@@ -16,7 +16,7 @@ const OUT = path.join(ROOT, 'docs/screenshots');
 async function main(): Promise<void> {
   await mkdir(OUT, { recursive: true });
   const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-  const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1, colorScheme: 'dark' });
   const problems: string[] = [];
   page.on('console', (m) => m.type() === 'error' && problems.push(`console: ${m.text()}`));
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`));
@@ -46,7 +46,7 @@ async function main(): Promise<void> {
     if (back !== total - 1) problems.push(`${s.id}: End then Left gave ${back}, expected ${total - 1}`);
   }
 
-  // Lite mode and each view, on the list sample.
+  // Each view and the 2D tree, on the list sample.
   await page.goto(`${url}#sample=rev&step=3`);
   await page.reload();
   await page.waitForSelector('.transport');

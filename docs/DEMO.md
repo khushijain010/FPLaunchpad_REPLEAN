@@ -62,6 +62,13 @@ and animation progress. The extractor is a Lean 4 metaprogram.
 ends where the next line's first tactic starts. Goals parked by `·` are put back so you always see
 every open goal. Details in `docs/STEPPING.md`.
 
+**How do you get branching right?** Goals are tracked by Lean's own goal ids, never by their
+text. Lean hides parked goals inside `·`, `case` and `cases`/`induction … with | alt =>`; we put
+them back, so `induction` on a 3-constructor type opens 3 goals and each case closes on its own.
+When one line works on several goals (`all_goals`, `<;>`), Lean records one run per goal, so each
+new goal hangs under the goal it came from. Each of these cases has a real Lean proof in
+`lean/Fixtures` with tests on its output, golden-checked in CI.
+
 **How is this different from Paperproof?** Paperproof is an editor tool for writing proofs, drawn
 as 2D paper trees. This is a player for watching and presenting them: scrub, autoplay, four
 coordinated views, plain-English explanations, nothing to install.

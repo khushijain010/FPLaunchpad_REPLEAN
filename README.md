@@ -1,3 +1,5 @@
+<img src="docs/logo.svg" alt="replean" width="260">
+
 # Replean
 
 A step-through player for Lean 4 proofs. Press **Next** and one line of the proof runs; the goal
@@ -27,15 +29,16 @@ Khushi · team Bilibuu · IITR, for Syntax Error 2026 (Functional Programming tr
 
 ### The four views
 
-- **Tree**: the graph grows. Goals are nodes, tactics are edges; `constructor`, `rcases` and
-  `induction` visibly branch. Proved goals turn gold and drop into a row along the bottom.
+- **Tree**: the graph grows. Goals are nodes, tactics are edges; `constructor`, `rcases`,
+  `cases … with` and `induction … with` visibly branch, one child per case. Every node shows its
+  whole goal, wrapped, never cut off. Proved goals turn gold and drop into a row along the bottom.
 - **List Lab**: a list rearranges. List elements in the goal are boxes keyed by value, so when
   `rw [rev]` moves `1` from the front to the back, that box slides there.
 - **Rewrite**: before and after, diffed token by token, with what was replaced by what.
 - **Shrink**: a goal shrinks down to what was just proved. Theorem on the left, open goals in the
   middle getting smaller, proved goals collapsing onto a shelf.
 
-![Replean in light mode: List Lab on rev [1, 2, 3]](docs/screenshots/hero-light.png)
+![Replean in light mode: rev [1, 2, 3] = [3, 2, 1] rewriting one line at a time](docs/screenshots/hero-light.png)
 
 ### Your own proofs
 
@@ -60,6 +63,20 @@ core replacements for the tactics it uses, such as `omega` for `ring`.
 
 More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
+### Keeping the picture honest
+
+- **Goals are tracked by Lean's own ids**, not by their text, so two branches that print the same
+  are still two nodes, and two hypotheses both named `a✝` never get mixed up.
+- **Parked goals stay visible.** Inside `·`, `case` or a `| alt =>` of `cases`/`induction … with`,
+  Lean only reports the goal it's focused on; Replean puts the waiting ones back, so goals never
+  blink out of existence ([STEPPING.md](docs/STEPPING.md)).
+- **Each new goal hangs under the goal it really came from.** `all_goals intro h` or
+  `constructor <;> simp` work on several goals at once; Lean records one run per goal, and the tree
+  follows that instead of guessing.
+- **Tested on real Lean output.** The edge cases above are small proofs in
+  [`lean/Fixtures`](lean/Fixtures) with unit tests on their extractor output, and CI re-runs Lean
+  on every push and fails if any committed trace or fixture differs (`pnpm golden`).
+
 ## Run it locally
 
 Needs Node 20+ and pnpm 9 (`npm i -g pnpm@9`).
@@ -75,10 +92,11 @@ Running your own files and regenerating the example traces need Lean
 
 ```sh
 pnpm verify         # lake build: all examples compile
-pnpm traces         # rerun the extractor and rewrite apps/web/public/traces/*.json
-pnpm golden         # check the committed traces match a fresh Lean run
+pnpm traces         # rerun the extractor: example traces + the test fixtures from lean/Fixtures
+pnpm golden         # check the committed traces and fixtures match a fresh Lean run
 pnpm test           # unit tests (core + server)
 pnpm ui-check       # click every control in a real browser (needs pnpm preview + pnpm server)
+pnpm capture        # retake the screenshots in docs/screenshots (same servers)
 pnpm build          # static site in apps/web/dist
 ```
 

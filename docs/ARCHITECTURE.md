@@ -16,8 +16,8 @@ Replay first, live optional: the demo never depends on a Lean process being aliv
                                                       │ frames[step]
             ┌──────────────┬──────────────┬───────────┼────────────┬──────────────┬─────────────┐
             ▼              ▼              ▼           ▼            ▼              ▼             ▼
-       CodePane       GoalPanel       WhyPanel     Tree3D       Tree2D        ListLab   Rewrite/Shrink
-   (decorations)    (diff colours)  (dictionary)  (R3F)       (SVG, 2D)     (CSS 3D)    (DOM)
+       CodePane       GoalState     Explanation    Tree3D       Tree2D        ListLab   Rewrite/Shrink
+   (decorations)    (diff colours)  (explain.ts)  (R3F)       (SVG, 2D)     (CSS 3D)    (DOM)
 ```
 
 ## The pieces
@@ -64,6 +64,12 @@ local loops; nothing outside the function can see them.
 
 ## Tests
 
-- `core/core.test.ts`, `core/scene.test.ts`, `core/validate.test.ts`: every pure function.
-- `pnpm golden` (CI): regenerate every trace with real Lean and compare to the committed JSON.
+- `apps/web/src/core/*.test.ts` (Vitest): every pure function. `edgecases.test.ts` runs the
+  stepping, graph and explanations on real extractor output for the proofs in `lean/Fixtures`
+  (`cases … with`, `induction … with`, `all_goals`, `<;>`, `example`, `rw … at h`).
+- `apps/server/src/*.test.ts`: the live API and the public-mode source filter.
+- `pnpm golden` (CI): regenerate every trace and fixture with real Lean and compare to the
+  committed JSON.
 - `pnpm verify` (CI): `lake build Samples`.
+- `pnpm ui-check`: a real browser clicks every control, checks layout (tree boxes hold their whole
+  goal and never overlap) and fails on any console error.
