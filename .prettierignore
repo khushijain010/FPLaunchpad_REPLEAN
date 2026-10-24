@@ -1,0 +1,5 @@
+pnpm-lock.yaml
+dist
+apps/web/public/traces
+lean/.lake
+PROMPT.md

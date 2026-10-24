@@ -1,0 +1,12 @@
+name = "lemmascope"
+defaultTargets = ["Samples", "extract"]
+
+# The five sample proofs. Core Lean only, no Mathlib.
+[[lean_lib]]
+name = "Samples"
+
+# Elaborates a .lean file and prints its tactic steps as JSON.
+[[lean_exe]]
+name = "extract"
+root = "Extractor"
+supportInterpreter = true

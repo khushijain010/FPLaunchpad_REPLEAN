@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.lake/
+lean/.lake/
+*.log
+.DS_Store
+.env
+.env.*
+coverage/
+.vite/
+apps/web/test-results/

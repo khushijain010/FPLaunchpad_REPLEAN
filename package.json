@@ -1,0 +1,35 @@
+{
+  "name": "lemmascope",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @lemmascope/web dev",
+    "build": "pnpm --filter @lemmascope/web build",
+    "preview": "pnpm --filter @lemmascope/web preview",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "traces": "tsx scripts/gen-traces.ts",
+    "verify": "tsx scripts/verify-samples.ts",
+    "golden": "tsx scripts/gen-traces.ts --check",
+    "server": "pnpm --filter @lemmascope/server dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.5",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0",
+    "vitest": "^5.0.5"
+  }
+}
