@@ -22,8 +22,10 @@ export type GoalView = Readonly<{
 export type StepDiff = Readonly<{
   /** The goal the tactic worked on: the first goal that disappeared. */
   acted: Goal | undefined;
-  /** Goals that exist after but not before. All of them came from `acted`. */
+  /** Goals that exist after but not before. */
   opened: readonly Goal[];
+  /** The goal each opened goal came from, keyed by the opened goal's id. */
+  parentOf: ReadonlyMap<string, Goal>;
   /** Goals that disappeared and did not turn into anything: proved. */
   proved: readonly Goal[];
   /** Goals present before and after with the same id. */
@@ -64,19 +66,31 @@ export function diffHyps(from: readonly Hyp[], to: readonly Hyp[]): readonly Hyp
   return [...changes, ...spare.map((hyp): HypChange => ({ kind: 'removed', hyp }))];
 }
 
-export function diffStates(before: ProofState, after: ProofState, tacticText = ''): StepDiff {
+/**
+ * @param parents where Lean says each opened goal came from (Step.parents). Goals it doesn't
+ *   cover are taken to come from `acted`, the first goal that changed.
+ */
+export function diffStates(before: ProofState, after: ProofState, tacticText = '', parents: Readonly<Record<string, string>> = {}): StepDiff {
   const beforeIds = new Set(before.goals.map((g) => g.id));
   const afterIds = new Set(after.goals.map((g) => g.id));
   const gone = before.goals.filter((g) => !afterIds.has(g.id));
   const opened = after.goals.filter((g) => !beforeIds.has(g.id));
   const kept = after.goals.filter((g) => beforeIds.has(g.id));
   const acted = gone[0];
-  const proved = opened.length > 0 ? gone.slice(1) : gone;
+  const goneById = new Map(gone.map((g) => [g.id, g] as const));
+  const parentOf = new Map(
+    opened.flatMap((g) => {
+      const p = goneById.get(parents[g.id] ?? '') ?? acted;
+      return p ? [[g.id, p] as const] : [];
+    }),
+  );
+  const hasChildren = new Set([...parentOf.values()].map((g) => g.id));
+  const proved = gone.filter((g) => !hasChildren.has(g.id));
 
   const beforeById = new Map(before.goals.map((g) => [g.id, g] as const));
   const goals: GoalView[] = after.goals.map((goal) => {
     const same = beforeById.get(goal.id);
-    const from = same ?? acted;
+    const from = same ?? parentOf.get(goal.id);
     const targetChanged = from !== undefined && from.target !== goal.target;
     const status = same ? (targetChanged ? 'changed' : 'kept') : 'new';
     return { goal, from, status, hyps: diffHyps(from?.hyps ?? [], goal.hyps), targetChanged };
@@ -90,6 +104,7 @@ export function diffStates(before: ProofState, after: ProofState, tacticText = '
   return {
     acted,
     opened,
+    parentOf,
     proved,
     kept,
     usedHyps,

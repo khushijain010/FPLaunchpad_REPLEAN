@@ -58,34 +58,32 @@ const foldStep = (acc: Acc, step: Step, i: number): Acc => {
       }),
     acc,
   );
-  const d = diffStates(step.before, step.after);
-  const parent = d.acted ? withRoots.nodes.get(d.acted.id) : undefined;
-  const withChildren = d.opened.reduce(
-    (a, goal) =>
-      withNode(a, {
-        id: goal.id,
-        goal,
-        parent: parent?.id,
-        proof: step.proof,
-        depth: (parent?.depth ?? -1) + 1,
-        bornFrame: i + 1,
-        bornStep: i,
-        endFrame: undefined,
-        endStep: undefined,
-        children: [],
-      }),
-    withRoots,
-  );
-  const linked = parent
-    ? update(withChildren, parent.id, (n) => ({
-        ...n,
-        children: [...n.children, ...d.opened.map((g) => g.id)],
-      }))
-    : withChildren;
-  const gone = [...(d.acted ? [d.acted] : []), ...d.proved];
+  const d = diffStates(step.before, step.after, step.text, step.parents);
+  // Each new goal hangs under the goal it came from, so `all_goals` keeps every branch apart.
+  const parentOf = (goal: Goal) => {
+    const p = d.parentOf.get(goal.id);
+    return p ? withRoots.nodes.get(p.id) : undefined;
+  };
+  const withChildren = d.opened.reduce((a, goal) => {
+    const parent = parentOf(goal);
+    const born = withNode(a, {
+      id: goal.id,
+      goal,
+      parent: parent?.id,
+      proof: step.proof,
+      depth: (parent?.depth ?? -1) + 1,
+      bornFrame: i + 1,
+      bornStep: i,
+      endFrame: undefined,
+      endStep: undefined,
+      children: [],
+    });
+    return parent ? update(born, parent.id, (n) => ({ ...n, children: [...n.children, goal.id] })) : born;
+  }, withRoots);
+  const gone = [...new Set(d.parentOf.values()), ...d.proved];
   return gone.reduce(
     (a, g) => update(a, g.id, (n) => (n.endFrame === undefined ? { ...n, endFrame: i + 1, endStep: i } : n)),
-    linked,
+    withChildren,
   );
 };
 

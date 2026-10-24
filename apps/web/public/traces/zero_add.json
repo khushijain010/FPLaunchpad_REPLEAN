@@ -64,6 +64,10 @@
             "target": "myAdd 0 (n✝ + 1) = n✝ + 1"
           }
         ]
+      },
+      "parents": {
+        "_uniq.545": "_uniq.530",
+        "_uniq.550": "_uniq.530"
       }
     },
     {
@@ -229,6 +233,9 @@
             "target": "myAdd 0 k + 1 = k + 1"
           }
         ]
+      },
+      "parents": {
+        "_uniq.672": "_uniq.562"
       }
     },
     {

@@ -109,8 +109,6 @@ words, and nothing to install.
   see [docs/LIVE.md](docs/LIVE.md) for the security trade-offs.
 - **"Used" hypotheses are a heuristic:** a hypothesis counts as used if the line mentions it by name.
 - **`simp` is a black box:** you see before and after, not which lemmas fired.
-- **`cases … with | …` alternatives hide their sibling goals** while you're inside one
-  ([STEPPING.md](docs/STEPPING.md)); `rcases` with bullets keeps every goal visible.
 - **List Lab reads the printed goal**, so it handles list literals and `::` chains, not lists hidden
   behind definitions.
 

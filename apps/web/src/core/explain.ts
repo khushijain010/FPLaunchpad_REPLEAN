@@ -72,7 +72,9 @@ export function explainTactic(step: Step, diff: StepDiff): Explanation {
     );
   }
   if (diff.removed.length > 0) facts.push(`Gone from the context: ${diff.removed.map((h) => code(h.name)).join(', ')}.`);
-  if (diff.opened.length > 1) facts.push(`Opened ${count(diff.opened.length, 'goal')}.`);
+  const worked = new Set([...diff.parentOf.values()].map((g) => g.id)).size;
+  if (worked > 1) facts.push(`Worked on ${count(worked, 'goal')}, each in its own branch.`);
+  else if (diff.opened.length > 1) facts.push(`Opened ${count(diff.opened.length, 'goal')}.`);
   if (diff.proved.length > 0) facts.push(`Closed ${count(diff.proved.length, 'goal')}.`);
   const left = step.after.goals.length;
   facts.push(left === 0 ? 'No goals remaining.' : `${count(left, 'goal')} remaining.`);
@@ -87,6 +89,9 @@ function headline(step: Step, diff: StepDiff): string {
   const added = diff.added;
   const closed = diff.opened.length === 0 && acted !== undefined;
   const text = code(step.text.replace(/^·\s*/, ''));
+  // `all_goals t` or `t₁ <;> t₂` over several goals: nothing was split, several goals changed.
+  const parents = new Set([...diff.parentOf.values()].map((g) => g.id)).size;
+  if (parents > 1) return `${text} ran on ${parents} goals at once, changing each in place.`;
 
   switch (t) {
     case 'intro':

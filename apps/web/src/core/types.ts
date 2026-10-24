@@ -39,6 +39,12 @@ export type Step = Readonly<{
   tactic: string;
   before: ProofState;
   after: ProofState;
+  /**
+   * Goal id -> the before-goal it came from, for goals this line opened, when Lean recorded
+   * it. Without it every new goal is assumed to come from the first goal that changed, which
+   * is wrong for `all_goals t` or `t₁ <;> t₂` acting on several goals.
+   */
+  parents?: Readonly<Record<string, string>>;
   error?: Readonly<{ message: string }>;
 }>;
 

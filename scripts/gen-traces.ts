@@ -1,4 +1,5 @@
-// pnpm traces          regenerate apps/web/public/traces/*.json from the Lean samples
+// pnpm traces          regenerate apps/web/public/traces/*.json from the Lean samples, and the
+//                      unit-test fixtures in apps/web/src/core/fixtures from lean/Fixtures
 // pnpm traces --check  regenerate in memory and fail if anything differs (golden test)
 // pnpm traces --raw    also write the extractor's raw JSON next to each trace, for debugging
 
@@ -8,6 +9,9 @@ import { LEAN_DIR, ROOT, requireLake, run, traceFile } from './lean.ts';
 import { SAMPLES } from './samples.ts';
 
 const OUT = path.join(ROOT, 'apps/web/public/traces');
+/** Real extractor output for the unit tests' edge cases, checked by --check like the traces. */
+const FIXTURE_OUT = path.join(ROOT, 'apps/web/src/core/fixtures');
+const FIXTURES = ['CasesWith', 'AllGoals'] as const;
 const check = process.argv.includes('--check');
 const keepRaw = process.argv.includes('--raw');
 
@@ -36,18 +40,30 @@ async function main(): Promise<void> {
     }
   }
 
+  const fixtures: Array<[string, string]> = [];
+  for (const name of FIXTURES) {
+    const raw = await run('lake', ['exe', 'extract', `Fixtures/${name}.lean`], LEAN_DIR);
+    if (raw.code !== 0) throw new Error(`extract Fixtures/${name}.lean failed:\n${raw.stderr}`);
+    const out = JSON.parse(raw.stdout) as { messages: Array<{ severity: string; text: string }> };
+    const errors = out.messages.filter((m) => m.severity === 'error');
+    if (errors.length) throw new Error(`Fixtures/${name}.lean has Lean errors:\n${errors.map((e) => `  ${e.text}`).join('\n')}`);
+    fixtures.push([`${name}.raw.json`, stringify(out)]);
+  }
+  const files = [...outputs.map(([n, t]) => [path.join(OUT, n), t] as const), ...fixtures.map(([n, t]) => [path.join(FIXTURE_OUT, n), t] as const)];
+
   if (check) {
     const stale: string[] = [];
-    for (const [name, text] of outputs) {
-      const committed = await readFile(path.join(OUT, name), 'utf8').catch(() => '');
-      if (committed.replace(/\r\n/g, '\n') !== text) stale.push(name);
+    for (const [file, text] of files) {
+      const committed = await readFile(file, 'utf8').catch(() => '');
+      if (committed.replace(/\r\n/g, '\n') !== text) stale.push(path.basename(file));
     }
     if (stale.length) throw new Error(`Committed traces are stale: ${stale.join(', ')}. Run pnpm traces.`);
     console.log('Golden check passed: committed traces match a fresh Lean run.');
     return;
   }
-  for (const [name, text] of outputs) await writeFile(path.join(OUT, name), text);
-  console.log(`Wrote ${outputs.length} files to ${path.relative(ROOT, OUT)}`);
+  await mkdir(FIXTURE_OUT, { recursive: true });
+  for (const [file, text] of files) await writeFile(file, text);
+  console.log(`Wrote ${outputs.length} files to ${path.relative(ROOT, OUT)} and ${fixtures.length} test fixtures`);
 }
 
 main().catch((e: unknown) => {

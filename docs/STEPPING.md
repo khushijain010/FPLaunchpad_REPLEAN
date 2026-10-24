@@ -40,6 +40,27 @@ out of existence, so `fullGoals` adds them back:
 Walking up a node's ancestors and collecting those goals gives the full list, in order: focused
 goals first, then parked ones.
 
+`cases h with | inl … | inr …` (and `induction … with`, `match`) is different: the tactic makes
+every alternative's goal at once, but Lean records each one only on its own alternative, never in
+any tactic's "after". So while `inl` runs, `inr` is **waiting**:
+
+> The goals of later siblings, along the path up from a node, that no tactic produced, are still
+> open at that node.
+
+The `cases` line therefore opens both goals, and `inr` stays visible (and stays attached to the
+goal `cases` split) until its turn.
+
+## Where each goal came from
+
+A goal that appears on a line hangs under the goal it came from. Lean tells us: the narrowest
+tactic node that produced a goal (fewest goals before it, then the innermost) was working on its
+parent. `all_goals intro h` on `p → p` and `q → q` records one `intro` per goal, so `p` hangs under
+`p → p` and `q` under `q → q`, and neither original is counted as proved. The result is stored per
+step as `parents`; without it, every new goal would be credited to the first goal that changed.
+
+Both rules are tested on real extractor output for [`lean/Fixtures`](../lean/Fixtures), which
+`pnpm golden` regenerates and checks like the sample traces.
+
 ## Consequences
 
 | Source line | What one Next does |
@@ -52,13 +73,11 @@ goals first, then parked ones.
 | `case zero => rfl` | Focuses and closes in one step. |
 | `intro h; exact h` | Both tactics, one step. |
 | `constructor <;> simp` | One step. |
+| `cases h with` (alternatives below) | Opens one goal per alternative; the later ones wait, visible, until their turn. |
+| `all_goals intro h` | One step; each goal is transformed in place, under its own branch. |
 
 ## Known limits
 
-- `cases h with | inl hp => ...` and `induction n with | zero => ... | succ ...` focus each
-  alternative without leaving the sibling goal in any ancestor's before/after lists, so the
-  sibling isn't visible while you're inside the first alternative. The samples use `rcases` +
-  bullets and `induction` + `case` instead, which keep every goal visible.
 - If a single declaration has two separate `by` blocks, the last line of the first block hands
   its "after" to the first line of the second. Rare, and none of the samples do it.
 - Columns are Lean codepoint offsets. Lean source here is all in the Basic Multilingual Plane,

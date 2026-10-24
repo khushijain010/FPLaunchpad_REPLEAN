@@ -110,6 +110,10 @@
             "target": "exec (compile (a✝¹.add a✝) ++ rest) stk = exec rest (eval (a✝¹.add a✝) :: stk)"
           }
         ]
+      },
+      "parents": {
+        "_uniq.3197": "_uniq.3172",
+        "_uniq.3212": "_uniq.3172"
       }
     },
     {
@@ -411,6 +415,9 @@
             "target": "exec (compile a ++ (compile b ++ ([Instr.add] ++ rest))) stk = exec rest (eval (a.add b) :: stk)"
           }
         ]
+      },
+      "parents": {
+        "_uniq.3426": "_uniq.3265"
       }
     },
     {
@@ -504,6 +511,9 @@
             "target": "exec (compile b ++ ([Instr.add] ++ rest)) (eval a :: stk) = exec rest (eval (a.add b) :: stk)"
           }
         ]
+      },
+      "parents": {
+        "_uniq.3433": "_uniq.3426"
       }
     },
     {
@@ -597,6 +607,9 @@
             "target": "exec ([Instr.add] ++ rest) (eval b :: eval a :: stk) = exec rest (eval (a.add b) :: stk)"
           }
         ]
+      },
+      "parents": {
+        "_uniq.3444": "_uniq.3433"
       }
     },
     {
@@ -700,6 +713,9 @@
             "target": "exec (compile e) [] = [eval e]"
           }
         ]
+      },
+      "parents": {
+        "_uniq.3509": "_uniq.3501"
       }
     },
     {
@@ -753,6 +769,9 @@
             "target": "exec (compile e) [] = [eval e]"
           }
         ]
+      },
+      "parents": {
+        "_uniq.3529": "_uniq.3509"
       }
     },
     {

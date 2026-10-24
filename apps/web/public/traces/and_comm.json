@@ -68,6 +68,9 @@
             "target": "q ∧ p"
           }
         ]
+      },
+      "parents": {
+        "_uniq.13": "_uniq.11"
       }
     },
     {
@@ -153,6 +156,10 @@
             "target": "p"
           }
         ]
+      },
+      "parents": {
+        "_uniq.21": "_uniq.13",
+        "_uniq.22": "_uniq.13"
       }
     },
     {

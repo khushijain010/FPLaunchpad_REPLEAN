@@ -51,7 +51,7 @@ function frameAt(trace: Trace, graph: GoalGraph, k: number): Frame {
   const state = step ? step.after : (nextStep?.before ?? NO_GOALS);
   const upcoming =
     step && nextStep && nextStep.proof !== step.proof ? nextStep.before : undefined;
-  const diff = step ? diffStates(step.before, step.after, step.text) : undefined;
+  const diff = step ? diffStates(step.before, step.after, step.text, step.parents) : undefined;
   const ran = steps.slice(0, k);
   const done = k === total && total > 0 && state.goals.length === 0 && !ran.some((s) => s.error);
   const activeGoalId = (state.goals[0] ?? upcoming?.goals[0])?.id;

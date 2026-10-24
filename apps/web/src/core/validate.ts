@@ -36,6 +36,9 @@ export function validateTrace(json: unknown): Trace {
     if (s.range.line < 1 || s.range.line > lines) throw new Error(`${where} points at line ${s.range.line}, past the end of the file.`);
     checkGoals(s.before, `${where} (before)`);
     checkGoals(s.after, `${where} (after)`);
+    if (s.parents !== undefined && (!isObj(s.parents) || !Object.values(s.parents).every(isStr))) {
+      throw new Error(`${where} has a malformed goal-parent map.`);
+    }
   });
   return {
     ...(json as unknown as Trace),

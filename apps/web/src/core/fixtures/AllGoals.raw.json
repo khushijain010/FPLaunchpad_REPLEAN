@@ -1,0 +1,2738 @@
+{
+  "file": "Fixtures/AllGoals.lean",
+  "leanVersion": "4.34.1",
+  "messages": [],
+  "nodes": [
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.15",
+          "tag": "",
+          "target": "(p → p) ∧ (q → q)"
+        }
+      ],
+      "cmd": 0,
+      "id": 0,
+      "kind": "Lean.Parser.Term.byTactic",
+      "parent": null,
+      "start": {
+        "col": 60,
+        "line": 4
+      },
+      "stop": {
+        "col": 11,
+        "line": 8
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.15",
+          "tag": "",
+          "target": "(p → p) ∧ (q → q)"
+        }
+      ],
+      "cmd": 0,
+      "id": 1,
+      "kind": "by",
+      "parent": 0,
+      "start": {
+        "col": 60,
+        "line": 4
+      },
+      "stop": {
+        "col": 62,
+        "line": 4
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.15",
+          "tag": "",
+          "target": "(p → p) ∧ (q → q)"
+        }
+      ],
+      "cmd": 0,
+      "id": 2,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 1,
+      "start": {
+        "col": 2,
+        "line": 5
+      },
+      "stop": {
+        "col": 11,
+        "line": 8
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.15",
+          "tag": "",
+          "target": "(p → p) ∧ (q → q)"
+        }
+      ],
+      "cmd": 0,
+      "id": 3,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 2,
+      "start": {
+        "col": 2,
+        "line": 5
+      },
+      "stop": {
+        "col": 11,
+        "line": 8
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.22",
+          "tag": "left",
+          "target": "p → p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.23",
+          "tag": "right",
+          "target": "q → q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.15",
+          "tag": "",
+          "target": "(p → p) ∧ (q → q)"
+        }
+      ],
+      "cmd": 0,
+      "id": 4,
+      "kind": "Lean.Parser.Tactic.constructor",
+      "parent": 3,
+      "start": {
+        "col": 2,
+        "line": 5
+      },
+      "stop": {
+        "col": 13,
+        "line": 5
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.22",
+          "tag": "left",
+          "target": "p → p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.23",
+          "tag": "right",
+          "target": "q → q"
+        }
+      ],
+      "cmd": 0,
+      "id": 5,
+      "kind": "Lean.Parser.Tactic.allGoals",
+      "parent": 3,
+      "start": {
+        "col": 2,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.22",
+          "tag": "left",
+          "target": "p → p"
+        }
+      ],
+      "cmd": 0,
+      "id": 6,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 5,
+      "start": {
+        "col": 12,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.22",
+          "tag": "left",
+          "target": "p → p"
+        }
+      ],
+      "cmd": 0,
+      "id": 7,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 6,
+      "start": {
+        "col": 12,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.22",
+          "tag": "left",
+          "target": "p → p"
+        }
+      ],
+      "cmd": 0,
+      "id": 8,
+      "kind": "Lean.Parser.Tactic.intro",
+      "parent": 7,
+      "start": {
+        "col": 12,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.22",
+          "tag": "left",
+          "target": "p → p"
+        }
+      ],
+      "cmd": 0,
+      "id": 9,
+      "kind": "null",
+      "parent": 8,
+      "start": {
+        "col": 12,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.23",
+          "tag": "right",
+          "target": "q → q"
+        }
+      ],
+      "cmd": 0,
+      "id": 10,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 5,
+      "start": {
+        "col": 12,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.23",
+          "tag": "right",
+          "target": "q → q"
+        }
+      ],
+      "cmd": 0,
+      "id": 11,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 10,
+      "start": {
+        "col": 12,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.23",
+          "tag": "right",
+          "target": "q → q"
+        }
+      ],
+      "cmd": 0,
+      "id": 12,
+      "kind": "Lean.Parser.Tactic.intro",
+      "parent": 11,
+      "start": {
+        "col": 12,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            }
+          ],
+          "id": "_uniq.23",
+          "tag": "right",
+          "target": "q → q"
+        }
+      ],
+      "cmd": 0,
+      "id": 13,
+      "kind": "null",
+      "parent": 12,
+      "start": {
+        "col": 12,
+        "line": 6
+      },
+      "stop": {
+        "col": 19,
+        "line": 6
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 0,
+      "id": 14,
+      "kind": "Lean.cdot",
+      "parent": 3,
+      "start": {
+        "col": 2,
+        "line": 7
+      },
+      "stop": {
+        "col": 11,
+        "line": 7
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 0,
+      "id": 15,
+      "kind": "Lean.cdotTk",
+      "parent": 14,
+      "start": {
+        "col": 2,
+        "line": 7
+      },
+      "stop": {
+        "col": 3,
+        "line": 7
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "cmd": 0,
+      "id": 16,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 14,
+      "start": {
+        "col": 4,
+        "line": 7
+      },
+      "stop": {
+        "col": 11,
+        "line": 7
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "cmd": 0,
+      "id": 17,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 16,
+      "start": {
+        "col": 4,
+        "line": 7
+      },
+      "stop": {
+        "col": 11,
+        "line": 7
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.26",
+              "name": "h",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.27",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "cmd": 0,
+      "id": 18,
+      "kind": "Lean.Parser.Tactic.exact",
+      "parent": 17,
+      "start": {
+        "col": 4,
+        "line": 7
+      },
+      "stop": {
+        "col": 11,
+        "line": 7
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 0,
+      "id": 19,
+      "kind": "Lean.cdot",
+      "parent": 3,
+      "start": {
+        "col": 2,
+        "line": 8
+      },
+      "stop": {
+        "col": 11,
+        "line": 8
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 0,
+      "id": 20,
+      "kind": "Lean.cdotTk",
+      "parent": 19,
+      "start": {
+        "col": 2,
+        "line": 8
+      },
+      "stop": {
+        "col": 3,
+        "line": 8
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 0,
+      "id": 21,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 19,
+      "start": {
+        "col": 4,
+        "line": 8
+      },
+      "stop": {
+        "col": 11,
+        "line": 8
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 0,
+      "id": 22,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 21,
+      "start": {
+        "col": 4,
+        "line": 8
+      },
+      "stop": {
+        "col": 11,
+        "line": 8
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.13",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.14",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.29",
+              "name": "h",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.30",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 0,
+      "id": 23,
+      "kind": "Lean.Parser.Tactic.exact",
+      "parent": 22,
+      "start": {
+        "col": 4,
+        "line": 8
+      },
+      "stop": {
+        "col": 11,
+        "line": 8
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.52",
+          "tag": "",
+          "target": "(True → p) ∧ (True → q)"
+        }
+      ],
+      "cmd": 1,
+      "id": 24,
+      "kind": "Lean.Parser.Term.byTactic",
+      "parent": null,
+      "start": {
+        "col": 78,
+        "line": 10
+      },
+      "stop": {
+        "col": 12,
+        "line": 13
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.52",
+          "tag": "",
+          "target": "(True → p) ∧ (True → q)"
+        }
+      ],
+      "cmd": 1,
+      "id": 25,
+      "kind": "by",
+      "parent": 24,
+      "start": {
+        "col": 78,
+        "line": 10
+      },
+      "stop": {
+        "col": 80,
+        "line": 10
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.52",
+          "tag": "",
+          "target": "(True → p) ∧ (True → q)"
+        }
+      ],
+      "cmd": 1,
+      "id": 26,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 25,
+      "start": {
+        "col": 2,
+        "line": 11
+      },
+      "stop": {
+        "col": 12,
+        "line": 13
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.52",
+          "tag": "",
+          "target": "(True → p) ∧ (True → q)"
+        }
+      ],
+      "cmd": 1,
+      "id": 27,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 26,
+      "start": {
+        "col": 2,
+        "line": 11
+      },
+      "stop": {
+        "col": 12,
+        "line": 13
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.52",
+          "tag": "",
+          "target": "(True → p) ∧ (True → q)"
+        }
+      ],
+      "cmd": 1,
+      "id": 28,
+      "kind": "Lean.Parser.Tactic.«tactic_<;>_»",
+      "parent": 27,
+      "start": {
+        "col": 2,
+        "line": 11
+      },
+      "stop": {
+        "col": 25,
+        "line": 11
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.59",
+          "tag": "left",
+          "target": "True → p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.60",
+          "tag": "right",
+          "target": "True → q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.52",
+          "tag": "",
+          "target": "(True → p) ∧ (True → q)"
+        }
+      ],
+      "cmd": 1,
+      "id": 29,
+      "kind": "Lean.Parser.Tactic.constructor",
+      "parent": 28,
+      "start": {
+        "col": 2,
+        "line": 11
+      },
+      "stop": {
+        "col": 13,
+        "line": 11
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.59",
+          "tag": "left",
+          "target": "True → p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.60",
+          "tag": "right",
+          "target": "True → q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.59",
+          "tag": "left",
+          "target": "True → p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.60",
+          "tag": "right",
+          "target": "True → q"
+        }
+      ],
+      "cmd": 1,
+      "id": 30,
+      "kind": "«<;>»",
+      "parent": 28,
+      "start": {
+        "col": 14,
+        "line": 11
+      },
+      "stop": {
+        "col": 17,
+        "line": 11
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.59",
+          "tag": "left",
+          "target": "True → p"
+        }
+      ],
+      "cmd": 1,
+      "id": 31,
+      "kind": "Lean.Parser.Tactic.intro",
+      "parent": 28,
+      "start": {
+        "col": 18,
+        "line": 11
+      },
+      "stop": {
+        "col": 25,
+        "line": 11
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.59",
+          "tag": "left",
+          "target": "True → p"
+        }
+      ],
+      "cmd": 1,
+      "id": 32,
+      "kind": "null",
+      "parent": 31,
+      "start": {
+        "col": 18,
+        "line": 11
+      },
+      "stop": {
+        "col": 25,
+        "line": 11
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.60",
+          "tag": "right",
+          "target": "True → q"
+        }
+      ],
+      "cmd": 1,
+      "id": 33,
+      "kind": "Lean.Parser.Tactic.intro",
+      "parent": 28,
+      "start": {
+        "col": 18,
+        "line": 11
+      },
+      "stop": {
+        "col": 25,
+        "line": 11
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            }
+          ],
+          "id": "_uniq.60",
+          "tag": "right",
+          "target": "True → q"
+        }
+      ],
+      "cmd": 1,
+      "id": 34,
+      "kind": "null",
+      "parent": 33,
+      "start": {
+        "col": 18,
+        "line": 11
+      },
+      "stop": {
+        "col": 25,
+        "line": 11
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 1,
+      "id": 35,
+      "kind": "Lean.cdot",
+      "parent": 27,
+      "start": {
+        "col": 2,
+        "line": 12
+      },
+      "stop": {
+        "col": 12,
+        "line": 12
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        },
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 1,
+      "id": 36,
+      "kind": "Lean.cdotTk",
+      "parent": 35,
+      "start": {
+        "col": 2,
+        "line": 12
+      },
+      "stop": {
+        "col": 3,
+        "line": 12
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "cmd": 1,
+      "id": 37,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 35,
+      "start": {
+        "col": 4,
+        "line": 12
+      },
+      "stop": {
+        "col": 12,
+        "line": 12
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "cmd": 1,
+      "id": 38,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 37,
+      "start": {
+        "col": 4,
+        "line": 12
+      },
+      "stop": {
+        "col": 12,
+        "line": 12
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.63",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.64",
+          "tag": "left",
+          "target": "p"
+        }
+      ],
+      "cmd": 1,
+      "id": 39,
+      "kind": "Lean.Parser.Tactic.exact",
+      "parent": 38,
+      "start": {
+        "col": 4,
+        "line": 12
+      },
+      "stop": {
+        "col": 12,
+        "line": 12
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 1,
+      "id": 40,
+      "kind": "Lean.cdot",
+      "parent": 27,
+      "start": {
+        "col": 2,
+        "line": 13
+      },
+      "stop": {
+        "col": 12,
+        "line": 13
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 1,
+      "id": 41,
+      "kind": "Lean.cdotTk",
+      "parent": 40,
+      "start": {
+        "col": 2,
+        "line": 13
+      },
+      "stop": {
+        "col": 3,
+        "line": 13
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 1,
+      "id": 42,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 40,
+      "start": {
+        "col": 4,
+        "line": 13
+      },
+      "stop": {
+        "col": 12,
+        "line": 13
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 1,
+      "id": 43,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 42,
+      "start": {
+        "col": 4,
+        "line": 13
+      },
+      "stop": {
+        "col": 12,
+        "line": 13
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.48",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.49",
+              "name": "q",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.50",
+              "name": "hp",
+              "type": "p"
+            },
+            {
+              "id": "_uniq.51",
+              "name": "hq",
+              "type": "q"
+            },
+            {
+              "id": "_uniq.66",
+              "name": "a✝",
+              "type": "True"
+            }
+          ],
+          "id": "_uniq.67",
+          "tag": "right",
+          "target": "q"
+        }
+      ],
+      "cmd": 1,
+      "id": 44,
+      "kind": "Lean.Parser.Tactic.exact",
+      "parent": 43,
+      "start": {
+        "col": 4,
+        "line": 13
+      },
+      "stop": {
+        "col": 12,
+        "line": 13
+      }
+    }
+  ]
+}

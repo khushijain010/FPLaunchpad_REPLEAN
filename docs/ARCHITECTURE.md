@@ -35,12 +35,15 @@ the frontend can tell "the same goal" from "a new goal that looks similar". It d
 trace loads (they're small), so scrubbing, Back, Home/End and permalinks are array lookups and can
 never disagree with stepping. `reduce(trace, k)` is the indexed form.
 
-**Goal graph.** Goals are nodes, tactics are edges. A goal that exists after a step but not before
-was produced from the first goal that disappeared. Built with a fold over the steps; parents are
-derived, never stored.
+**Goal graph.** Goals are nodes, tactics are edges, and identity is Lean's own goal id, so two
+goals that print the same are still two nodes. A goal that exists after a step but not before hangs
+under the goal Lean produced it from (`Step.parents`, read off the narrowest tactic node that
+created it, so `all_goals` and `<;>` keep each branch apart), falling back to the first goal that
+disappeared. Built with a fold over the steps.
 
 **Layout.** `d3-hierarchy`'s tidy tree over the *whole* graph, computed once. A node knows where it
-will sit before it is born, so nothing jumps as the tree grows. Depth goes down Y and back in Z.
+will sit before it is born, so nothing jumps as the tree grows. Every node is sized to its full,
+wrapped goal text and siblings are spaced by those sizes. Depth goes down Y and back in Z.
 
 **Views.** Each view is a function of a `Frame` (and the trace-wide `Film`). The 3D view keeps one
 kind of state, animation progress, which it damps toward the frame's targets each tick and stops

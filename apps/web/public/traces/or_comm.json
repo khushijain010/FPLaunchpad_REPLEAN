@@ -68,6 +68,9 @@
             "target": "q ∨ p"
           }
         ]
+      },
+      "parents": {
+        "_uniq.13": "_uniq.11"
       }
     },
     {
@@ -153,6 +156,10 @@
             "target": "q ∨ p"
           }
         ]
+      },
+      "parents": {
+        "_uniq.32": "_uniq.13",
+        "_uniq.37": "_uniq.13"
       }
     },
     {
@@ -260,6 +267,9 @@
             "target": "q ∨ p"
           }
         ]
+      },
+      "parents": {
+        "_uniq.44": "_uniq.32"
       }
     },
     {
@@ -408,6 +418,9 @@
             "target": "q"
           }
         ]
+      },
+      "parents": {
+        "_uniq.50": "_uniq.37"
       }
     },
     {
