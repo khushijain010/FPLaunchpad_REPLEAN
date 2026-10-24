@@ -27,7 +27,7 @@ Last updated: 2026-10-24
 - [x] `lean/Extractor.lean`: elaborates a file, walks the InfoTree, prints every original tactic node (cmd, parent, kind, range, goals before/after) as JSON
 - [x] `core/raw.ts`: types for extractor JSON
 - [x] `core/buildSteps.ts`: raw nodes -> one step per line, with parked-goal reconstruction for `·`/`case`
-- [ ] `scripts/gen-traces.ts` (`pnpm traces`) and `scripts/verify-samples.ts`
+- [x] `scripts/gen-traces.ts` (`pnpm traces`, `--check` golden mode, `--raw` debug), `scripts/verify-samples.ts` (`pnpm verify`), `scripts/lean.ts` (shared lake runner), `scripts/samples.ts` (manifest with titles/blurbs/watch hints). Fails cleanly when lake is missing.
 - [ ] Generate and commit the 5 real traces (needs Lean)
 - [ ] CI: `lake build` + golden-trace check
 
