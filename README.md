@@ -30,6 +30,10 @@ keeps up:
 - **Shrink**: a goal shrinks down to what was just proved. Theorem on the left, open goals in the
   middle getting smaller, proved goals collapsing onto a shelf.
 
+**Your own proofs (live mode):** pick *+ Your own proof (live)*, paste Lean or upload a `.lean`
+file, press Run, and your proof plays the same way. Locally: `pnpm live`. On the deployed site it
+talks to a hosted, sandboxed Lean server ([docs/LIVE.md](docs/LIVE.md)).
+
 The player picks the best view per step; picking one yourself overrides that until the next sample.
 On the left: the code with the current line lit, the goals infoview-style with a diff, and a **Why**
 panel that explains each tactic in plain English (offline, no AI).
@@ -53,6 +57,12 @@ Needs Node 20+ and pnpm 9 (`npm i -g pnpm@9`).
 ```sh
 pnpm install
 pnpm dev            # http://localhost:5173
+```
+
+Live mode (paste or upload your own proof) needs Lean too:
+
+```sh
+pnpm live           # Lean backend on 127.0.0.1:8787 + the player
 ```
 
 Regenerating traces needs Lean ([elan](https://github.com/leanprover/elan)); the toolchain is
@@ -81,8 +91,10 @@ words.
 
 ## Limitations
 
-- **Demo mode replays pre-generated traces.** You can't paste your own Lean into the public site;
-  Lean doesn't run in a browser.
+- **Live mode on the public site goes through a hosted Lean server** with a free plan: the first run
+  after a quiet spell waits up to a minute for it to wake. It refuses code-running commands
+  (`#eval`, `native_decide`, macros, `import`), so it's core-Lean proofs only. See [docs/LIVE.md](docs/LIVE.md)
+  for the security trade-offs.
 - **"Used" hypotheses are a heuristic:** a hypothesis counts as used if the line mentions it by name.
   `simp` using one implicitly won't show.
 - **`cases ... with | ...` alternatives hide their sibling goals** while you're inside one (see

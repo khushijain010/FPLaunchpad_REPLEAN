@@ -3,7 +3,8 @@
 import { useEffect } from 'react';
 import { validateTrace } from '../core/validate';
 import type { SampleInfo } from '../core/types';
-import { useStore } from './store';
+import { checkLive } from './live';
+import { LIVE_ID, useStore } from './store';
 
 const base = import.meta.env.BASE_URL;
 
@@ -33,6 +34,8 @@ export async function loadSample(id: string, step = 0): Promise<void> {
 
 export function useBoot(): void {
   useEffect(() => {
+    // Ping the live backend early: a sleeping free-tier host starts waking while you read.
+    void checkLive();
     void (async () => {
       const { setSamples, failed } = useStore.getState();
       try {
@@ -60,7 +63,8 @@ export function useHashSync(): void {
   const step = useStore((s) => s.step);
   const status = useStore((s) => s.status);
   useEffect(() => {
-    if (status !== 'ready' || !sampleId) return;
+    // A live trace can't be reloaded from a link, so it gets no permalink.
+    if (status !== 'ready' || !sampleId || sampleId === LIVE_ID) return;
     const next = `#sample=${sampleId}&step=${step}`;
     if (window.location.hash !== next) history.replaceState(null, '', next);
   }, [sampleId, step, status]);

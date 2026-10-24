@@ -60,12 +60,17 @@ Goal parents are *not* stored: `buildGoalGraph` derives them from consecutive st
 - **pnpm 9** installed per-user via npm since corepack isn't bundled with Node 26.
 - **Compiler sample is ~40 lines**, over the 15-line guide: it's the boss level, and it still
   steps cleanly (two short proofs).
+- **Live mode on the public site** (asked for by the user): hosted Docker backend (Render free) with
+  a source filter, rate limits, an origin allow-list and per-run kill. Not a full sandbox; trade-offs
+  written up in docs/LIVE.md. Locally it binds to loopback and doesn't filter.
+- **Live traces get no permalink:** they exist only in the browser that ran them.
 
 ## Risks
 
 | Risk | Mitigation |
 | --- | --- |
-| Extractor never compiled yet (no Lean) | Written against the real v4.34.1 source; fix on first run; REPL fallback |
-| Sample proofs may need small fixes | Kept conservative (`rfl`, `rw`, `exact`); fix on first `lake build` |
+| Lean upgrade changes InfoTree shapes | Toolchain pinned; golden check in CI catches any drift |
 | 3D perf on weak laptops | `frameloop="demand"`, lazy bundle, lite 2D mode |
 | WebGL missing | Auto-detect, fall back to Tree2D |
+| Public live server abused | Filter + limits + disposable container; demo still works if it's down |
+| Free host asleep during the demo | Page pings it on load; open the site a minute before presenting |

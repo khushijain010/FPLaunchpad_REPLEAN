@@ -3,6 +3,8 @@ import { filmOf } from './core/frames';
 import { identity, isPlaceholder } from './identity';
 import { CodePane } from './ui/CodePane';
 import { Dialogs } from './ui/Dialogs';
+import { useLive } from './ui/live';
+import { LiveEditor } from './ui/LiveEditor';
 import { ErrorBoundary } from './ui/ErrorBoundary';
 import { useAutoplay, useBoot, useHashSync } from './ui/loader';
 import { useShortcuts } from './ui/shortcuts';
@@ -34,6 +36,7 @@ function Player() {
   const goto = useStore((s) => s.goto);
   const stopPlay = useStore((s) => s.stopPlay);
   const presentation = useStore((s) => s.presentation);
+  const editing = useLive((s) => s.editing);
   const film = useMemo(() => filmOf(trace), [trace]);
   const frame = film.frames[Math.min(step, film.frames.length - 1)]!;
 
@@ -45,7 +48,12 @@ function Player() {
     }
   };
 
-  const left = (
+  const left = editing ? (
+    <>
+      <TopBar />
+      <LiveEditor />
+    </>
+  ) : (
     <>
       <TopBar />
       {trace.meta.watch && (
@@ -66,7 +74,7 @@ function Player() {
   return (
     <div className={`app${presentation ? ' is-presenting' : ''}`}>
       <Split
-        hideLeft={presentation}
+        hideLeft={presentation && !editing}
         left={left}
         right={
           <ErrorBoundary fallback={(msg) => <StatusCard kind="error" title="The picture broke." message={`${msg} The code and goals still work. Try lite mode (L).`} />}>

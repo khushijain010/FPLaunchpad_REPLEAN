@@ -19,7 +19,8 @@
     "verify": "tsx scripts/verify-samples.ts",
     "golden": "tsx scripts/gen-traces.ts --check",
     "server": "pnpm --filter @lemmascope/server dev",
-    "capture": "tsx scripts/capture.ts"
+    "capture": "tsx scripts/capture.ts",
+    "live": "pnpm --parallel --filter @lemmascope/server --filter @lemmascope/web dev"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

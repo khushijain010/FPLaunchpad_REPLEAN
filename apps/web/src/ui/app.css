@@ -1088,3 +1088,72 @@
 .viz-layer[hidden] {
   display: none;
 }
+
+/* ---------- live mode ---------- */
+
+.mode-badge.is-live {
+  color: var(--brand);
+  border-color: #ff4f0066;
+}
+.live {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+.live.is-dragging::after {
+  content: 'Drop the .lean file';
+  position: absolute;
+  inset: 8px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--brand);
+  border-radius: 10px;
+  background: #0a0a0add;
+  font: 700 18px var(--sans);
+  color: var(--brand);
+  pointer-events: none;
+}
+.live-head {
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.live-head h2 {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.live-head code {
+  color: var(--text);
+}
+.live-editor {
+  flex: 1;
+  min-height: 160px;
+  overflow: hidden;
+}
+.live-editor .cm-editor {
+  height: 100%;
+}
+.live-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+}
+.live-kbd {
+  color: #0a0a0a99;
+  border-color: #0a0a0a55;
+  margin-left: 4px;
+}
+.live-status,
+.live-error {
+  margin: 0;
+  padding: 0 14px 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.live-error {
+  color: var(--error);
+  white-space: pre-wrap;
+}

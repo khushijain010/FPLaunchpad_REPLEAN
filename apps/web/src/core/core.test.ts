@@ -53,6 +53,11 @@ describe('buildSteps', () => {
     expect(s.filter((x) => x.error)).toHaveLength(1);
   });
 
+  it('drops duplicate messages', () => {
+    const m = { severity: 'error' as const, start: { line: 6, col: 4 }, text: 'No goals to be solved' };
+    expect(buildSteps({ ...andCommRaw, messages: [m, m] }, andCommSource).messages).toHaveLength(1);
+  });
+
   it('gives each top-level command its own proof number', () => {
     const second = andCommRaw.nodes.map((n) => ({ ...n, id: n.id + 100, cmd: 5, parent: n.parent == null ? null : n.parent + 100, start: { ...n.start, line: n.start.line + 10 }, stop: { ...n.stop, line: n.stop.line + 10 } }));
     const s = buildSteps({ ...andCommRaw, nodes: [...andCommRaw.nodes, ...second] }, andCommSource).steps;

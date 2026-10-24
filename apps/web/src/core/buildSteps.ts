@@ -97,12 +97,10 @@ export function buildSteps(raw: RawOutput, source: string): BuiltSteps {
     });
   });
 
-  const messages: TraceMessage[] = raw.messages.map((m) => ({
-    severity: m.severity,
-    line: m.start.line,
-    col: m.start.col,
-    text: m.text,
-  }));
+  // Lean can report the same message in both its reported and unreported logs.
+  const messages: TraceMessage[] = raw.messages
+    .map((m): TraceMessage => ({ severity: m.severity, line: m.start.line, col: m.start.col, text: m.text }))
+    .filter((m, i, all) => all.findIndex((o) => o.line === m.line && o.col === m.col && o.text === m.text && o.severity === m.severity) === i);
 
   const steps = drafts.map((d, index): Step => {
     const lineText = lines[d.line - 1] ?? '';

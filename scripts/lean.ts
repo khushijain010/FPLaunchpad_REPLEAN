@@ -15,16 +15,36 @@ export const LEAN_DIR = path.join(ROOT, 'lean');
 
 export type RunResult = Readonly<{ code: number | null; stdout: string; stderr: string }>;
 
+/** Kill a process and everything it started. On Windows `kill()` would only stop the shell. */
+function killTree(pid: number | undefined): void {
+  if (pid === undefined) return;
+  if (process.platform === 'win32') spawn('taskkill', ['/pid', String(pid), '/T', '/F'], { windowsHide: true });
+  else process.kill(-pid, 'SIGKILL');
+}
+
+const MAX_OUTPUT = 32 * 1024 * 1024;
+
+/** Run a fixed command. Arguments must never contain user text: on Windows this goes through a shell. */
 export function run(cmd: string, args: readonly string[], cwd: string, timeoutMs = 600_000): Promise<RunResult> {
   return new Promise((resolve, reject) => {
-    const child = spawn(cmd, [...args], { cwd, shell: process.platform === 'win32', windowsHide: true });
+    const child = spawn(cmd, [...args], {
+      cwd,
+      shell: process.platform === 'win32',
+      windowsHide: true,
+      detached: process.platform !== 'win32',
+    });
     let stdout = '';
     let stderr = '';
-    const timer = setTimeout(() => {
-      child.kill();
-      reject(new Error(`${cmd} ${args.join(' ')} timed out after ${timeoutMs} ms`));
-    }, timeoutMs);
-    child.stdout.on('data', (d: Buffer) => (stdout += d.toString('utf8')));
+    const fail = (e: Error) => {
+      clearTimeout(timer);
+      killTree(child.pid);
+      reject(e);
+    };
+    const timer = setTimeout(() => fail(new Error(`Lean took longer than ${Math.round(timeoutMs / 1000)} s, so I stopped it.`)), timeoutMs);
+    child.stdout.on('data', (d: Buffer) => {
+      stdout += d.toString('utf8');
+      if (stdout.length > MAX_OUTPUT) fail(new Error('Lean printed more output than I am willing to read.'));
+    });
     child.stderr.on('data', (d: Buffer) => (stderr += d.toString('utf8')));
     child.on('error', (e) => {
       clearTimeout(timer);

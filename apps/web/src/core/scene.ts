@@ -65,7 +65,7 @@ export function buildScene(film: Film, frame: Frame): Scene {
       y: p.y,
       z: p.z,
       status: frame.statuses.get(id) as SceneNode['status'],
-      label: shortLabel(n.goal.target),
+      label: shortLabel(n.goal.target, 24),
       target: n.goal.target,
       tag: n.goal.tag,
       hyps: n.goal.hyps,

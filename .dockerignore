@@ -1,0 +1,8 @@
+.git
+**/node_modules
+lean/.lake
+lean/Live
+apps/web/dist
+apps/web/public
+docs
+*.log

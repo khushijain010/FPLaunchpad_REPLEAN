@@ -74,7 +74,10 @@ Last updated: 2026-10-24
 - [ ] Push to GitHub and see CI go green (needs you: HUMAN_TASKS #3)
 - [ ] Deploy (needs you: HUMAN_TASKS #4)
 - [ ] Tag v1.0 (after CI is green on GitHub)
-- [ ] Live mode (P2): **cut for now.** The replay player is the priority; the shared `scripts/lean.ts` runner makes it a small add later.
+- [x] Live mode (P2, requested by the user): `apps/server` (Fastify; 22 tests incl. CORS, origin block, source filter, rate limit, one-job lock), `ui/LiveEditor.tsx` (paste / upload / drag-drop, Ctrl+Enter), `ui/live.ts`, picker entry, Edit button, `pnpm live`. Verified with real Lean in the browser (`pnpm capture` covers upload → run → step → failing proof).
+- [x] Public live server: `Dockerfile`, `render.yaml`, Pages build reads `vars.LIVE_API_URL`, CI job builds the image and smoke-tests it (real proof = 3 steps, `#eval` = 422, foreign origin = 403). Docs: `docs/LIVE.md`.
+- [ ] Docker image built locally: not possible here (no Docker); CI does it on first push.
+- [ ] Deploy the live server (needs you: HUMAN_TASKS)
 
 ## Decisions
 

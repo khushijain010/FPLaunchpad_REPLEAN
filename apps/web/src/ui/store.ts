@@ -5,6 +5,9 @@ import { create } from 'zustand';
 import { clampStep } from '../core/frames';
 import type { SampleInfo, Trace, ViewId } from '../core/types';
 
+/** The sample id used for a trace that came from live mode. */
+export const LIVE_ID = 'live';
+
 export type Speed = 0.5 | 1 | 2;
 export const SPEEDS: readonly Speed[] = [0.5, 1, 2];
 export type Dialog = 'none' | 'help' | 'about';
@@ -31,6 +34,8 @@ type Actions = Readonly<{
   setSamples: (samples: readonly SampleInfo[]) => void;
   startLoading: (sampleId: string) => void;
   loaded: (trace: Trace, step?: number) => void;
+  /** A trace from live mode: it has no entry in the sample list. */
+  loadedLive: (trace: Trace) => void;
   failed: (status: 'empty' | 'error', message?: string) => void;
   goto: (k: number) => void;
   next: () => void;
@@ -85,6 +90,8 @@ export const useStore = create<State & Actions>()((set, get) => {
     setSamples: (samples) => set({ samples }),
     startLoading: (sampleId) => set({ sampleId, status: 'loading', playing: false, manualView: undefined }),
     loaded: (trace, step = 0) => set({ trace, status: 'ready', error: undefined, step: clampStep(trace, step) }),
+    loadedLive: (trace) =>
+      set({ trace, sampleId: LIVE_ID, status: 'ready', error: undefined, step: 0, playing: false, manualView: undefined }),
     failed: (status, message) => set({ status, error: message, trace: undefined, playing: false }),
     goto: move,
     next: () => move(get().step + 1),
