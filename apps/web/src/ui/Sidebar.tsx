@@ -233,14 +233,16 @@ export function Sidebar() {
         </Folder>
       </ul>
 
-      <div className="sidebar-foot">
-        {uploadError && (
-          <p className="sidebar-error" role="alert">
-            {uploadError}
-          </p>
-        )}
-        <p>{storageProblem ? 'This browser is not saving files right now (private mode or full storage).' : 'My Proofs are saved in this browser. Drop .lean files here to add them.'}</p>
-      </div>
+      {(uploadError || storageProblem) && (
+        <div className="sidebar-foot">
+          {uploadError && (
+            <p className="sidebar-error" role="alert">
+              {uploadError}
+            </p>
+          )}
+          {storageProblem && <p>This browser is not saving files right now (private mode or full storage).</p>}
+        </div>
+      )}
     </nav>
   );
 }
