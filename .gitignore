@@ -11,3 +11,4 @@ coverage/
 apps/web/test-results/
 apps/web/public/traces/*.raw.json
 lean/Live/
+*.tsbuildinfo
