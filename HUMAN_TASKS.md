@@ -12,6 +12,11 @@ Things only you can do. Ordered roughly by priority. Tick them off as you go.
     Accept the defaults, open a new terminal, then check `elan --version` and `lean --version`.
     Then tell me, and I'll run `cd lean && lake build` and `pnpm traces`.
   - Blocking: compiling samples, checking the extractor, generating the 5 traces.
+Done task 1 by human 
+PS C:\Users\Khushi Jain\Desktop\Work\Hackathons\Syntax Error\FPLaunchpad\lean> lean --version
+Lean (version 4.34.1, x86_64-w64-windows-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)
+PS C:\Users\Khushi Jain\Desktop\Work\Hackathons\Syntax Error\FPLaunchpad\lean> elan --version
+elan 4.2.4 (227caca13 2026-08-25)
 
 - [ ] **2. Finish your identity** (priority: before submission)
   - Done: name (Khushi), team (Bilibuu), college (IITR).
