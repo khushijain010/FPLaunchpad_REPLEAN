@@ -4,7 +4,7 @@ import { useRef, type KeyboardEvent, type PointerEvent } from 'react';
 import type { Frame } from '../core/frames';
 import { identity } from '../identity';
 import { FirstIcon, HelpIcon, MoonIcon, NextIcon, PauseIcon, PlayIcon, PrevIcon, SidebarIcon, SunIcon } from './icons';
-import { Logo } from './Logo';
+import { Logo, Wordmark } from './Logo';
 import { SPEEDS, useStore, type Speed } from './store';
 import { setTheme, useTheme } from './theme';
 
@@ -77,8 +77,8 @@ export function Header({ frame, errorSteps }: { frame: Frame | undefined; errorS
     <header className="header">
       <div className="header-left">
         <button className="brand" onClick={() => setDialog('help')} aria-label={`${identity.projectName}: help and about`}>
-          <Logo />
-          <span className="brand-name">{identity.projectName}</span>
+          <Logo size={26} />
+          <Wordmark />
         </button>
         <button className="icon-btn" onClick={toggleExplorer} aria-pressed={explorerOpen} aria-label={explorerOpen ? 'Close the files panel' : 'Open the files panel'} title="Files panel (B)">
           <SidebarIcon />

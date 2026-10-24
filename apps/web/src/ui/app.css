@@ -130,9 +130,15 @@
   cursor: pointer;
   border-radius: var(--radius);
 }
-.brand-name {
-  font: 700 18px var(--sans);
-  letter-spacing: -0.02em;
+.wordmark {
+  /* Lowercase and two-tone, like the logo. */
+  font: 700 21px var(--sans);
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--text);
+}
+.wordmark-lean {
+  color: #f26b2e;
 }
 .transport {
   display: flex;
