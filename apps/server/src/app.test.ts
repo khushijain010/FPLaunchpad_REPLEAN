@@ -14,7 +14,7 @@ const fakeTrace = (title: string): Trace => ({
 });
 
 async function setup(runTrace: TraceRunner = async (_f, t) => fakeTrace(t), extra: Partial<AppOptions> = {}) {
-  const leanDir = await mkdtemp(path.join(os.tmpdir(), 'lemmascope-'));
+  const leanDir = await mkdtemp(path.join(os.tmpdir(), 'replean-'));
   const app = buildApp({ leanDir, runTrace, leanVersion: async () => '4.34.1', ...extra });
   return { app, leanDir };
 }
@@ -72,11 +72,11 @@ describe('live server', () => {
 
   it('turns a Lean failure into a readable error', async () => {
     const { app } = await setup(async () => {
-      throw new Error('Lean took longer than 60 s, so I stopped it.');
+      throw new Error('Lean timed out after 60 s.');
     });
     const r = await app.inject(post({ source: 'x' }));
     expect(r.statusCode).toBe(422);
-    expect(r.json().error).toMatch(/longer than/);
+    expect(r.json().error).toMatch(/timed out/);
   });
 
   it('runs one job at a time', async () => {

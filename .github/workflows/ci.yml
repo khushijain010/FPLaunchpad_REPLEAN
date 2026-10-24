@@ -49,10 +49,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build the public live-mode image
-        run: docker build -t lemmascope-live .
+        run: docker build -t replean-live .
       - name: Smoke test it against real Lean
         run: |
-          docker run -d --name live -p 8787:8787 -e LEMMASCOPE_ORIGINS=https://example.github.io lemmascope-live
+          docker run -d --name live -p 8787:8787 -e REPLEAN_ORIGINS=https://example.github.io replean-live
           for i in $(seq 1 60); do curl -sf localhost:8787/api/health && break; sleep 2; done
           curl -sf localhost:8787/api/health | grep '"ok":true'
           # A real proof comes back as a trace with three steps.

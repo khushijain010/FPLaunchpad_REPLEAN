@@ -8,7 +8,7 @@ Things only you can do. Ordered by priority. Tick them off as you go.
   - Why: CI, both deployments and the submission all need the repo on GitHub. I can't log in for you.
   - How: create an empty repo on github.com (no README or license, so the push is clean), then from the repo root:
     ```powershell
-    git remote add origin https://github.com/<you>/lemmascope.git
+    git remote add origin https://github.com/<you>/replean.git
     git push -u origin main
     ```
   - Then open the **Actions** tab. `CI` has four jobs: web, Lean (golden check), and
@@ -22,11 +22,11 @@ Things only you can do. Ordered by priority. Tick them off as you go.
 
 - [ ] **4. Deploy the live Lean server on Render** (priority: before submission, for live mode on the site)
   1. Sign up at https://render.com with your GitHub account (free plan, no card).
-  2. **New → Blueprint**, pick your repo. Render reads `render.yaml` and creates `lemmascope-live`.
-  3. When asked for `LEMMASCOPE_ORIGINS`, enter your site's origin, scheme and host only:
+  2. **New → Blueprint**, pick your repo. Render reads `render.yaml` and creates `replean-live`.
+  3. When asked for `REPLEAN_ORIGINS`, enter your site's origin, scheme and host only:
      `https://<you>.github.io` (no `/repo` path, no trailing slash).
   4. Wait for the first deploy (it downloads Lean, ~5–10 min). Copy the service URL,
-     e.g. `https://lemmascope-live.onrender.com`. Check `<that URL>/api/health` shows `"ok":true`.
+     e.g. `https://replean-live.onrender.com`. Check `<that URL>/api/health` shows `"ok":true`.
   5. In GitHub: repo **Settings → Secrets and variables → Actions → Variables → New repository variable**,
      name `LIVE_API_URL`, value = that service URL.
   6. **Actions → Deploy to GitHub Pages → Run workflow**, so the site is rebuilt knowing where the server is.
@@ -47,7 +47,7 @@ Things only you can do. Ordered by priority. Tick them off as you go.
 
 - [ ] **8. Tag v1.0** (priority: before submission, after CI is green)
   ```powershell
-  git tag -a v1.0 -m "Lemmascope v1.0"
+  git tag -a v1.0 -m "Replean v1.0"
   git push origin v1.0
   ```
 

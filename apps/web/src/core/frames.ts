@@ -72,7 +72,7 @@ function frameAt(trace: Trace, graph: GoalGraph, k: number): Frame {
     errorLines: ran.filter((s) => s.error).map((s) => s.range.line),
     statuses: nodeStatuses(graph, steps, k, activeGoalId),
     view: chooseView({ step, diff, done }),
-    summary: done ? 'Q.E.D. Nothing left to prove.' : stepSummary(k, total, step, state.goals.length),
+    summary: done ? 'Q.E.D. All goals closed.' : stepSummary(k, total, step, state.goals.length),
   };
 }
 

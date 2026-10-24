@@ -2,7 +2,7 @@
 // TODO(me): replace each {{...}} placeholder.
 
 export const identity = {
-  projectName: 'Lemmascope',
+  projectName: 'Replean',
   yourName: 'Khushi',
   teamName: 'Bilibuu',
   collegeOrOrg: 'IITR',

@@ -1,5 +1,5 @@
 {
-  "name": "lemmascope",
+  "name": "replean",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.15.9",
@@ -7,9 +7,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "pnpm --filter @lemmascope/web dev",
-    "build": "pnpm --filter @lemmascope/web build",
-    "preview": "pnpm --filter @lemmascope/web preview",
+    "dev": "pnpm --filter @replean/web dev",
+    "build": "pnpm --filter @replean/web build",
+    "preview": "pnpm --filter @replean/web preview",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint .",
@@ -18,9 +18,10 @@
     "traces": "tsx scripts/gen-traces.ts",
     "verify": "tsx scripts/verify-samples.ts",
     "golden": "tsx scripts/gen-traces.ts --check",
-    "server": "pnpm --filter @lemmascope/server dev",
+    "server": "pnpm --filter @replean/server dev",
     "capture": "tsx scripts/capture.ts",
-    "live": "pnpm --parallel --filter @lemmascope/server --filter @lemmascope/web dev"
+    "live": "pnpm --parallel --filter @replean/server --filter @replean/web dev",
+    "ui-check": "tsx scripts/ui-check.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -63,16 +63,16 @@ export function LiveEditor() {
     return () => v.destroy();
   }, []);
 
-  const replaceDoc = (text: string, title?: string) => {
-    setSource(text, title);
+  const replaceDoc = (text: string) => {
+    setSource(text);
     const v = view.current;
     v?.dispatch({ changes: { from: 0, to: v.state.doc.length, insert: text } });
   };
 
   const readFile = async (file: File | undefined) => {
     if (!file) return;
-    if (file.size > MAX_BYTES) return useLive.setState({ error: `${file.name} is over 64 KB. Live mode is for short proofs.` });
-    replaceDoc((await file.text()).replace(/\r\n/g, '\n'), file.name.replace(/\.lean$/, ''));
+    if (file.size > MAX_BYTES) return useLive.setState({ error: `${file.name} exceeds 64 KB.` });
+    replaceDoc((await file.text()).replace(/\r\n/g, '\n'));
   };
 
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -83,16 +83,16 @@ export function LiveEditor() {
 
   const status = running
     ? slow && HOSTED
-      ? 'Waking the Lean server. Free hosting naps when nobody visits; this can take a minute.'
-      : 'Asking Lean nicely...'
+      ? 'Starting the Lean server (the free host sleeps when idle). This can take up to a minute.'
+      : 'Running Lean…'
     : availability === 'checking'
       ? HOSTED
-        ? 'Checking the Lean server (it may be waking up)...'
-        : 'Looking for the local Lean server...'
+        ? 'Connecting to the Lean server…'
+        : 'Connecting to the local Lean server…'
       : availability === 'no'
         ? HOSTED
-          ? 'The Lean server is not answering right now. The samples still work.'
-          : 'No Lean server found. Start one with `pnpm live` from the repo root.'
+          ? 'The Lean server is unavailable. The sample proofs still work.'
+          : 'No local Lean server found. Start it with pnpm live from the repo root.'
         : null;
 
   return (
@@ -106,13 +106,13 @@ export function LiveEditor() {
         <h2>Your own proof</h2>
         <p className="muted small">
           Paste a proof, upload a <code>.lean</code> file, or drop one here. Core Lean only, no imports.
-          {isPublic && ' The public server runs proofs, not programs: #eval, native_decide, macros and IO are refused.'}
+          {isPublic && ' The public server rejects #eval, native_decide, macros and IO.'}
         </p>
       </div>
       <div className="live-editor" ref={host} />
       <div className="live-bar">
         <button className="btn primary" onClick={() => void runLive()} disabled={running || availability === 'no'} title="Run (Ctrl+Enter)">
-          {running ? 'Running...' : 'Run'}
+          {running ? 'Running…' : 'Run'}
           <kbd className="live-kbd">Ctrl ↵</kbd>
         </button>
         <button className="btn" onClick={() => fileInput.current?.click()} disabled={running}>
@@ -128,7 +128,7 @@ export function LiveEditor() {
             e.target.value = '';
           }}
         />
-        <button className="btn ghost" onClick={() => replaceDoc(STARTER, 'Your proof')} disabled={running}>
+        <button className="btn ghost" onClick={() => replaceDoc(STARTER)} disabled={running}>
           Example
         </button>
         {hasTrace && (

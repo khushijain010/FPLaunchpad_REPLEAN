@@ -155,7 +155,7 @@ describe('frames', () => {
   });
   it('declares Q.E.D. only at the end', () => {
     expect(film.frames.map((f) => f.done)).toEqual([false, false, false, false, true]);
-    expect(film.frames[4]!.summary).toBe('Q.E.D. Nothing left to prove.');
+    expect(film.frames[4]!.summary).toBe('Q.E.D. All goals closed.');
   });
   it('is a pure function of the index: jumping matches stepping', () => {
     expect(reduce(trace, 3)).toStrictEqual(film.frames[3]);
@@ -264,7 +264,7 @@ describe('explain', () => {
   });
   it('reports errors with the line number', () => {
     const s = { ...built.steps[1]!, error: { message: 'unknown tactic\nmore' } };
-    expect(explainTactic(s, diffStates(s.before, s.after)).headline).toBe('Lean disagrees on line 5.');
+    expect(explainTactic(s, diffStates(s.before, s.after)).headline).toBe('Lean error on line 5.');
   });
   it('writes a screen-reader summary', () => {
     expect(stepSummary(1, 4, built.steps[0], 1)).toBe('Step 1 of 4: intro h. One goal remains.');

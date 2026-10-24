@@ -1,15 +1,15 @@
 // pnpm live (from the repo root) starts this together with the player, on 127.0.0.1.
-// The public deployment runs the same file inside the Docker sandbox with LEMMASCOPE_PUBLIC=1.
+// The public deployment runs the same file inside the Docker sandbox with REPLEAN_PUBLIC=1.
 
 import { LEAN_DIR, run, traceFile } from '../../../scripts/lean.ts';
 import { buildApp, TIMEOUT_MS } from './app.ts';
 
 // Public mode is for the sandboxed container only (Dockerfile sets it). Locally it stays off and
 // the server binds to loopback.
-const PUBLIC = process.env.LEMMASCOPE_PUBLIC === '1';
-const PORT = Number(process.env.PORT ?? process.env.LEMMASCOPE_PORT ?? 8787);
+const PUBLIC = process.env.REPLEAN_PUBLIC === '1';
+const PORT = Number(process.env.PORT ?? process.env.REPLEAN_PORT ?? 8787);
 const HOST = PUBLIC ? '0.0.0.0' : '127.0.0.1';
-const ORIGINS = (process.env.LEMMASCOPE_ORIGINS ?? '')
+const ORIGINS = (process.env.REPLEAN_ORIGINS ?? '')
   .split(',')
   .map((o) => o.trim().replace(/\/+$/, ''))
   .filter(Boolean);

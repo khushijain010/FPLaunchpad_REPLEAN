@@ -32,7 +32,14 @@ export function TopBar() {
       {samples.length > 0 && (
         <label className="picker">
           <span className="sr-only">Sample proof</span>
-          <select value={isLive ? LIVE_OPTION : (sampleId ?? '')} onChange={(e) => onPick(e.target.value)}>
+          <select
+            value={isLive ? LIVE_OPTION : (sampleId ?? '')}
+            onChange={(e) => {
+              // Give the keyboard back to the player, or → would change the sample instead of stepping.
+              e.target.blur();
+              onPick(e.target.value);
+            }}
+          >
             {samples.map((s, i) => (
               <option key={s.id} value={s.id}>
                 {i + 1}. {s.title}
@@ -41,7 +48,7 @@ export function TopBar() {
             {liveOffered && <option value={LIVE_OPTION}>{liveTitle ? `Live: ${liveTitle}` : '+ Your own proof (live)'}</option>}
           </select>
           {isLive ? (
-            <span className="picker-blurb">{editing ? 'Paste or upload Lean, then Run.' : 'Your proof, run by Lean just now.'}</span>
+            <span className="picker-blurb">{editing ? 'Paste or upload Lean, then Run.' : 'Your proof, checked by Lean.'}</span>
           ) : (
             current && <span className="picker-blurb">{current.blurb}</span>
           )}

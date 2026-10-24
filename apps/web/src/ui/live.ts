@@ -21,7 +21,7 @@ theorem imp_chain (p q r : Prop) (hpq : p → q) (hqr : q → r) : p → r := by
   exact hp
 `;
 
-const DRAFT_KEY = 'lemmascope.liveDraft';
+const DRAFT_KEY = 'replean.liveDraft';
 
 export type Availability = 'checking' | 'yes' | 'no';
 
@@ -30,7 +30,6 @@ type LiveState = Readonly<{
   isPublic: boolean;
   editing: boolean;
   source: string;
-  title: string;
   running: boolean;
   slow: boolean;
   error: string | undefined;
@@ -49,14 +48,13 @@ export const useLive = create<LiveState>()(() => ({
   isPublic: false,
   editing: false,
   source: loadDraft(),
-  title: 'Your proof',
   running: false,
   slow: false,
   error: undefined,
 }));
 
-export function setSource(source: string, title?: string): void {
-  useLive.setState({ source, ...(title ? { title } : {}), error: undefined });
+export function setSource(source: string): void {
+  useLive.setState({ source, error: undefined });
   try {
     localStorage.setItem(DRAFT_KEY, source);
   } catch {
@@ -94,8 +92,10 @@ export async function checkLive(): Promise<void> {
 }
 
 export async function runLive(): Promise<void> {
-  const { source, title, running } = useLive.getState();
+  const { source, running } = useLive.getState();
   if (running) return;
+  // Named after the first theorem in the file, so the picker always matches the code.
+  const title = /\b(?:theorem|lemma)\s+([^\s:({[]+)/.exec(source)?.[1] ?? (/\bexample\b/.test(source) ? 'example' : 'Your proof');
   useLive.setState({ running: true, slow: false, error: undefined });
   const slowTimer = setTimeout(() => useLive.setState({ slow: true }), 6000);
   try {
@@ -109,18 +109,15 @@ export async function runLive(): Promise<void> {
       throw new Error(b?.error ?? (status === 0 ? 'No answer from the Lean server.' : `The Lean server answered ${status}.`));
     }
     const trace: Trace = validateTrace(b.trace);
-    if (trace.steps.length === 0) {
-      const errors = trace.messages.filter((m) => m.severity === 'error');
-      throw new Error(
-        errors.length > 0
-          ? `Lean disagrees on line ${errors[0]!.line}: ${errors[0]!.text.split('\n')[0]}`
-          : 'Lean ran it, but found no tactic proof to step through. Write a proof with `by`.',
-      );
+    const hasErrors = trace.messages.some((m) => m.severity === 'error');
+    // A file Lean rejected still opens in the player, so its errors show in the visualization panel.
+    if (trace.steps.length === 0 && !hasErrors) {
+      throw new Error('No tactic proof found. Live mode steps through proofs written with `by`.');
     }
     useStore.getState().loadedLive(trace);
     useLive.setState({ editing: false });
   } catch (e) {
-    const msg = e instanceof Error ? (e.name === 'AbortError' ? 'The Lean server took too long to answer.' : e.message) : String(e);
+    const msg = e instanceof Error ? (e.name === 'AbortError' ? 'The Lean server did not respond in time.' : e.message) : String(e);
     useLive.setState({ error: msg });
   } finally {
     clearTimeout(slowTimer);

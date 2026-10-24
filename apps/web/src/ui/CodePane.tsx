@@ -6,6 +6,7 @@ import { EditorState, RangeSet, StateEffect, StateField, type Extension } from '
 import { Decoration, EditorView, GutterMarker, gutter, lineNumbers, type DecorationSet } from '@codemirror/view';
 import { useEffect, useRef } from 'react';
 import type { Frame } from '../core/frames';
+import { unownedErrorLines } from '../core/errors';
 import type { Trace } from '../core/types';
 import { lean4, leanHighlight } from './leanLanguage';
 
@@ -129,14 +130,15 @@ export function CodePane({ trace, frame, onLine }: { trace: Trace; frame: Frame;
         current: frame.currentLine,
         next: frame.nextStep?.range.line,
         ran: frame.executedLines,
-        errors: frame.errorLines,
+        // Failed steps already run, plus errors outside any step (visible from the start).
+        errors: [...new Set([...frame.errorLines, ...unownedErrorLines(trace)])],
       }),
     ];
     if (focus !== undefined && focus <= v.state.doc.lines) {
       effects.push(EditorView.scrollIntoView(v.state.doc.line(focus).from, { y: 'nearest', yMargin: 48 }));
     }
     v.dispatch({ effects });
-  }, [frame, trace.source]);
+  }, [frame, trace]);
 
   return <div className="code-host" ref={host} />;
 }

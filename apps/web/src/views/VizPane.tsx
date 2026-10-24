@@ -7,6 +7,7 @@ import type { ViewId } from '../core/types';
 import { VIEW_KEYS } from '../ui/shortcuts';
 import { useStore } from '../ui/store';
 import { hasWebGL } from '../ui/webgl';
+import { LeanErrors } from './LeanErrors';
 import { ListLab } from './ListLab';
 import { RewriteLens } from './RewriteLens';
 import { ShrinkRail } from './ShrinkRail';
@@ -99,6 +100,8 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
             </>
           )}
         </div>
+        {/* Keyed by source so the expanded/collapsed choice resets for each new file. */}
+        <LeanErrors key={film.trace.source} trace={film.trace} frame={frame} />
         {scene.truncated && <p className="viz-note">Showing the first 300 goals. The rest are still in the goal panel.</p>}
       </div>
     </div>

@@ -64,6 +64,11 @@ Goal parents are *not* stored: `buildGoalGraph` derives them from consecutive st
   a source filter, rate limits, an origin allow-list and per-run kill. Not a full sandbox; trade-offs
   written up in docs/LIVE.md. Locally it binds to loopback and doesn't filter.
 - **Live traces get no permalink:** they exist only in the browser that ran them.
+- **Name: Replean** (user's choice), replacing the working name Lemmascope.
+- **No footer, plain copy:** the user found the playful microcopy from the brief off-putting; UI text
+  is now neutral and factual. This overrides the brief's voice section.
+- **A file Lean rejects still opens in the player** so its errors can be shown in the visualization
+  panel; only a file with no proof and no errors stays in the editor with a message.
 
 ## Risks
 

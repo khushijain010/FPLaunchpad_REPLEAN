@@ -47,8 +47,12 @@ export function Split({ left, right, hideLeft }: { left: ReactNode; right: React
         hidden={hideLeft}
         onPointerDown={(e) => {
           e.currentTarget.setPointerCapture(e.pointerId);
+          e.currentTarget.blur();
           setDragging(true);
         }}
+        // A mouse drag shouldn't leave focus here, or → would resize panels instead of stepping.
+        // Keyboard users can still Tab to the divider and resize with the arrow keys.
+        onMouseDown={(e) => e.preventDefault()}
         onDoubleClick={() => setPct(50)}
         onKeyDown={onKey}
       />

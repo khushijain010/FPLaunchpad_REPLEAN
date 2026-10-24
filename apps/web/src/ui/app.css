@@ -971,7 +971,16 @@
 }
 @media (max-width: 899px) {
   .transport {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    padding: 10px 12px;
+  }
+  .transport-buttons {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+  .speeds {
+    margin-left: 0;
   }
   .scrubber {
     grid-column: 1 / -1;
@@ -979,20 +988,6 @@
   }
 }
 
-.footer {
-  margin: 0;
-  padding: 4px 16px 6px;
-  font-size: 11px;
-  color: var(--faint);
-  background: var(--panel);
-}
-.footer-sep {
-  margin: 0 8px;
-}
-
-.app.is-presenting .footer {
-  display: none;
-}
 
 /* ---------- dialogs and status ---------- */
 
@@ -1156,4 +1151,121 @@
 .live-error {
   color: var(--error);
   white-space: pre-wrap;
+}
+
+@media (max-width: 899px) {
+  .topbar {
+    flex-wrap: wrap;
+  }
+  .picker {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .picker select {
+    flex: 1;
+    min-width: 0;
+  }
+  .picker-blurb {
+    display: none;
+  }
+  .brand {
+    margin-right: auto;
+  }
+}
+
+/* ---------- Lean errors over the visualization ---------- */
+
+.lean-errors {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  max-height: 55%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 40;
+}
+.le-card,
+.le-bar {
+  background: #160707f2;
+  border: 1px solid #ff4b4b88;
+  border-radius: var(--radius);
+}
+.le-card {
+  padding: 10px 14px 12px;
+  box-shadow: inset 3px 0 0 var(--error);
+}
+.le-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 14px var(--sans);
+  color: var(--error);
+  margin-bottom: 6px;
+}
+.le-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--error);
+  flex: none;
+}
+.le-line {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.le-msg {
+  margin: 0;
+  font: 13px/1.5 var(--mono);
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.le-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: 8px 12px;
+  color: var(--error);
+  font: 600 12px var(--mono);
+  cursor: pointer;
+  text-align: left;
+}
+.le-chevron {
+  margin-left: auto;
+  color: var(--muted);
+}
+.le-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 6px 6px;
+}
+.le-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-top: 1px solid #ff4b4b33;
+  padding: 8px 6px;
+  cursor: pointer;
+}
+.le-item:disabled {
+  cursor: default;
+}
+.le-item:hover:not(:disabled) {
+  background: #ff4b4b14;
+}
+.le-where {
+  display: block;
+  font-size: 11px;
+  color: var(--error);
+  margin-bottom: 2px;
 }

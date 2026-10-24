@@ -59,7 +59,7 @@ export function ShrinkRail({ film, frame }: { film: Film; frame: Frame }) {
               );
             })}
           </AnimatePresence>
-          {goals.length === 0 && <p className="qed-line">{frame.done ? 'Q.E.D. Nothing left to prove.' : 'No goals open.'}</p>}
+          {goals.length === 0 && <p className="qed-line">{frame.done ? 'Q.E.D. All goals closed.' : 'No goals open.'}</p>}
         </section>
 
         <section className="sh-shelf" aria-label="Proved">

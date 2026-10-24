@@ -3,10 +3,13 @@
 > Read this first after any context reset, then `PLAN.md` and `HUMAN_TASKS.md`.
 > Continue from the first unchecked item.
 
-**Current phase:** 5 (ship). Player verified in a real browser on real traces. Remaining work is mostly yours: push, deploy, tag, record. Lean is not installed yet, so
+**Current phase:** 5 (ship). Everything in the brief plus live mode and a Lean error panel is built and
+verified: 57 web tests, 22 server tests, golden check, `pnpm verify`, `pnpm capture`, and
+`pnpm ui-check` (91/91 clicks-and-checks, zero console errors). Remaining work is yours: push,
+deploy, tag, record (HUMAN_TASKS.md). Lean is not installed yet, so
 everything that needs a real Lean run is waiting on `HUMAN_TASKS.md` item 1.
 
-Last updated: 2026-10-24
+Last updated: 2026-10-24 (evening)
 
 ## Phase 0: Ground truth
 
@@ -78,6 +81,26 @@ Last updated: 2026-10-24
 - [x] Public live server: `Dockerfile`, `render.yaml`, Pages build reads `vars.LIVE_API_URL`, CI job builds the image and smoke-tests it (real proof = 3 steps, `#eval` = 422, foreign origin = 403). Docs: `docs/LIVE.md`.
 - [ ] Docker image built locally: not possible here (no Docker); CI does it on first push.
 - [ ] Deploy the live server (needs you: HUMAN_TASKS)
+
+## Latest round (user requests)
+
+- [x] **Renamed to Replean** everywhere (UI, docs, packages `@replean/*`, Lean package, Docker/Render
+  names, env vars `REPLEAN_*`, localStorage keys). `PROMPT.md` keeps the original brief untouched.
+- [x] **Removed the footer** ("Built by ... · Every proof state comes from a real Lean run.") and
+  rewrote casual UI copy as plain text: loading, empty and error states, the About dialog (now a plain
+  description + "Khushi · Bilibuu · IITR · Syntax Error 2026"), live-mode statuses, server errors.
+- [x] **Lean errors in the visualization panel** (`core/errors.ts` + tests, `views/LeanErrors.tsx`):
+  a red card with Lean's full message when the step that just ran failed; a "Lean reported N errors"
+  bar otherwise, expanded by default when errors can't be reached by stepping, each entry jumping to
+  its line; every error line marked in the editor gutter; a live file Lean rejects now opens in the
+  player with its errors instead of only a line under the editor.
+- [x] **`scripts/ui-check.ts` (`pnpm ui-check`)**: clicks every control (transport, speeds, scrubber
+  click/drag/keys, all shortcuts, tabs, auto, lite, presentation, Why, divider, picker, code-line jump,
+  permalink, dialogs, live editor: example/upload/drop/run/edit/back/errors) and checks phone width,
+  no-WebGL, empty state, bad-trace card, backend-down. 91/91 pass.
+- [x] Bugs it found and fixed: the sample picker kept keyboard focus (→ changed the sample instead of
+  stepping); a mouse-dragged divider kept focus (→ resized panels); page wider than a phone (grid
+  columns sized to content; transport bar didn't wrap); live proofs named after a stale upload.
 
 ## Decisions
 

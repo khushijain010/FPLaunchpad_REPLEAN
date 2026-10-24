@@ -12,3 +12,7 @@ apps/web/test-results/
 apps/web/public/traces/*.raw.json
 lean/Live/
 *.tsbuildinfo
+HUMAN_TASKS.md
+PROGRESS.md
+PROMPT.md
+PLAN.md

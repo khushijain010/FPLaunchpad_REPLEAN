@@ -7,7 +7,7 @@
 
 **0:00 – Open on And, swapped. Shrink view (press `4`).**
 "This is a Lean proof. Lean checks it in a blink, which is great for Lean and useless for
-learning. Lemmascope slows it down to one line at a time."
+learning. Replean slows it down to one line at a time."
 
 **0:10 – Press `1` (Tree). Press `→` twice.**
 "`intro h` takes `p ∧ q` off the goal and puts it in the context: there it is, flying in, in cyan.

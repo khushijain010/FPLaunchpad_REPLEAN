@@ -1,4 +1,4 @@
-name = "lemmascope"
+name = "replean"
 defaultTargets = ["Samples", "extract"]
 
 # The five sample proofs. Core Lean only, no Mathlib.

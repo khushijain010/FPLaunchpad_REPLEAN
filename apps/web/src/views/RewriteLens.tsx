@@ -8,11 +8,11 @@ export function RewriteLens({ frame }: { frame: Frame }) {
   const d = frame.diff;
   const step = frame.step;
   if (!d || !step) {
-    return <p className="view-empty">Nothing rewritten yet. Step forward and I'll show each rewrite here.</p>;
+    return <p className="view-empty">No rewrite yet. Step forward to see each rewrite.</p>;
   }
   const before = d.acted ?? step.before.goals[0];
   const after = d.opened[0];
-  if (!before) return <p className="view-empty">This step didn't touch a goal.</p>;
+  if (!before) return <p className="view-empty">This step did not change a goal.</p>;
 
   const ops = tokenDiff(before.target, after?.target ?? '');
   const { from, to } = rewriteSummary(ops);

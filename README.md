@@ -1,9 +1,9 @@
-# Lemmascope
+# Replean
 
 **Watch a Lean proof think.** Step through a Lean 4 proof one line at a time while a 3D scene
 shows goals splitting, hypotheses arriving, and goals turning gold as they're proved.
 
-![Lemmascope stepping through or_comm: rcases has just split the goal into two branches](docs/screenshots/or_comm-2.png)
+![Replean stepping through or_comm: rcases has just split the goal into two branches](docs/screenshots/or_comm-2.png)
 
 <!-- TODO(me): optionally swap in a 15-second GIF (see HUMAN_TASKS.md). -->
 
@@ -33,6 +33,10 @@ keeps up:
 **Your own proofs (live mode):** pick *+ Your own proof (live)*, paste Lean or upload a `.lean`
 file, press Run, and your proof plays the same way. Locally: `pnpm live`. On the deployed site it
 talks to a hosted, sandboxed Lean server ([docs/LIVE.md](docs/LIVE.md)).
+
+**Errors:** if Lean rejects a line, the visualization panel shows Lean's own error message for it,
+the line is marked red in the editor and the failing goal turns red in the tree. Errors outside any
+proof step are listed in the same panel.
 
 The player picks the best view per step; picking one yourself overrides that until the next sample.
 On the left: the code with the current line lit, the goals infoview-style with a diff, and a **Why**
@@ -72,7 +76,8 @@ pinned in `lean/lean-toolchain`:
 pnpm verify         # lake build: all samples compile
 pnpm traces         # run the extractor, rewrite apps/web/public/traces/*.json
 pnpm golden         # check the committed traces match a fresh run
-pnpm test           # unit tests for the pure core
+pnpm test           # unit tests (core + live server)
+pnpm ui-check       # click every control in a real browser (needs pnpm preview + pnpm server)
 pnpm build          # static site in apps/web/dist
 ```
 
@@ -84,7 +89,7 @@ Shortcuts: `→`/`Space` next, `←` back, `Home`/`End`, `P` autoplay, `[` `]` s
 I'm not the first to draw Lean proofs. [Paperproof](https://github.com/Paper-Proof/paperproof)
 renders Lean 4 proofs as 2D paper-style proof trees inside the editor, and
 [lean-tui](https://github.com/lean-tui) is a terminal infoview with tactic and data-flow graphs.
-Both are tools you use while writing proofs. Lemmascope is for *watching* one: it's a player
+Both are tools you use while writing proofs. Replean is for *watching* one: it's a player
 (next, back, scrub, autoplay), it runs from a URL with nothing installed, it has three
 coordinated views for the three things the brief asked to see, and it explains each step in
 words.

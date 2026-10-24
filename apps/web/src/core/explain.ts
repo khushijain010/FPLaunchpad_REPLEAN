@@ -51,13 +51,13 @@ const ABOUT: Readonly<Record<string, string>> = {
 
 export function explainTactic(step: Step, diff: StepDiff): Explanation {
   const t = step.tactic;
-  const about = ABOUT[t] ?? 'A tactic I have no notes on. The facts below come straight from the diff.';
+  const about = ABOUT[t] ?? 'No description for this tactic. The facts below come from the goal diff.';
   const facts: string[] = [];
   const bullet = startsWithBullet(step.text);
 
   if (step.error) {
     return {
-      headline: `Lean disagrees on line ${step.range.line}.`,
+      headline: `Lean error on line ${step.range.line}.`,
       about,
       facts: [step.error.message.split('\n')[0] ?? step.error.message],
     };
@@ -75,7 +75,7 @@ export function explainTactic(step: Step, diff: StepDiff): Explanation {
   if (diff.opened.length > 1) facts.push(`Opened ${count(diff.opened.length, 'goal')}.`);
   if (diff.proved.length > 0) facts.push(`Closed ${count(diff.proved.length, 'goal')}.`);
   const left = step.after.goals.length;
-  facts.push(left === 0 ? 'Nothing left to prove here.' : `${count(left, 'goal')} remaining.`);
+  facts.push(left === 0 ? 'No goals remaining.' : `${count(left, 'goal')} remaining.`);
 
   return { headline: headline(step, diff), about, facts };
 }

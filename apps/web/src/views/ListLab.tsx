@@ -59,7 +59,7 @@ function Row({ cells, side, previous, label }: { cells: readonly ListCell[]; sid
 
 export function ListLab({ frame }: { frame: Frame }) {
   const { goal, was, closed } = focusGoal(frame);
-  if (!goal) return <p className="view-empty">Nothing on the bench yet.</p>;
+  if (!goal) return <p className="view-empty">No goal to show.</p>;
 
   const parts = sides(goal.target);
   const anyItems = parts.some((p) => listCells(p).some((c) => c.kind === 'item'));
@@ -67,7 +67,7 @@ export function ListLab({ frame }: { frame: Frame }) {
   return (
     <div className={`list-lab${closed ? ' is-closed' : ''}`}>
       <p className="view-caption">
-        {closed ? 'This goal just closed. Both sides matched.' : anyItems ? 'List items in the goal. Lit boxes moved this step.' : 'No concrete list here, so here is the chain it is built from.'}
+        {closed ? 'Goal closed.' : anyItems ? 'List elements in the goal. Highlighted boxes moved in this step.' : 'No concrete list in this goal. Showing its top-level structure.'}
       </p>
       <LayoutGroup>
         {anyItems ? (

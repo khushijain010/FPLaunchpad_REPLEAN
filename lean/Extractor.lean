@@ -1,7 +1,7 @@
 import Lean
 
 /-!
-# Lemmascope extractor
+# Replean extractor
 
 Elaborates one Lean file, walks its InfoTree, and prints every tactic node as JSON:
 its source range, its parent tactic, and the goals before and after it, with each

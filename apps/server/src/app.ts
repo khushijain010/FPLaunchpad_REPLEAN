@@ -80,7 +80,7 @@ export function buildApp({
           .send();
       }
     } else if (origin !== undefined) {
-      return reply.code(403).send({ error: 'This server only answers the Lemmascope player.' });
+      return reply.code(403).send({ error: 'This server only answers the Replean player.' });
     }
   });
 
@@ -95,18 +95,18 @@ export function buildApp({
     }
     const body = req.body as { source?: unknown; title?: unknown } | null;
     const source = typeof body?.source === 'string' ? body.source.replace(/\r\n/g, '\n') : null;
-    if (source === null || source.trim() === '') return reply.code(400).send({ error: 'There is no Lean source in that request.' });
+    if (source === null || source.trim() === '') return reply.code(400).send({ error: 'The request contains no Lean source.' });
     if (Buffer.byteLength(source, 'utf8') > MAX_SOURCE_BYTES) {
-      return reply.code(413).send({ error: `That file is over ${MAX_SOURCE_BYTES / 1024} KB. Live mode is for short proofs.` });
+      return reply.code(413).send({ error: `Source exceeds ${MAX_SOURCE_BYTES / 1024} KB.` });
     }
     if (publicMode) {
       const verdict = checkPublicSource(source);
       if (!verdict.ok) {
-        return reply.code(422).send({ error: `The public live server doesn't run code, only proofs. It refused: ${verdict.reasons.join('; ')}.` });
+        return reply.code(422).send({ error: `Rejected by the public server's safety filter: ${verdict.reasons.join('; ')}.` });
       }
-      if (!allow(req.ip)) return reply.code(429).send({ error: `That's ${ratePerMinute} runs in a minute. Lean needs a breather; try again shortly.` });
+      if (!allow(req.ip)) return reply.code(429).send({ error: `Rate limit reached (${ratePerMinute} runs per minute). Try again shortly.` });
     }
-    if (busy) return reply.code(429).send({ error: 'Lean is still busy with the last run. Try again in a moment.' });
+    if (busy) return reply.code(429).send({ error: 'Lean is busy with another run. Try again in a moment.' });
 
     const title = typeof body?.title === 'string' && body.title.trim() ? body.title.trim().slice(0, 80) : 'Your proof';
     busy = true;

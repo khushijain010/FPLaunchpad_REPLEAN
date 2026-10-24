@@ -57,7 +57,7 @@ type Actions = Readonly<{
 
 const initialLite = (() => {
   try {
-    return localStorage.getItem('lemmascope.lite') === '1';
+    return localStorage.getItem('replean.lite') === '1';
   } catch {
     return false;
   }
@@ -116,7 +116,7 @@ export const useStore = create<State & Actions>()((set, get) => {
     toggleLite: () => {
       const lite = !get().lite;
       try {
-        localStorage.setItem('lemmascope.lite', lite ? '1' : '0');
+        localStorage.setItem('replean.lite', lite ? '1' : '0');
       } catch {
         // Storage can be unavailable (private mode). Lite mode still works for this visit.
       }

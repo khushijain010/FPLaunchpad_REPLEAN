@@ -28,16 +28,16 @@ at build time. If it's unset, the site is demo-only and the live entry hides its
 backend answers.
 
 **Render (free, what `render.yaml` sets up):** New → Blueprint → this repo. Set
-`LEMMASCOPE_ORIGINS` to the deployed site's origin (for GitHub Pages: `https://<you>.github.io`).
-Then put the service URL (`https://lemmascope-live.onrender.com` or similar) in the repo's Actions
+`REPLEAN_ORIGINS` to the deployed site's origin (for GitHub Pages: `https://<you>.github.io`).
+Then put the service URL (`https://replean-live.onrender.com` or similar) in the repo's Actions
 variable `LIVE_API_URL` and re-run the Pages workflow.
 
 Free instances sleep after ~15 idle minutes. The first request then takes up to a minute while the
-container wakes, and the UI says so ("Waking the Lean server..."). The page pings the server as
+container wakes, and the UI says so ("Starting the Lean server..."). The page pings the server as
 soon as it loads, so it's often awake by the time someone presses Run.
 
 Any Docker host works the same way (Fly.io, Railway, a VPS): run the image, set `PORT` if the host
-wants a specific one, and set `LEMMASCOPE_ORIGINS`.
+wants a specific one, and set `REPLEAN_ORIGINS`.
 
 ## Security
 

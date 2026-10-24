@@ -33,7 +33,7 @@ jobs:
       - run: pnpm build
         env:
           # Set under Settings -> Secrets and variables -> Actions -> Variables, e.g.
-          # https://lemmascope-live.onrender.com . Leave unset for a demo-only site.
+          # https://replean-live.onrender.com . Leave unset for a demo-only site.
           VITE_LIVE_API: ${{ vars.LIVE_API_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,14 +1,14 @@
 # Render Blueprint for the public live-mode server (free plan, Docker).
-# New -> Blueprint -> pick this repo. Then set LEMMASCOPE_ORIGINS to your deployed site's origin,
+# New -> Blueprint -> pick this repo. Then set REPLEAN_ORIGINS to your deployed site's origin,
 # e.g. https://<you>.github.io (no path, no trailing slash).
 services:
   - type: web
-    name: lemmascope-live
+    name: replean-live
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
-      - key: LEMMASCOPE_ORIGINS
+      - key: REPLEAN_ORIGINS
         sync: false

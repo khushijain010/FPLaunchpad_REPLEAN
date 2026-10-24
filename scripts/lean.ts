@@ -40,10 +40,10 @@ export function run(cmd: string, args: readonly string[], cwd: string, timeoutMs
       killTree(child.pid);
       reject(e);
     };
-    const timer = setTimeout(() => fail(new Error(`Lean took longer than ${Math.round(timeoutMs / 1000)} s, so I stopped it.`)), timeoutMs);
+    const timer = setTimeout(() => fail(new Error(`Lean timed out after ${Math.round(timeoutMs / 1000)} s.`)), timeoutMs);
     child.stdout.on('data', (d: Buffer) => {
       stdout += d.toString('utf8');
-      if (stdout.length > MAX_OUTPUT) fail(new Error('Lean printed more output than I am willing to read.'));
+      if (stdout.length > MAX_OUTPUT) fail(new Error('Lean output exceeded the size limit.'));
     });
     child.stderr.on('data', (d: Buffer) => (stderr += d.toString('utf8')));
     child.on('error', (e) => {

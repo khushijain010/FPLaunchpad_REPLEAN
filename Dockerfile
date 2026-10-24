@@ -1,6 +1,6 @@
 # The public live-mode server: Lean 4 + the extractor + the Fastify backend, in one sandboxed box.
 # It runs code strangers paste, so: non-root user, no secrets in the image or environment, source
-# filtering + rate limits in the app (LEMMASCOPE_PUBLIC=1), and a hard per-run timeout.
+# filtering + rate limits in the app (REPLEAN_PUBLIC=1), and a hard per-run timeout.
 # See docs/LIVE.md.
 
 FROM node:22-bookworm-slim
@@ -27,13 +27,13 @@ RUN cd lean && lake build extract
 COPY --chown=lean:lean package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY --chown=lean:lean apps/server/package.json apps/server/
 COPY --chown=lean:lean apps/web/package.json apps/web/
-RUN pnpm install --frozen-lockfile --filter @lemmascope/server
+RUN pnpm install --frozen-lockfile --filter @replean/server
 
 COPY --chown=lean:lean scripts/ scripts/
 COPY --chown=lean:lean apps/server/src/ apps/server/src/
 COPY --chown=lean:lean apps/web/src/core/ apps/web/src/core/
 
-ENV LEMMASCOPE_PUBLIC=1 \
+ENV REPLEAN_PUBLIC=1 \
     NODE_ENV=production \
     PORT=8787
 EXPOSE 8787

@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { filmOf } from './core/frames';
-import { identity, isPlaceholder } from './identity';
 import { CodePane } from './ui/CodePane';
 import { Dialogs } from './ui/Dialogs';
 import { useLive } from './ui/live';
@@ -16,19 +15,6 @@ import { TransportBar } from './ui/TransportBar';
 import { GoalPanel } from './views/GoalPanel';
 import { VizPane } from './views/VizPane';
 import { WhyPanel } from './views/WhyPanel';
-
-function Footer() {
-  const who = isPlaceholder(identity.yourName) ? null : identity.yourName;
-  return (
-    <p className="footer">
-      {who ? `Built by ${who} for ${identity.event}.` : `Built for ${identity.event}.`}
-      <span className="footer-sep" aria-hidden>
-        ·
-      </span>
-      <span>Every proof state comes from a real Lean run.</span>
-    </p>
-  );
-}
 
 function Player() {
   const trace = useStore((s) => s.trace)!;
@@ -77,13 +63,12 @@ function Player() {
         hideLeft={presentation && !editing}
         left={left}
         right={
-          <ErrorBoundary fallback={(msg) => <StatusCard kind="error" title="The picture broke." message={`${msg} The code and goals still work. Try lite mode (L).`} />}>
+          <ErrorBoundary fallback={(msg) => <StatusCard kind="error" title="Visualization error" message={`${msg}. The code and goal panels still work; lite mode (L) may help.`} />}>
             <VizPane film={film} frame={frame} />
           </ErrorBoundary>
         }
       />
       <TransportBar trace={trace} frame={frame} />
-      <Footer />
     </div>
   );
 }
@@ -103,15 +88,15 @@ export function App() {
       {(status === 'ready' || status === 'loading') && hasTrace ? (
         <Player />
       ) : status === 'loading' ? (
-        <StatusCard kind="loading" title="Asking Lean nicely..." message="Loading the proof trace." />
+        <StatusCard kind="loading" title="Loading" message="Loading the proof trace." />
       ) : status === 'empty' ? (
         <StatusCard
           kind="empty"
-          title="No traces yet."
-          message="Lean hasn't been run over the samples on this build. From the repo root: pnpm traces (needs Lean via elan), then reload."
+          title="No traces found"
+          message="Generate them from the repo root with pnpm traces (requires Lean), then reload."
         />
       ) : (
-        <StatusCard kind="error" title="This trace didn't load." message={error ?? 'Something went wrong reading the trace.'} />
+        <StatusCard kind="error" title="Could not load the trace" message={error ?? 'The trace file could not be read.'} />
       )}
       <Dialogs />
     </>

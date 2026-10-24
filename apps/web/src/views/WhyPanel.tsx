@@ -29,7 +29,7 @@ export function WhyPanel({ frame }: { frame: Frame }) {
         <div className="why-body">
           {!e ? (
             <p className="muted">
-              Press <kbd>→</kbd> to run the first line. I'll explain each step as it happens.
+              Press <kbd>→</kbd> to run the first line.
             </p>
           ) : (
             <>

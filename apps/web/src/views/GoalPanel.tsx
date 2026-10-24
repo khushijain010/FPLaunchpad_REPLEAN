@@ -83,10 +83,10 @@ export function GoalPanel({ frame }: { frame: Frame }) {
       ))}
       {goals.length === 0 ? (
         frame.done ? (
-          <p className="qed-line">Q.E.D. Nothing left to prove.</p>
+          <p className="qed-line">Q.E.D. All goals closed.</p>
         ) : frame.upcoming ? (
           <div className="upcoming">
-            <p className="muted">That proof is done. Next up:</p>
+            <p className="muted">Proof complete. Next theorem:</p>
             {frame.upcoming.goals.map((g, i) => (
               <GoalCard key={g.id} view={plain(g)} n={i + 1} total={frame.upcoming!.goals.length} active={false} />
             ))}

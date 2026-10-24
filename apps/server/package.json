@@ -1,5 +1,5 @@
 {
-  "name": "@lemmascope/server",
+  "name": "@replean/server",
   "private": true,
   "type": "module",
   "scripts": {
