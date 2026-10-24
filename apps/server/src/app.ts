@@ -84,6 +84,13 @@ export function buildApp({
     }
   });
 
+  // Someone opening the server's address in a browser gets a pointer, not a 404.
+  app.get('/', async () => ({
+    service: 'Replean live server',
+    about: 'Runs Lean 4 for the Replean player. Open the player site and pick "Your own proof (live)".',
+    health: '/api/health',
+  }));
+
   app.get('/api/health', async () => {
     const version = await leanVersion();
     return { ok: version !== null, leanVersion: version, public: publicMode };

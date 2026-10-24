@@ -33,6 +33,13 @@ describe('live server', () => {
     expect(r.json()).toEqual({ ok: true, leanVersion: '4.34.1', public: false });
   });
 
+  it('answers its root URL with a pointer instead of a 404', async () => {
+    const { app } = await setup();
+    const r = await app.inject({ method: 'GET', url: '/' });
+    expect(r.statusCode).toBe(200);
+    expect(r.json().health).toBe('/api/health');
+  });
+
   it('traces posted source and cleans up the temp file', async () => {
     let seen = '';
     const { app, leanDir } = await setup(async (file, title) => {

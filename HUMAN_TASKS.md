@@ -4,7 +4,7 @@ Things only you can do. Ordered by priority. Tick them off as you go.
 
 - [x] **1. Install Lean 4 via elan.** Done (elan 4.2.4, Lean 4.34.1).
 
-- [ ] **2. Push to GitHub** (priority: now)
+- [x] **2. Push to GitHub.** Done: github.com/khushijain010/FPLaunchpad_REPLEAN
   - Why: CI, both deployments and the submission all need the repo on GitHub. I can't log in for you.
   - How: create an empty repo on github.com (no README or license, so the push is clean), then from the repo root:
     ```powershell
@@ -15,12 +15,12 @@ Things only you can do. Ordered by priority. Tick them off as you go.
     `live-server-image`, which builds the Docker image and tests it against real Lean. That one is
     the first real build of the image, so tell me if it fails and paste the log.
 
-- [ ] **3. Deploy the site on GitHub Pages** (priority: before submission)
+- [x] **3. Deploy the site on GitHub Pages.** Done: https://khushijain010.github.io/FPLaunchpad_REPLEAN/
   - Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
   - The `Deploy to GitHub Pages` workflow runs on every push to `main`. Your site will be
     `https://<you>.github.io/<repo>/`.
 
-- [ ] **4. Deploy the live Lean server on Render** (priority: before submission, for live mode on the site)
+- [x] **4. Deploy the live Lean server on Render.** Done: https://replean-live.onrender.com (health ok, public mode, CORS allows the Pages site; the full UI check passes against the deployed site)
   1. Sign up at https://render.com with your GitHub account (free plan, no card).
   2. **New → Blueprint**, pick your repo. Render reads `render.yaml` and creates `replean-live`.
   3. When asked for `REPLEAN_ORIGINS`, enter your site's origin, scheme and host only:

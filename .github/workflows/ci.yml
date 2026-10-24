@@ -52,18 +52,7 @@ jobs:
         run: docker build -t replean-live .
       - name: Smoke test it against real Lean
         run: |
-          docker run -d --name live -p 8787:8787 -e REPLEAN_ORIGINS=https://example.github.io replean-live
-          for i in $(seq 1 60); do curl -sf localhost:8787/api/health && break; sleep 2; done
-          curl -sf localhost:8787/api/health | grep '"ok":true'
-          # A real proof comes back as a trace with three steps.
-          curl -sf -X POST localhost:8787/api/trace -H 'content-type: application/json'             -d '{"source":"theorem t (p q : Prop) (hp : p) (hq : q) : p ∧ q := by
-  constructor
-  · exact hp
-  · exact hq
-"}'             | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{const n=JSON.parse(d).trace.steps.length;console.log("steps",n);process.exit(n===3?0:1)})'
-          # Code execution is refused.
-          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST localhost:8787/api/trace -H 'content-type: application/json' -d '{"source":"#eval 1"}')" = 422
-          # Other websites are refused.
-          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST localhost:8787/api/trace -H 'origin: https://evil.example' -H 'content-type: application/json' -d '{"source":"x"}')" = 403
+          docker run -d --name live -p 8787:8787 replean-live
+          node scripts/smoke-live.mjs http://localhost:8787
       - if: failure()
         run: docker logs live || true

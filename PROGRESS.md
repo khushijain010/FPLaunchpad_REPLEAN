@@ -74,13 +74,27 @@ Last updated: 2026-10-24 (evening)
 
 - [x] README (real screenshot; story still TODO(me)), docs/ARCHITECTURE.md, docs/STEPPING.md, docs/DEMO.md, docs/lean-output-notes.md (real output)
 - [x] CI (`.github/workflows/ci.yml`: lint, typecheck, test, build, `pnpm verify`, `pnpm golden`), GitHub Pages workflow, `vercel.json`, `netlify.toml`
-- [ ] Push to GitHub and see CI go green (needs you: HUMAN_TASKS #3)
-- [ ] Deploy (needs you: HUMAN_TASKS #4)
+- [x] Pushed to GitHub (FPLaunchpad_REPLEAN). CI: first run failed on invalid YAML, fixed locally, needs a push.
+- [x] Deployed on GitHub Pages.
 - [ ] Tag v1.0 (after CI is green on GitHub)
 - [x] Live mode (P2, requested by the user): `apps/server` (Fastify; 22 tests incl. CORS, origin block, source filter, rate limit, one-job lock), `ui/LiveEditor.tsx` (paste / upload / drag-drop, Ctrl+Enter), `ui/live.ts`, picker entry, Edit button, `pnpm live`. Verified with real Lean in the browser (`pnpm capture` covers upload → run → step → failing proof).
 - [x] Public live server: `Dockerfile`, `render.yaml`, Pages build reads `vars.LIVE_API_URL`, CI job builds the image and smoke-tests it (real proof = 3 steps, `#eval` = 422, foreign origin = 403). Docs: `docs/LIVE.md`.
-- [ ] Docker image built locally: not possible here (no Docker); CI does it on first push.
-- [ ] Deploy the live server (needs you: HUMAN_TASKS)
+- [x] Docker image: built and running on Render; CI builds and smoke-tests it on every push.
+- [x] Live server deployed on Render.
+
+## Deployed (2026-10-24)
+
+- Site: https://khushijain010.github.io/FPLaunchpad_REPLEAN/ (GitHub Pages, built with `LIVE_API_URL`)
+- Live server: https://replean-live.onrender.com (Render free, Docker, public mode)
+- Verified against the real deployment: `node scripts/smoke-live.mjs https://replean-live.onrender.com`
+  (4/4: health, real proof = 3 steps, `#eval` refused, foreign origin refused) and
+  `pnpm ui-check https://khushijain010.github.io/FPLaunchpad_REPLEAN/` (91/91, zero console errors,
+  live mode through Render).
+- Fixed after the first push: `ci.yml` was invalid YAML (a Lean proof with real newlines inside the
+  Docker smoke step), so CI never ran; the step now calls `scripts/smoke-live.mjs`. The first Pages run
+  failed only because Pages wasn't enabled yet; the re-run succeeded. The server's root URL now answers
+  with a short description instead of a 404.
+- Commit history cleaned up before the move to the new repo (user request).
 
 ## Latest round (user requests)
 
