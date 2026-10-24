@@ -311,6 +311,17 @@ describe('tactics', () => {
   it('collects mentioned names', () => {
     expect([...mentionedNames('rw [ih, myAdd] -- not h')]).toEqual(['rw', 'ih', 'myAdd']);
   });
+  it('ignores the names a pattern binds', () => {
+    expect([...mentionedNames('| add a b iha ihb => rw [iha]')]).toEqual(['rw', 'iha']);
+    expect([...mentionedNames('case succ k ih =>')]).toEqual([]);
+    expect([...mentionedNames('next h => exact h')]).toEqual(['exact', 'h']);
+    expect([...mentionedNames('example (hp : p) : p := by exact hp')]).toEqual(['exact', 'hp']);
+  });
+  it('labels an example by its statement', () => {
+    const src = 'theorem a : P := by\n  rfl\nexample : Q := by decide\n';
+    expect(theoremAt(src, 2)).toBe('a : P');
+    expect(theoremAt(src, 3)).toBe('example : Q');
+  });
   it('finds the theorem a line belongs to', () => {
     const src = 'theorem a : P := by\n  rfl\ntheorem b : Q := by\n  rfl\n';
     expect(theoremAt(src, 2)).toBe('a : P');

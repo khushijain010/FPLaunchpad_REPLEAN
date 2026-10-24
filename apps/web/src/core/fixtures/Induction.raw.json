@@ -1,0 +1,1835 @@
+{
+  "file": "Fixtures/Induction.lean",
+  "leanVersion": "4.34.1",
+  "messages": [],
+  "nodes": [
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2132",
+              "name": "e",
+              "type": "E"
+            }
+          ],
+          "id": "_uniq.2133",
+          "tag": "",
+          "target": "ev (fold e) = ev e"
+        }
+      ],
+      "cmd": 3,
+      "id": 0,
+      "kind": "Lean.Parser.Term.byTactic",
+      "parent": null,
+      "start": {
+        "col": 48,
+        "line": 19
+      },
+      "stop": {
+        "col": 17,
+        "line": 27
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2132",
+              "name": "e",
+              "type": "E"
+            }
+          ],
+          "id": "_uniq.2133",
+          "tag": "",
+          "target": "ev (fold e) = ev e"
+        }
+      ],
+      "cmd": 3,
+      "id": 1,
+      "kind": "by",
+      "parent": 0,
+      "start": {
+        "col": 48,
+        "line": 19
+      },
+      "stop": {
+        "col": 50,
+        "line": 19
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2132",
+              "name": "e",
+              "type": "E"
+            }
+          ],
+          "id": "_uniq.2133",
+          "tag": "",
+          "target": "ev (fold e) = ev e"
+        }
+      ],
+      "cmd": 3,
+      "id": 2,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 1,
+      "start": {
+        "col": 2,
+        "line": 20
+      },
+      "stop": {
+        "col": 17,
+        "line": 27
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2132",
+              "name": "e",
+              "type": "E"
+            }
+          ],
+          "id": "_uniq.2133",
+          "tag": "",
+          "target": "ev (fold e) = ev e"
+        }
+      ],
+      "cmd": 3,
+      "id": 3,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 2,
+      "start": {
+        "col": 2,
+        "line": 20
+      },
+      "stop": {
+        "col": 17,
+        "line": 27
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2132",
+              "name": "e",
+              "type": "E"
+            }
+          ],
+          "id": "_uniq.2133",
+          "tag": "",
+          "target": "ev (fold e) = ev e"
+        }
+      ],
+      "cmd": 3,
+      "id": 4,
+      "kind": "Lean.Parser.Tactic.induction",
+      "parent": 3,
+      "start": {
+        "col": 2,
+        "line": 20
+      },
+      "stop": {
+        "col": 17,
+        "line": 27
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2132",
+              "name": "e",
+              "type": "E"
+            }
+          ],
+          "id": "_uniq.2133",
+          "tag": "",
+          "target": "ev (fold e) = ev e"
+        }
+      ],
+      "cmd": 3,
+      "id": 5,
+      "kind": "null",
+      "parent": 4,
+      "start": {
+        "col": 2,
+        "line": 20
+      },
+      "stop": {
+        "col": 18,
+        "line": 20
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2154",
+              "name": "n",
+              "type": "Nat"
+            }
+          ],
+          "id": "_uniq.2157",
+          "tag": "num",
+          "target": "ev (fold (E.num n)) = ev (E.num n)"
+        }
+      ],
+      "cmd": 3,
+      "id": 6,
+      "kind": "null",
+      "parent": 5,
+      "start": {
+        "col": 2,
+        "line": 21
+      },
+      "stop": {
+        "col": 12,
+        "line": 21
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2154",
+              "name": "n",
+              "type": "Nat"
+            }
+          ],
+          "id": "_uniq.2157",
+          "tag": "num",
+          "target": "ev (fold (E.num n)) = ev (E.num n)"
+        }
+      ],
+      "cmd": 3,
+      "id": 7,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 6,
+      "start": {
+        "col": 13,
+        "line": 21
+      },
+      "stop": {
+        "col": 16,
+        "line": 21
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2154",
+              "name": "n",
+              "type": "Nat"
+            }
+          ],
+          "id": "_uniq.2157",
+          "tag": "num",
+          "target": "ev (fold (E.num n)) = ev (E.num n)"
+        }
+      ],
+      "cmd": 3,
+      "id": 8,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 7,
+      "start": {
+        "col": 13,
+        "line": 21
+      },
+      "stop": {
+        "col": 16,
+        "line": 21
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2154",
+              "name": "n",
+              "type": "Nat"
+            }
+          ],
+          "id": "_uniq.2157",
+          "tag": "num",
+          "target": "ev (fold (E.num n)) = ev (E.num n)"
+        }
+      ],
+      "cmd": 3,
+      "id": 9,
+      "kind": "Lean.Parser.Tactic.tacticRfl",
+      "parent": 8,
+      "start": {
+        "col": 13,
+        "line": 21
+      },
+      "stop": {
+        "col": 16,
+        "line": 21
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2182",
+          "tag": "add",
+          "target": "ev (fold (a.add b)) = ev (a.add b)"
+        }
+      ],
+      "cmd": 3,
+      "id": 10,
+      "kind": "null",
+      "parent": 5,
+      "start": {
+        "col": 2,
+        "line": 22
+      },
+      "stop": {
+        "col": 22,
+        "line": 22
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2182",
+          "tag": "add",
+          "target": "ev (fold (a.add b)) = ev (a.add b)"
+        }
+      ],
+      "cmd": 3,
+      "id": 11,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 10,
+      "start": {
+        "col": 4,
+        "line": 23
+      },
+      "stop": {
+        "col": 17,
+        "line": 24
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2182",
+          "tag": "add",
+          "target": "ev (fold (a.add b)) = ev (a.add b)"
+        }
+      ],
+      "cmd": 3,
+      "id": 12,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 11,
+      "start": {
+        "col": 4,
+        "line": 23
+      },
+      "stop": {
+        "col": 17,
+        "line": 24
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2462",
+          "tag": "add",
+          "target": "ev (fold a) + ev (fold b) = ev a + ev b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2182",
+          "tag": "add",
+          "target": "ev (fold (a.add b)) = ev (a.add b)"
+        }
+      ],
+      "cmd": 3,
+      "id": 13,
+      "kind": "Lean.Parser.Tactic.simp",
+      "parent": 12,
+      "start": {
+        "col": 4,
+        "line": 23
+      },
+      "stop": {
+        "col": 24,
+        "line": 23
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2462",
+          "tag": "add",
+          "target": "ev (fold a) + ev (fold b) = ev a + ev b"
+        }
+      ],
+      "cmd": 3,
+      "id": 14,
+      "kind": "Lean.Parser.Tactic.rwSeq",
+      "parent": 12,
+      "start": {
+        "col": 4,
+        "line": 24
+      },
+      "stop": {
+        "col": 17,
+        "line": 24
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2465",
+          "tag": "add",
+          "target": "ev a + ev (fold b) = ev a + ev b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2462",
+          "tag": "add",
+          "target": "ev (fold a) + ev (fold b) = ev a + ev b"
+        }
+      ],
+      "cmd": 3,
+      "id": 15,
+      "kind": "null",
+      "parent": 14,
+      "start": {
+        "col": 8,
+        "line": 24
+      },
+      "stop": {
+        "col": 12,
+        "line": 24
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2468",
+          "tag": "add",
+          "target": "ev a + ev b = ev a + ev b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2465",
+          "tag": "add",
+          "target": "ev a + ev (fold b) = ev a + ev b"
+        }
+      ],
+      "cmd": 3,
+      "id": 16,
+      "kind": "null",
+      "parent": 14,
+      "start": {
+        "col": 13,
+        "line": 24
+      },
+      "stop": {
+        "col": 16,
+        "line": 24
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2176",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2177",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2178",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2179",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2468",
+          "tag": "add",
+          "target": "ev a + ev b = ev a + ev b"
+        }
+      ],
+      "cmd": 3,
+      "id": 17,
+      "kind": "«]»",
+      "parent": 14,
+      "start": {
+        "col": 16,
+        "line": 24
+      },
+      "stop": {
+        "col": 17,
+        "line": 24
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2485",
+          "tag": "mul",
+          "target": "ev (fold (a.mul b)) = ev (a.mul b)"
+        }
+      ],
+      "cmd": 3,
+      "id": 18,
+      "kind": "null",
+      "parent": 5,
+      "start": {
+        "col": 2,
+        "line": 25
+      },
+      "stop": {
+        "col": 22,
+        "line": 25
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2485",
+          "tag": "mul",
+          "target": "ev (fold (a.mul b)) = ev (a.mul b)"
+        }
+      ],
+      "cmd": 3,
+      "id": 19,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 18,
+      "start": {
+        "col": 4,
+        "line": 26
+      },
+      "stop": {
+        "col": 17,
+        "line": 27
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2485",
+          "tag": "mul",
+          "target": "ev (fold (a.mul b)) = ev (a.mul b)"
+        }
+      ],
+      "cmd": 3,
+      "id": 20,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 19,
+      "start": {
+        "col": 4,
+        "line": 26
+      },
+      "stop": {
+        "col": 17,
+        "line": 27
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2567",
+          "tag": "mul",
+          "target": "ev (fold a) * ev (fold b) = ev a * ev b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2485",
+          "tag": "mul",
+          "target": "ev (fold (a.mul b)) = ev (a.mul b)"
+        }
+      ],
+      "cmd": 3,
+      "id": 21,
+      "kind": "Lean.Parser.Tactic.simp",
+      "parent": 20,
+      "start": {
+        "col": 4,
+        "line": 26
+      },
+      "stop": {
+        "col": 24,
+        "line": 26
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2567",
+          "tag": "mul",
+          "target": "ev (fold a) * ev (fold b) = ev a * ev b"
+        }
+      ],
+      "cmd": 3,
+      "id": 22,
+      "kind": "Lean.Parser.Tactic.rwSeq",
+      "parent": 20,
+      "start": {
+        "col": 4,
+        "line": 27
+      },
+      "stop": {
+        "col": 17,
+        "line": 27
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2570",
+          "tag": "mul",
+          "target": "ev a * ev (fold b) = ev a * ev b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2567",
+          "tag": "mul",
+          "target": "ev (fold a) * ev (fold b) = ev a * ev b"
+        }
+      ],
+      "cmd": 3,
+      "id": 23,
+      "kind": "null",
+      "parent": 22,
+      "start": {
+        "col": 8,
+        "line": 27
+      },
+      "stop": {
+        "col": 12,
+        "line": 27
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2573",
+          "tag": "mul",
+          "target": "ev a * ev b = ev a * ev b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2570",
+          "tag": "mul",
+          "target": "ev a * ev (fold b) = ev a * ev b"
+        }
+      ],
+      "cmd": 3,
+      "id": 24,
+      "kind": "null",
+      "parent": 22,
+      "start": {
+        "col": 13,
+        "line": 27
+      },
+      "stop": {
+        "col": 16,
+        "line": 27
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2479",
+              "name": "a",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2480",
+              "name": "b",
+              "type": "E"
+            },
+            {
+              "id": "_uniq.2481",
+              "name": "iha",
+              "type": "ev (fold a) = ev a"
+            },
+            {
+              "id": "_uniq.2482",
+              "name": "ihb",
+              "type": "ev (fold b) = ev b"
+            }
+          ],
+          "id": "_uniq.2573",
+          "tag": "mul",
+          "target": "ev a * ev b = ev a * ev b"
+        }
+      ],
+      "cmd": 3,
+      "id": 25,
+      "kind": "«]»",
+      "parent": 22,
+      "start": {
+        "col": 16,
+        "line": 27
+      },
+      "stop": {
+        "col": 17,
+        "line": 27
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2586",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.2587",
+              "name": "hp",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.2588",
+          "tag": "",
+          "target": "p"
+        }
+      ],
+      "cmd": 4,
+      "id": 26,
+      "kind": "Lean.Parser.Term.byTactic",
+      "parent": null,
+      "start": {
+        "col": 35,
+        "line": 29
+      },
+      "stop": {
+        "col": 46,
+        "line": 29
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2586",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.2587",
+              "name": "hp",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.2588",
+          "tag": "",
+          "target": "p"
+        }
+      ],
+      "cmd": 4,
+      "id": 27,
+      "kind": "by",
+      "parent": 26,
+      "start": {
+        "col": 35,
+        "line": 29
+      },
+      "stop": {
+        "col": 37,
+        "line": 29
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2586",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.2587",
+              "name": "hp",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.2588",
+          "tag": "",
+          "target": "p"
+        }
+      ],
+      "cmd": 4,
+      "id": 28,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 27,
+      "start": {
+        "col": 38,
+        "line": 29
+      },
+      "stop": {
+        "col": 46,
+        "line": 29
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2586",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.2587",
+              "name": "hp",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.2588",
+          "tag": "",
+          "target": "p"
+        }
+      ],
+      "cmd": 4,
+      "id": 29,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 28,
+      "start": {
+        "col": 38,
+        "line": 29
+      },
+      "stop": {
+        "col": 46,
+        "line": 29
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2586",
+              "name": "p",
+              "type": "Prop"
+            },
+            {
+              "id": "_uniq.2587",
+              "name": "hp",
+              "type": "p"
+            }
+          ],
+          "id": "_uniq.2588",
+          "tag": "",
+          "target": "p"
+        }
+      ],
+      "cmd": 4,
+      "id": 30,
+      "kind": "Lean.Parser.Tactic.exact",
+      "parent": 29,
+      "start": {
+        "col": 38,
+        "line": 29
+      },
+      "stop": {
+        "col": 46,
+        "line": 29
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2677",
+              "name": "h",
+              "type": "a + 0 = b"
+            }
+          ],
+          "id": "_uniq.2678",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "cmd": 5,
+      "id": 31,
+      "kind": "Lean.Parser.Term.byTactic",
+      "parent": null,
+      "start": {
+        "col": 50,
+        "line": 31
+      },
+      "stop": {
+        "col": 9,
+        "line": 33
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2677",
+              "name": "h",
+              "type": "a + 0 = b"
+            }
+          ],
+          "id": "_uniq.2678",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "cmd": 5,
+      "id": 32,
+      "kind": "by",
+      "parent": 31,
+      "start": {
+        "col": 50,
+        "line": 31
+      },
+      "stop": {
+        "col": 52,
+        "line": 31
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2677",
+              "name": "h",
+              "type": "a + 0 = b"
+            }
+          ],
+          "id": "_uniq.2678",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "cmd": 5,
+      "id": 33,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 32,
+      "start": {
+        "col": 2,
+        "line": 32
+      },
+      "stop": {
+        "col": 9,
+        "line": 33
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2677",
+              "name": "h",
+              "type": "a + 0 = b"
+            }
+          ],
+          "id": "_uniq.2678",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "cmd": 5,
+      "id": 34,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 33,
+      "start": {
+        "col": 2,
+        "line": 32
+      },
+      "stop": {
+        "col": 9,
+        "line": 33
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2690",
+              "name": "h",
+              "type": "a = b"
+            }
+          ],
+          "id": "_uniq.2693",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2677",
+              "name": "h",
+              "type": "a + 0 = b"
+            }
+          ],
+          "id": "_uniq.2678",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "cmd": 5,
+      "id": 35,
+      "kind": "Lean.Parser.Tactic.rwSeq",
+      "parent": 34,
+      "start": {
+        "col": 2,
+        "line": 32
+      },
+      "stop": {
+        "col": 24,
+        "line": 32
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2690",
+              "name": "h",
+              "type": "a = b"
+            }
+          ],
+          "id": "_uniq.2693",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2677",
+              "name": "h",
+              "type": "a + 0 = b"
+            }
+          ],
+          "id": "_uniq.2678",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "cmd": 5,
+      "id": 36,
+      "kind": "null",
+      "parent": 35,
+      "start": {
+        "col": 6,
+        "line": 32
+      },
+      "stop": {
+        "col": 18,
+        "line": 32
+      }
+    },
+    {
+      "after": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2690",
+              "name": "h",
+              "type": "a = b"
+            }
+          ],
+          "id": "_uniq.2693",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2690",
+              "name": "h",
+              "type": "a = b"
+            }
+          ],
+          "id": "_uniq.2693",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "cmd": 5,
+      "id": 37,
+      "kind": "«]»",
+      "parent": 35,
+      "start": {
+        "col": 18,
+        "line": 32
+      },
+      "stop": {
+        "col": 19,
+        "line": 32
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [
+            {
+              "id": "_uniq.2675",
+              "name": "a",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2676",
+              "name": "b",
+              "type": "Nat"
+            },
+            {
+              "id": "_uniq.2690",
+              "name": "h",
+              "type": "a = b"
+            }
+          ],
+          "id": "_uniq.2693",
+          "tag": "",
+          "target": "a = b"
+        }
+      ],
+      "cmd": 5,
+      "id": 38,
+      "kind": "Lean.Parser.Tactic.exact",
+      "parent": 34,
+      "start": {
+        "col": 2,
+        "line": 33
+      },
+      "stop": {
+        "col": 9,
+        "line": 33
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [],
+          "id": "_uniq.2980",
+          "tag": "",
+          "target": "2 + 2 = 4"
+        }
+      ],
+      "cmd": 6,
+      "id": 39,
+      "kind": "Lean.Parser.Term.byTactic",
+      "parent": null,
+      "start": {
+        "col": 23,
+        "line": 35
+      },
+      "stop": {
+        "col": 32,
+        "line": 35
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [],
+          "id": "_uniq.2980",
+          "tag": "",
+          "target": "2 + 2 = 4"
+        }
+      ],
+      "cmd": 6,
+      "id": 40,
+      "kind": "by",
+      "parent": 39,
+      "start": {
+        "col": 23,
+        "line": 35
+      },
+      "stop": {
+        "col": 25,
+        "line": 35
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [],
+          "id": "_uniq.2980",
+          "tag": "",
+          "target": "2 + 2 = 4"
+        }
+      ],
+      "cmd": 6,
+      "id": 41,
+      "kind": "Lean.Parser.Tactic.tacticSeq",
+      "parent": 40,
+      "start": {
+        "col": 26,
+        "line": 35
+      },
+      "stop": {
+        "col": 32,
+        "line": 35
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [],
+          "id": "_uniq.2980",
+          "tag": "",
+          "target": "2 + 2 = 4"
+        }
+      ],
+      "cmd": 6,
+      "id": 42,
+      "kind": "Lean.Parser.Tactic.tacticSeq1Indented",
+      "parent": 41,
+      "start": {
+        "col": 26,
+        "line": 35
+      },
+      "stop": {
+        "col": 32,
+        "line": 35
+      }
+    },
+    {
+      "after": [],
+      "before": [
+        {
+          "hyps": [],
+          "id": "_uniq.2980",
+          "tag": "",
+          "target": "2 + 2 = 4"
+        }
+      ],
+      "cmd": 6,
+      "id": 43,
+      "kind": "Lean.Parser.Tactic.decide",
+      "parent": 42,
+      "start": {
+        "col": 26,
+        "line": 35
+      },
+      "stop": {
+        "col": 32,
+        "line": 35
+      }
+    }
+  ]
+}

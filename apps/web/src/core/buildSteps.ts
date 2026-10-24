@@ -191,7 +191,8 @@ export function buildSteps(raw: RawOutput, source: string): BuiltSteps {
       proof: d.proof,
       range: { line: d.line, colStart: d.first.start.col, colEnd: lineText.trimEnd().length },
       text,
-      tactic: headTactic(text),
+      // From where the tactic starts: on `example : p := by decide` that's "decide", not "example".
+      tactic: headTactic(lineText.slice(d.first.start.col)),
       before: { goals: goalsBefore },
       after: { goals: d.after },
       ...(Object.keys(parents).length ? { parents } : {}),

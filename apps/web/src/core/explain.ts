@@ -133,6 +133,12 @@ function headline(step: Step, diff: StepDiff): string {
     case 'unfold':
     case 'show':
       if (closed) return `${text} rewrote the goal until it closed.`;
+      // `rw … at h` / `simp at h`: a fresh goal, but the same target. Only the context moved.
+      if (first && acted && first.target === acted.target) {
+        return diff.changed.length > 0
+          ? `${text} rewrote ${diff.changed.map((c) => code(c.hyp.name)).join(', ')}. The goal itself is unchanged.`
+          : `${text} left the goal unchanged.`;
+      }
       if (first) return `${text} turned the goal into ${code(first.target)}.`;
       break;
     case 'have':

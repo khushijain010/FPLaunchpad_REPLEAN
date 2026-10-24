@@ -73,7 +73,9 @@ Both rules are tested on real extractor output for [`lean/Fixtures`](../lean/Fix
 | `case zero => rfl` | Focuses and closes in one step. |
 | `intro h; exact h` | Both tactics, one step. |
 | `constructor <;> simp` | One step. |
-| `cases h with` (alternatives below) | Opens one goal per alternative; the later ones wait, visible, until their turn. |
+| `cases h with` / `induction e with` (alternatives below) | Opens one goal per alternative; the later ones wait, visible, until their turn. |
+| `\| num n => rfl` | Focuses that alternative and closes it. `n` is a new name, not a "used" hypothesis. |
+| `example : p := by decide` | The step is `decide`, the tactic after `by`. |
 | `all_goals intro h` | One step; each goal is transformed in place, under its own branch. |
 
 ## Known limits

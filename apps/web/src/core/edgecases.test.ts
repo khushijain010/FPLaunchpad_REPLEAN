@@ -44,6 +44,41 @@ describe('cases … with | alternatives', () => {
   });
 });
 
+describe('induction … with | alt =>, example, rw … at h', () => {
+  const steps = fixture('Induction');
+  const film = buildFrames({ schema: 1, meta: { id: 'f', title: 'f', blurb: '', watch: '', theorem: '', leanVersion: 'test' }, source: '', steps, messages: [] });
+  const frameAfter = (text: string) => film.frames[steps.indexOf(onLine(steps, text)) + 1]!;
+
+  it('opens one goal per alternative and branches the tree into three', () => {
+    expect(onLine(steps, 'induction e with').after.goals.map((g) => g.tag)).toEqual(['num', 'add', 'mul']);
+    const root = [...film.graph.nodes.values()].find((n) => n.goal.target === 'ev (fold e) = ev e')!;
+    expect(root.children.map((id) => film.graph.nodes.get(id)!.goal.tag)).toEqual(['num', 'add', 'mul']);
+  });
+
+  it('closes each case, turning it gold, instead of turning it into the next case', () => {
+    const f = frameAfter('| num n => rfl');
+    expect(f.explanation?.headline).toContain('proved');
+    expect(f.remaining).toBe(2);
+    const num = film.graph.nodes.get(onLine(steps, 'induction e with').after.goals[0]!.id)!;
+    expect(film.frames.at(-1)!.statuses.get(num.id)).toBe('proved');
+  });
+
+  it("doesn't count names an alternative introduces as used", () => {
+    expect(frameAfter('| num n => rfl').diff?.usedHyps).toEqual([]);
+    expect(frameAfter('| add a b iha ihb =>').diff?.usedHyps).toEqual([]);
+  });
+
+  it('reads `example … := by decide` as decide', () => {
+    expect(onLine(steps, 'example : 2 + 2 = 4').tactic).toBe('decide');
+    expect(onLine(steps, 'example (p : Prop)').tactic).toBe('exact');
+    expect(frameAfter('example (p : Prop)').diff?.usedHyps.map((h) => h.name)).toEqual(['hp']);
+  });
+
+  it('says rw … at h rewrote h and left the goal alone', () => {
+    expect(frameAfter('rw [Nat.add_zero] at h').explanation?.headline).toBe('`rw [Nat.add_zero] at h` rewrote `h`. The goal itself is unchanged.');
+  });
+});
+
 describe('one line acting on several goals', () => {
   const steps = fixture('AllGoals');
   const graph = buildGoalGraph(steps);

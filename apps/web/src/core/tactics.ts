@@ -37,10 +37,22 @@ export function headTactic(text: string): string {
   return rest.split(/\s+/)[0] ?? '';
 }
 
+/** A line without its leading `·`, `| … =>`, `case … =>` or `next … =>`: the names those bind are new, not used. */
+const withoutBinders = (text: string): string => {
+  // `example (hp : p) : p := by exact hp` declares its own names before the tactic.
+  let rest = text.trim().replace(/^(?:theorem|lemma|example)\b[\s\S]*?:=\s*by\b\s*/, '');
+  for (;;) {
+    const before = rest;
+    rest = rest.replace(BULLET, '').replace(CASE_PREFIX, '').replace(NEXT_PREFIX, '').replace(ALT_PREFIX, '');
+    if (/^(case|case'|next)\b/.test(rest) && !/=>/.test(rest)) return '';
+    if (rest === before) return rest;
+  }
+};
+
 /** Identifiers mentioned in a tactic line, used to guess which hypotheses it used. */
 export function mentionedNames(text: string): ReadonlySet<string> {
   const names = new Set<string>();
-  for (const m of stripComment(text).matchAll(/[A-Za-z_À-ɏͰ-Ͽ][A-Za-z0-9_'À-ɏͰ-Ͽ₀-₉]*/g)) {
+  for (const m of withoutBinders(stripComment(text)).matchAll(/[A-Za-z_À-ɏͰ-Ͽ][A-Za-z0-9_'À-ɏͰ-Ͽ₀-₉]*/g)) {
     names.add(m[0]);
   }
   return names;
@@ -50,10 +62,16 @@ export function mentionedNames(text: string): ReadonlySet<string> {
 export const theoremAt = (source: string, line: number): string =>
   extractTheorem(source.split('\n').slice(0, line).join('\n'));
 
-/** The statement of the last `theorem`/`lemma` in a file, whitespace collapsed. */
+/**
+ * The statement of the last `theorem`/`lemma`/`example` in a file, whitespace collapsed. An
+ * `example` has no name, so it reads "example <statement>".
+ */
 export function extractTheorem(source: string): string {
-  const re = /(?:^|\n)\s*(?:theorem|lemma)\s+([\s\S]*?):=/g;
+  const re = /(?:^|\n)\s*(theorem|lemma|example)\b\s*([\s\S]*?):=/g;
   let last = '';
-  for (const m of source.matchAll(re)) last = m[1] ?? '';
-  return last.replace(/\s+/g, ' ').trim();
+  for (const m of source.matchAll(re)) {
+    const statement = (m[2] ?? '').replace(/\s+/g, ' ').trim();
+    last = m[1] === 'example' ? `example ${statement}` : statement;
+  }
+  return last;
 }

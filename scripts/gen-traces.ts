@@ -11,7 +11,7 @@ import { SAMPLES } from './samples.ts';
 const OUT = path.join(ROOT, 'apps/web/public/traces');
 /** Real extractor output for the unit tests' edge cases, checked by --check like the traces. */
 const FIXTURE_OUT = path.join(ROOT, 'apps/web/src/core/fixtures');
-const FIXTURES = ['CasesWith', 'AllGoals'] as const;
+const FIXTURES = ['CasesWith', 'AllGoals', 'Induction'] as const;
 const check = process.argv.includes('--check');
 const keepRaw = process.argv.includes('--raw');
 
