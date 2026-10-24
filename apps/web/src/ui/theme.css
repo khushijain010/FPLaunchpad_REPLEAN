@@ -1,0 +1,216 @@
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/700.css';
+
+:root {
+  --bg: #0a0a0a;
+  --panel: #101010;
+  --panel-2: #151515;
+  --raise: #1c1c1c;
+  --line: #262626;
+  --line-2: #333333;
+  --text: #ececec;
+  --muted: #8f8f8f;
+  --faint: #5c5c5c;
+
+  /* Semantic palette: who is who in a proof. */
+  --brand: #ff4f00; /* open goals */
+  --brand-dim: #ff4f0026;
+  --hyp: #2fd3c4; /* hypotheses */
+  --hyp-dim: #2fd3c41f;
+  --gold: #f4b740; /* proved */
+  --gold-dim: #f4b7401f;
+  --error: #ff4b4b;
+  --error-dim: #ff4b4b1f;
+
+  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --radius: 6px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 var(--mono);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  cursor: pointer;
+  transition:
+    border-color 120ms,
+    background 120ms;
+}
+.btn:hover:not(:disabled) {
+  border-color: var(--muted);
+}
+.btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.btn.primary {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #0a0a0a;
+  font-weight: 600;
+}
+.btn.primary:hover:not(:disabled) {
+  background: #ff6a26;
+  border-color: #ff6a26;
+}
+.btn.icon {
+  width: 32px;
+  padding: 0;
+  justify-content: center;
+}
+.btn.ghost {
+  background: transparent;
+  border-color: transparent;
+}
+.btn.ghost:hover:not(:disabled) {
+  border-color: var(--line-2);
+}
+.btn[aria-pressed='true'] {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+kbd {
+  font: 11px var(--mono);
+  padding: 1px 5px;
+  border: 1px solid var(--line-2);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  color: var(--muted);
+}
+
+code {
+  font-family: var(--mono);
+}
+
+/* ---------- app shell ---------- */
+
+.app {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  height: 100%;
+}
+
+.split {
+  display: grid;
+  min-height: 0;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.divider {
+  width: 9px;
+  cursor: col-resize;
+  position: relative;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+.divider::after {
+  content: '';
+  position: absolute;
+  inset: 0 4px;
+  background: var(--line);
+  transition: background 120ms;
+}
+.divider:hover::after,
+.divider:focus-visible::after,
+.divider[data-dragging='true']::after {
+  background: var(--brand);
+}
+
+@media (max-width: 899px) {
+  body {
+    overflow: auto;
+  }
+  .app {
+    height: auto;
+    min-height: 100%;
+  }
+  .split {
+    grid-template-columns: 1fr !important;
+  }
+  .divider {
+    display: none;
+  }
+  .pane.viz {
+    min-height: 70vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

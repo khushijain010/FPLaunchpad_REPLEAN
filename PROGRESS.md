@@ -3,7 +3,7 @@
 > Read this first after any context reset, then `PLAN.md` and `HUMAN_TASKS.md`.
 > Continue from the first unchecked item.
 
-**Current phase:** 1–2 (data pipeline + functional core). Lean is not installed yet, so
+**Current phase:** 2–4 code-complete without data; 5 (docs/deploy) in progress. Lean is not installed yet, so
 everything that needs a real Lean run is waiting on `HUMAN_TASKS.md` item 1.
 
 Last updated: 2026-10-24
@@ -42,17 +42,28 @@ Last updated: 2026-10-24
 - [x] `core/frames.ts`: `buildFrames`, `reduce`, `filmOf` (all frames precomputed; scrubbing = array index)
 - [x] `core/chooseView.ts`, `core/layout.ts` (d3-hierarchy), `core/lists.ts`, `core/tokens.ts` (LCS token diff), `core/explain.ts` (offline dictionary)
 - [x] Unit tests for every core function: `core/core.test.ts`, 38 passing, against a synthetic and_comm-shaped fixture
-- [ ] Store, layout, editor, goal panel, Why panel, transport bar, shortcuts, theme
-- [ ] First static build
+- [x] `core/validate.ts` (+ tests): bad trace -> readable error, never a crash
+- [x] `ui/theme.css` (palette tokens, self-hosted fonts, focus rings, reduced motion, <900px stacking)
+- [x] `ui/store.ts` (zustand), `ui/loader.ts` (fetch index/trace, `#sample=&step=` permalink, autoplay)
+- [x] `ui/leanLanguage.ts` (Lean 4 tokenizer), `ui/CodePane.tsx` (current/ran/next/error lines, error gutter, click a line to jump)
+- [x] `views/GoalPanel.tsx` (diff colours, proved rows, Q.E.D., next-theorem preview), `views/WhyPanel.tsx`
+- [x] `ui/Logo.tsx` + `public/favicon.svg`, `ui/TopBar.tsx`, `ui/TransportBar.tsx` (custom scrubber with ticks), `ui/Split.tsx` (draggable 35-65%), `ui/shortcuts.ts`, `ui/Dialogs.tsx` (cheatsheet, About)
+- [x] `core/scene.ts` (+ tests): one pure scene for both Tree3D and Tree2D
+- [x] `views/VizPane.tsx` (tabs, auto view w/ manual override, lite toggle, presentation, remaining counter), `views/Tree2D.tsx`, `App.tsx`, `main.tsx`, `index.html`, `ui/app.css`, `ui/StatusCard.tsx` (loading / no traces / error), `ui/ErrorBoundary.tsx`
+- [x] First static build: `vite build` OK. Main bundle 217 KB gzip; Tree3D lazy chunk 279 KB gzip. 50 tests, lint clean, tsc clean.
+- [ ] Visual check in a browser with real traces (needs Lean)
 
 ## Phase 3: 3D Tree
 
-- [ ] Tree3D (lazy), hypothesis ring, pulses, proved constellation, camera, Q.E.D.
-- [ ] Tree2D SVG fallback / lite mode
+- [x] Tree3D (lazy): damped node motion (grow from parent, contract on proof), edge pulse, hypothesis ring with added/used states + beams, gold constellation, camera framing on active goal, double-click reset, Q.E.D. pull-back + pulse, bloom, `frameloop="demand"`, 300-node cap
+- [x] Tree2D SVG fallback: same scene/layout; used for lite mode (L), no-WebGL, and as Suspense fallback
 
 ## Phase 4: Views and polish
 
-- [ ] List Lab, Rewrite lens, Shrink rail, auto view, autoplay, scrubber, presentation mode, a11y pass
+- [x] List Lab (CSS 3D boxes keyed by value, moved boxes lit, symbolic chain + ih fallback)
+- [x] Rewrite lens (token diff, from -> to arrow), Shrink rail (theorem, recent steps, shrinking goals with size bars, proved shelf)
+- [x] Auto view (`chooseView`), autoplay + speed, custom scrubber with ticks, presentation mode, permalinks
+- [ ] a11y pass in a real browser (focus order, contrast check) once traces exist
 
 ## Phase 5: Ship
 
@@ -66,4 +77,5 @@ See `PLAN.md` § Decisions.
 
 - Lean not installed on this machine yet; the samples and the extractor are written against the
   v4.34.1 source but have never been compiled. Expect a round of fixes once Lean is in.
+- Identity values were entered with their `{{ }}` braces; removed the braces so they render.
 - TypeScript 7 broke typescript-eslint peer ranges; pinned TS `~6.0.0`.

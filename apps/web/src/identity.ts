@@ -3,9 +3,9 @@
 
 export const identity = {
   projectName: 'Lemmascope',
-  yourName: '{{YOUR_NAME}}',
-  teamName: '{{TEAM_NAME}}',
-  collegeOrOrg: '{{COLLEGE_OR_ORG}}',
+  yourName: 'Khushi',
+  teamName: 'Bilibuu',
+  collegeOrOrg: 'IITR',
   oneLineStory: '{{ONE_LINE_STORY}}',
   event: 'Syntax Error 2026',
   repoUrl: '{{REPO_URL}}',

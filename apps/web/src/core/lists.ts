@@ -105,6 +105,19 @@ function splitConsItems(s: string): readonly Readonly<{ kind: 'item' | 'glue'; t
   });
 }
 
+/**
+ * A symbolic chain for goals with no concrete list: `compile a ++ (compile b ++ rest)` ->
+ * the top-level `++` / `::` operands, with one level of parentheses opened up.
+ */
+export function chainLinks(expr: string): readonly string[] {
+  const unparen = (s: string) => (s.startsWith('(') && s.endsWith(')') ? s.slice(1, -1).trim() : s);
+  const split = (s: string): readonly string[] => {
+    const parts = splitTopLevel(s, ' ++ ').flatMap((p) => splitTopLevel(p, ' :: '));
+    return parts.length > 1 ? parts.flatMap((p) => (p.startsWith('(') ? split(unparen(p)) : [p])) : [s];
+  };
+  return split(expr.trim());
+}
+
 /** Split `lhs = rhs` at the top-level `=`; other goals come back as a single side. */
 export function sides(target: string): readonly string[] {
   const parts = splitTopLevel(target, ' = ');

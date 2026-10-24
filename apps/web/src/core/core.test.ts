@@ -7,7 +7,7 @@ import { andCommRaw, andCommSource, goals } from './fixtures.test-data';
 import { buildFrames, reduce } from './frames';
 import { buildGoalGraph } from './graph';
 import { layoutTree, shortLabel } from './layout';
-import { hasConcreteList, listCells, parseListLiteral, parseListLiterals, sides } from './lists';
+import { chainLinks, hasConcreteList, listCells, parseListLiteral, parseListLiterals, sides } from './lists';
 import { extractTheorem, headTactic, mentionedNames } from './tactics';
 import { rewriteSummary, tokenDiff, tokenize } from './tokens';
 import type { Step, Trace } from './types';
@@ -206,6 +206,11 @@ describe('lists', () => {
   it('reads cons cells', () => {
     const items = listCells('3 :: app [] [2]').filter((c) => c.kind === 'item').map((c) => c.text);
     expect(items).toEqual(['3', '2']);
+  });
+  it('breaks a symbolic append chain into links', () => {
+    expect(chainLinks('exec (compile a ++ (compile b ++ rest)) stk')).toEqual(['exec (compile a ++ (compile b ++ rest)) stk']);
+    expect(chainLinks('compile a ++ (compile b ++ ([Instr.add] ++ rest))')).toEqual(['compile a', 'compile b', '[Instr.add]', 'rest']);
+    expect(chainLinks('eval e :: stk')).toEqual(['eval e', 'stk']);
   });
   it('splits an equation into sides', () => {
     expect(sides('rev [1, 2] = [2, 1]')).toEqual(['rev [1, 2]', '[2, 1]']);

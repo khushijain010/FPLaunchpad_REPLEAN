@@ -13,7 +13,8 @@ Things only you can do. Ordered roughly by priority. Tick them off as you go.
     Then tell me, and I'll run `cd lean && lake build` and `pnpm traces`.
   - Blocking: compiling samples, checking the extractor, generating the 5 traces.
 
-- [ ] **2. Fill in your identity** (priority: before submission)
-  - Why: name, team, college and story appear in the footer, About dialog and README. I won't make them up.
-  - How: edit `apps/web/src/identity.ts` and replace each `{{...}}` placeholder.
-  - Blocking: nothing, placeholders render until then.
+- [ ] **2. Finish your identity** (priority: before submission)
+  - Done: name (Khushi), team (Bilibuu), college (IITR).
+  - Still open in `apps/web/src/identity.ts`: `oneLineStory` (one sentence, your words: why you built this)
+    and `repoUrl` (after task 3). Replace the whole `'{{...}}'` string, braces included.
+  - Blocking: nothing; unfilled fields are hidden in the UI.
