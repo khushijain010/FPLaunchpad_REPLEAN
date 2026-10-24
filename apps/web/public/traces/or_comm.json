@@ -1,0 +1,454 @@
+{
+  "schema": 1,
+  "meta": {
+    "id": "or_comm",
+    "file": "Samples/OrComm.lean",
+    "title": "Or, swapped",
+    "blurb": "p ∨ q → q ∨ p by splitting on which side is true.",
+    "watch": "rcases makes two branches with different hypotheses: hp in one, hq in the other.",
+    "theorem": "or_comm (p q : Prop) : p ∨ q → q ∨ p",
+    "leanVersion": "4.34.1"
+  },
+  "source": "namespace OrComm\n\ntheorem or_comm (p q : Prop) : p ∨ q → q ∨ p := by\n  intro h\n  rcases h with hp | hq\n  · apply Or.inr\n    exact hp\n  · apply Or.inl\n    exact hq\n\nend OrComm\n",
+  "steps": [
+    {
+      "index": 0,
+      "proof": 0,
+      "range": {
+        "line": 4,
+        "colStart": 2,
+        "colEnd": 9
+      },
+      "text": "intro h",
+      "tactic": "intro",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.11",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              }
+            ],
+            "target": "p ∨ q → q ∨ p"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.13",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "h",
+                "type": "p ∨ q",
+                "id": "_uniq.12"
+              }
+            ],
+            "target": "q ∨ p"
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "proof": 0,
+      "range": {
+        "line": 5,
+        "colStart": 2,
+        "colEnd": 23
+      },
+      "text": "rcases h with hp | hq",
+      "tactic": "rcases",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.13",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "h",
+                "type": "p ∨ q",
+                "id": "_uniq.12"
+              }
+            ],
+            "target": "q ∨ p"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.32",
+            "tag": "inl",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hp",
+                "type": "p",
+                "id": "_uniq.31"
+              }
+            ],
+            "target": "q ∨ p"
+          },
+          {
+            "id": "_uniq.37",
+            "tag": "inr",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hq",
+                "type": "q",
+                "id": "_uniq.36"
+              }
+            ],
+            "target": "q ∨ p"
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "proof": 0,
+      "range": {
+        "line": 6,
+        "colStart": 2,
+        "colEnd": 16
+      },
+      "text": "· apply Or.inr",
+      "tactic": "apply",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.32",
+            "tag": "inl",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hp",
+                "type": "p",
+                "id": "_uniq.31"
+              }
+            ],
+            "target": "q ∨ p"
+          },
+          {
+            "id": "_uniq.37",
+            "tag": "inr",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hq",
+                "type": "q",
+                "id": "_uniq.36"
+              }
+            ],
+            "target": "q ∨ p"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.44",
+            "tag": "inl",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hp",
+                "type": "p",
+                "id": "_uniq.31"
+              }
+            ],
+            "target": "p"
+          },
+          {
+            "id": "_uniq.37",
+            "tag": "inr",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hq",
+                "type": "q",
+                "id": "_uniq.36"
+              }
+            ],
+            "target": "q ∨ p"
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "proof": 0,
+      "range": {
+        "line": 7,
+        "colStart": 4,
+        "colEnd": 12
+      },
+      "text": "exact hp",
+      "tactic": "exact",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.44",
+            "tag": "inl",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hp",
+                "type": "p",
+                "id": "_uniq.31"
+              }
+            ],
+            "target": "p"
+          },
+          {
+            "id": "_uniq.37",
+            "tag": "inr",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hq",
+                "type": "q",
+                "id": "_uniq.36"
+              }
+            ],
+            "target": "q ∨ p"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.37",
+            "tag": "inr",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hq",
+                "type": "q",
+                "id": "_uniq.36"
+              }
+            ],
+            "target": "q ∨ p"
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "proof": 0,
+      "range": {
+        "line": 8,
+        "colStart": 2,
+        "colEnd": 16
+      },
+      "text": "· apply Or.inl",
+      "tactic": "apply",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.37",
+            "tag": "inr",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hq",
+                "type": "q",
+                "id": "_uniq.36"
+              }
+            ],
+            "target": "q ∨ p"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.50",
+            "tag": "inr",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hq",
+                "type": "q",
+                "id": "_uniq.36"
+              }
+            ],
+            "target": "q"
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "proof": 0,
+      "range": {
+        "line": 9,
+        "colStart": 4,
+        "colEnd": 12
+      },
+      "text": "exact hq",
+      "tactic": "exact",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.50",
+            "tag": "inr",
+            "hyps": [
+              {
+                "name": "p",
+                "type": "Prop",
+                "id": "_uniq.9"
+              },
+              {
+                "name": "q",
+                "type": "Prop",
+                "id": "_uniq.10"
+              },
+              {
+                "name": "hq",
+                "type": "q",
+                "id": "_uniq.36"
+              }
+            ],
+            "target": "q"
+          }
+        ]
+      },
+      "after": {
+        "goals": []
+      }
+    }
+  ],
+  "messages": []
+}

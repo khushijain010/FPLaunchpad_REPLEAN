@@ -2,7 +2,7 @@
 
 Things only you can do. Ordered roughly by priority. Tick them off as you go.
 
-- [ ] **1. Install Lean 4 via elan** (priority: now)
+- [x] **1. Install Lean 4 via elan** (priority: now)
   - Why: every proof state shown must come from a real Lean run. The installer was blocked for me.
   - How (PowerShell):
     ```powershell

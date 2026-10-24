@@ -31,7 +31,10 @@ export const andCommRaw: RawOutput = {
   file: 'Samples/AndComm.lean',
   messages: [],
   nodes: [
-    { id: 0, cmd: 1, parent: null, kind: 'Lean.Parser.Tactic.tacticSeq', start: pos(4, 2), stop: pos(7, 13), before: [g0], after: [] },
+    // Real Lean also records the `by` keyword as tactic nodes on the theorem line.
+    { id: 100, cmd: 1, parent: null, kind: 'Lean.Parser.Term.byTactic', start: pos(3, 49), stop: pos(7, 13), before: [g0], after: [] },
+    { id: 101, cmd: 1, parent: 100, kind: 'by', start: pos(3, 49), stop: pos(3, 51), before: [g0], after: [] },
+    { id: 0, cmd: 1, parent: 101, kind: 'Lean.Parser.Tactic.tacticSeq', start: pos(4, 2), stop: pos(7, 13), before: [g0], after: [] },
     { id: 1, cmd: 1, parent: 0, kind: 'Lean.Parser.Tactic.tacticSeq1Indented', start: pos(4, 2), stop: pos(7, 13), before: [g0], after: [] },
     { id: 2, cmd: 1, parent: 1, kind: 'Lean.Parser.Tactic.intro', start: pos(4, 2), stop: pos(4, 9), before: [g0], after: [g1] },
     { id: 3, cmd: 1, parent: 1, kind: 'Lean.Parser.Tactic.constructor', start: pos(5, 2), stop: pos(5, 13), before: [g1], after: [g2, g3] },

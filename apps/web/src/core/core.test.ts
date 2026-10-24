@@ -63,12 +63,13 @@ describe('buildSteps', () => {
 
 describe('fullGoals', () => {
   it('adds back goals parked by an enclosing bullet', () => {
-    const exactNode = andCommRaw.nodes[5]!;
-    const ancestors = [andCommRaw.nodes[4]!, andCommRaw.nodes[1]!, andCommRaw.nodes[0]!];
-    expect(ids(fullGoals(exactNode.before, ancestors))).toEqual([g2.id, g3.id]);
+    const node = (id: number) => andCommRaw.nodes.find((n) => n.id === id)!;
+    const ancestors = [node(4), node(1), node(0), node(101), node(100)];
+    expect(ids(fullGoals(node(5).before, ancestors))).toEqual([g2.id, g3.id]);
   });
   it('never duplicates a visible goal', () => {
-    expect(ids(fullGoals([g2, g3], [andCommRaw.nodes[4]!]))).toEqual([g2.id, g3.id]);
+    const bullet = andCommRaw.nodes.find((n) => n.id === 4)!;
+    expect(ids(fullGoals([g2, g3], [bullet]))).toEqual([g2.id, g3.id]);
   });
 });
 

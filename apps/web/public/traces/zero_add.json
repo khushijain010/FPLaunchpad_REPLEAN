@@ -1,0 +1,270 @@
+{
+  "schema": 1,
+  "meta": {
+    "id": "zero_add",
+    "file": "Samples/ZeroAdd.lean",
+    "title": "Zero plus n, by induction",
+    "blurb": "myAdd 0 n = n: a base case, a step case and an induction hypothesis.",
+    "watch": "In the succ case, ih arrives in the context, then rw [ih] spends it.",
+    "theorem": "zero_myAdd (n : Nat) : myAdd 0 n = n",
+    "leanVersion": "4.34.1"
+  },
+  "source": "namespace ZeroAdd\n\ndef myAdd : Nat → Nat → Nat\n  | n, 0     => n\n  | n, m + 1 => myAdd n m + 1\n\ntheorem zero_myAdd (n : Nat) : myAdd 0 n = n := by\n  induction n\n  case zero => rfl\n  case succ k ih =>\n    rw [myAdd]\n    rw [ih]\n\nend ZeroAdd\n",
+  "steps": [
+    {
+      "index": 0,
+      "proof": 0,
+      "range": {
+        "line": 8,
+        "colStart": 2,
+        "colEnd": 13
+      },
+      "text": "induction n",
+      "tactic": "induction",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.530",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "n",
+                "type": "Nat",
+                "id": "_uniq.529"
+              }
+            ],
+            "target": "myAdd 0 n = n"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.545",
+            "tag": "zero",
+            "hyps": [],
+            "target": "myAdd 0 0 = 0"
+          },
+          {
+            "id": "_uniq.550",
+            "tag": "succ",
+            "hyps": [
+              {
+                "name": "n✝",
+                "type": "Nat",
+                "id": "_uniq.546"
+              },
+              {
+                "name": "a✝",
+                "type": "myAdd 0 n✝ = n✝",
+                "id": "_uniq.547"
+              }
+            ],
+            "target": "myAdd 0 (n✝ + 1) = n✝ + 1"
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "proof": 0,
+      "range": {
+        "line": 9,
+        "colStart": 2,
+        "colEnd": 18
+      },
+      "text": "case zero => rfl",
+      "tactic": "rfl",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.545",
+            "tag": "zero",
+            "hyps": [],
+            "target": "myAdd 0 0 = 0"
+          },
+          {
+            "id": "_uniq.550",
+            "tag": "succ",
+            "hyps": [
+              {
+                "name": "n✝",
+                "type": "Nat",
+                "id": "_uniq.546"
+              },
+              {
+                "name": "a✝",
+                "type": "myAdd 0 n✝ = n✝",
+                "id": "_uniq.547"
+              }
+            ],
+            "target": "myAdd 0 (n✝ + 1) = n✝ + 1"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.550",
+            "tag": "succ",
+            "hyps": [
+              {
+                "name": "n✝",
+                "type": "Nat",
+                "id": "_uniq.546"
+              },
+              {
+                "name": "a✝",
+                "type": "myAdd 0 n✝ = n✝",
+                "id": "_uniq.547"
+              }
+            ],
+            "target": "myAdd 0 (n✝ + 1) = n✝ + 1"
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "proof": 0,
+      "range": {
+        "line": 10,
+        "colStart": 2,
+        "colEnd": 19
+      },
+      "text": "case succ k ih =>",
+      "tactic": "case",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.550",
+            "tag": "succ",
+            "hyps": [
+              {
+                "name": "n✝",
+                "type": "Nat",
+                "id": "_uniq.546"
+              },
+              {
+                "name": "a✝",
+                "type": "myAdd 0 n✝ = n✝",
+                "id": "_uniq.547"
+              }
+            ],
+            "target": "myAdd 0 (n✝ + 1) = n✝ + 1"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.562",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "k",
+                "type": "Nat",
+                "id": "_uniq.546"
+              },
+              {
+                "name": "ih",
+                "type": "myAdd 0 k = k",
+                "id": "_uniq.547"
+              }
+            ],
+            "target": "myAdd 0 (k + 1) = k + 1"
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "proof": 0,
+      "range": {
+        "line": 11,
+        "colStart": 4,
+        "colEnd": 14
+      },
+      "text": "rw [myAdd]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.562",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "k",
+                "type": "Nat",
+                "id": "_uniq.546"
+              },
+              {
+                "name": "ih",
+                "type": "myAdd 0 k = k",
+                "id": "_uniq.547"
+              }
+            ],
+            "target": "myAdd 0 (k + 1) = k + 1"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.672",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "k",
+                "type": "Nat",
+                "id": "_uniq.546"
+              },
+              {
+                "name": "ih",
+                "type": "myAdd 0 k = k",
+                "id": "_uniq.547"
+              }
+            ],
+            "target": "myAdd 0 k + 1 = k + 1"
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "proof": 0,
+      "range": {
+        "line": 12,
+        "colStart": 4,
+        "colEnd": 11
+      },
+      "text": "rw [ih]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.672",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "k",
+                "type": "Nat",
+                "id": "_uniq.546"
+              },
+              {
+                "name": "ih",
+                "type": "myAdd 0 k = k",
+                "id": "_uniq.547"
+              }
+            ],
+            "target": "myAdd 0 k + 1 = k + 1"
+          }
+        ]
+      },
+      "after": {
+        "goals": []
+      }
+    }
+  ],
+  "messages": []
+}

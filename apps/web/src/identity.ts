@@ -6,7 +6,7 @@ export const identity = {
   yourName: 'Khushi',
   teamName: 'Bilibuu',
   collegeOrOrg: 'IITR',
-  oneLineStory: '{{ONE_LINE_STORY}}',
+  oneLineStory: 'I was BORN',
   event: 'Syntax Error 2026',
   repoUrl: '{{REPO_URL}}',
 } as const;

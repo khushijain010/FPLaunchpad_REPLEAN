@@ -4,7 +4,13 @@ import type { RawGoal, RawNode, RawOutput, RawPos } from './raw';
 import type { Goal, Step, TraceMessage } from './types';
 import { headTactic } from './tactics';
 
-const comparePos = (a: RawPos, b: RawPos): number => a.line - b.line || a.col - b.col;
+/**
+ * Lean records the `by` keyword itself as tactic nodes, positioned on the `theorem` line.
+ * They never change a goal, so they never start a step (they still count as ancestors/roots).
+ */
+const NOT_A_STEP = new Set(['Lean.Parser.Term.byTactic', 'by']);
+
+const comparePos =(a: RawPos, b: RawPos): number => a.line - b.line || a.col - b.col;
 
 /**
  * Of several nodes starting on the same line, the step starts at the earliest one,
@@ -68,7 +74,7 @@ export function buildSteps(raw: RawOutput, source: string): BuiltSteps {
   type Draft = { proof: number; line: number; first: RawNode; after: readonly Goal[] };
   const drafts: Draft[] = cmds.flatMap((cmd, proof) => {
     const nodes = raw.nodes.filter((n) => n.cmd === cmd);
-    const firstByLine = nodes.reduce<ReadonlyMap<number, RawNode>>((m, n) => {
+    const firstByLine = nodes.filter((n) => !NOT_A_STEP.has(n.kind)).reduce<ReadonlyMap<number, RawNode>>((m, n) => {
       const cur = m.get(n.start.line);
       return !cur || firstOnLine(n, cur) < 0 ? new Map(m).set(n.start.line, n) : m;
     }, new Map());

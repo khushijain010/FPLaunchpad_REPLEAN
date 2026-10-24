@@ -155,6 +155,8 @@ end Extractor
 def main (args : List String) : IO UInt32 := do
   match args with
   | [path] =>
+    -- Without this, imported environment extensions (notation like `∧` among them) don't load.
+    unsafe enableInitializersExecution
     initSearchPath (← findSysroot)
     let out ← Extractor.run path
     IO.println (toJson out).compress

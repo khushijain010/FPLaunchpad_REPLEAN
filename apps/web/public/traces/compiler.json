@@ -1,0 +1,794 @@
+{
+  "schema": 1,
+  "meta": {
+    "id": "compiler",
+    "file": "Samples/Compiler.lean",
+    "title": "A tiny compiler, proved correct",
+    "blurb": "Arithmetic expressions compiled to a stack machine, with a correctness proof.",
+    "watch": "The add case uses both induction hypotheses, one rewrite each.",
+    "theorem": "compile_correct (e : Expr) : exec (compile e) [] = [eval e]",
+    "leanVersion": "4.34.1"
+  },
+  "source": "namespace Compiler\n\ninductive Expr where\n  | num : Nat → Expr\n  | add : Expr → Expr → Expr\n\ndef eval : Expr → Nat\n  | .num n   => n\n  | .add a b => eval a + eval b\n\ninductive Instr where\n  | push : Nat → Instr\n  | add  : Instr\n\ndef exec : List Instr → List Nat → List Nat\n  | [],            stk           => stk\n  | .push n :: rest, stk         => exec rest (n :: stk)\n  | .add :: rest,  y :: x :: stk => exec rest ((x + y) :: stk)\n  | .add :: _,     stk           => stk\n\ndef compile : Expr → List Instr\n  | .num n   => [.push n]\n  | .add a b => compile a ++ compile b ++ [.add]\n\ntheorem exec_compile (e : Expr) (rest : List Instr) (stk : List Nat) :\n    exec (compile e ++ rest) stk = exec rest (eval e :: stk) := by\n  induction e generalizing rest stk\n  case num n => rfl\n  case add a b iha ihb =>\n    simp only [compile, List.append_assoc]\n    rw [iha]\n    rw [ihb]\n    rfl\n\ntheorem compile_correct (e : Expr) : exec (compile e) [] = [eval e] := by\n  have h := exec_compile e [] []\n  rw [List.append_nil] at h\n  exact h\n\nend Compiler\n",
+  "steps": [
+    {
+      "index": 0,
+      "proof": 0,
+      "range": {
+        "line": 27,
+        "colStart": 2,
+        "colEnd": 35
+      },
+      "text": "induction e generalizing rest stk",
+      "tactic": "induction",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3172",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "e",
+                "type": "Expr",
+                "id": "_uniq.3169"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3170"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3171"
+              }
+            ],
+            "target": "exec (compile e ++ rest) stk = exec rest (eval e :: stk)"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.3197",
+            "tag": "num",
+            "hyps": [
+              {
+                "name": "a✝",
+                "type": "Nat",
+                "id": "_uniq.3190"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3193"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3194"
+              }
+            ],
+            "target": "exec (compile (Expr.num a✝) ++ rest) stk = exec rest (eval (Expr.num a✝) :: stk)"
+          },
+          {
+            "id": "_uniq.3212",
+            "tag": "add",
+            "hyps": [
+              {
+                "name": "a✝",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "a✝",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "a_ih✝",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a✝¹ ++ rest) stk = exec rest (eval a✝¹ :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "a_ih✝",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a✝ ++ rest) stk = exec rest (eval a✝ :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile (a✝¹.add a✝) ++ rest) stk = exec rest (eval (a✝¹.add a✝) :: stk)"
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "proof": 0,
+      "range": {
+        "line": 28,
+        "colStart": 2,
+        "colEnd": 19
+      },
+      "text": "case num n => rfl",
+      "tactic": "rfl",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3197",
+            "tag": "num",
+            "hyps": [
+              {
+                "name": "a✝",
+                "type": "Nat",
+                "id": "_uniq.3190"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3193"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3194"
+              }
+            ],
+            "target": "exec (compile (Expr.num a✝) ++ rest) stk = exec rest (eval (Expr.num a✝) :: stk)"
+          },
+          {
+            "id": "_uniq.3212",
+            "tag": "add",
+            "hyps": [
+              {
+                "name": "a✝",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "a✝",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "a_ih✝",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a✝¹ ++ rest) stk = exec rest (eval a✝¹ :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "a_ih✝",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a✝ ++ rest) stk = exec rest (eval a✝ :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile (a✝¹.add a✝) ++ rest) stk = exec rest (eval (a✝¹.add a✝) :: stk)"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.3212",
+            "tag": "add",
+            "hyps": [
+              {
+                "name": "a✝",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "a✝",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "a_ih✝",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a✝¹ ++ rest) stk = exec rest (eval a✝¹ :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "a_ih✝",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a✝ ++ rest) stk = exec rest (eval a✝ :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile (a✝¹.add a✝) ++ rest) stk = exec rest (eval (a✝¹.add a✝) :: stk)"
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "proof": 0,
+      "range": {
+        "line": 29,
+        "colStart": 2,
+        "colEnd": 25
+      },
+      "text": "case add a b iha ihb =>",
+      "tactic": "case",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3212",
+            "tag": "add",
+            "hyps": [
+              {
+                "name": "a✝",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "a✝",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "a_ih✝",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a✝¹ ++ rest) stk = exec rest (eval a✝¹ :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "a_ih✝",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a✝ ++ rest) stk = exec rest (eval a✝ :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile (a✝¹.add a✝) ++ rest) stk = exec rest (eval (a✝¹.add a✝) :: stk)"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.3265",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "a",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "b",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "iha",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a ++ rest) stk = exec rest (eval a :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "ihb",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile b ++ rest) stk = exec rest (eval b :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile (a.add b) ++ rest) stk = exec rest (eval (a.add b) :: stk)"
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "proof": 0,
+      "range": {
+        "line": 30,
+        "colStart": 4,
+        "colEnd": 42
+      },
+      "text": "simp only [compile, List.append_assoc]",
+      "tactic": "simp",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3265",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "a",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "b",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "iha",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a ++ rest) stk = exec rest (eval a :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "ihb",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile b ++ rest) stk = exec rest (eval b :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile (a.add b) ++ rest) stk = exec rest (eval (a.add b) :: stk)"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.3426",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "a",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "b",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "iha",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a ++ rest) stk = exec rest (eval a :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "ihb",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile b ++ rest) stk = exec rest (eval b :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile a ++ (compile b ++ ([Instr.add] ++ rest))) stk = exec rest (eval (a.add b) :: stk)"
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "proof": 0,
+      "range": {
+        "line": 31,
+        "colStart": 4,
+        "colEnd": 12
+      },
+      "text": "rw [iha]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3426",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "a",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "b",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "iha",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a ++ rest) stk = exec rest (eval a :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "ihb",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile b ++ rest) stk = exec rest (eval b :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile a ++ (compile b ++ ([Instr.add] ++ rest))) stk = exec rest (eval (a.add b) :: stk)"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.3433",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "a",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "b",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "iha",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a ++ rest) stk = exec rest (eval a :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "ihb",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile b ++ rest) stk = exec rest (eval b :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile b ++ ([Instr.add] ++ rest)) (eval a :: stk) = exec rest (eval (a.add b) :: stk)"
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "proof": 0,
+      "range": {
+        "line": 32,
+        "colStart": 4,
+        "colEnd": 12
+      },
+      "text": "rw [ihb]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3433",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "a",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "b",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "iha",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a ++ rest) stk = exec rest (eval a :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "ihb",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile b ++ rest) stk = exec rest (eval b :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec (compile b ++ ([Instr.add] ++ rest)) (eval a :: stk) = exec rest (eval (a.add b) :: stk)"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.3444",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "a",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "b",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "iha",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a ++ rest) stk = exec rest (eval a :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "ihb",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile b ++ rest) stk = exec rest (eval b :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec ([Instr.add] ++ rest) (eval b :: eval a :: stk) = exec rest (eval (a.add b) :: stk)"
+          }
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "proof": 0,
+      "range": {
+        "line": 33,
+        "colStart": 4,
+        "colEnd": 7
+      },
+      "text": "rfl",
+      "tactic": "rfl",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3444",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "a",
+                "type": "Expr",
+                "id": "_uniq.3198"
+              },
+              {
+                "name": "b",
+                "type": "Expr",
+                "id": "_uniq.3199"
+              },
+              {
+                "name": "iha",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile a ++ rest) stk = exec rest (eval a :: stk)",
+                "id": "_uniq.3200"
+              },
+              {
+                "name": "ihb",
+                "type": "∀ (rest : List Instr) (stk : List Nat), exec (compile b ++ rest) stk = exec rest (eval b :: stk)",
+                "id": "_uniq.3201"
+              },
+              {
+                "name": "rest",
+                "type": "List Instr",
+                "id": "_uniq.3208"
+              },
+              {
+                "name": "stk",
+                "type": "List Nat",
+                "id": "_uniq.3209"
+              }
+            ],
+            "target": "exec ([Instr.add] ++ rest) (eval b :: eval a :: stk) = exec rest (eval (a.add b) :: stk)"
+          }
+        ]
+      },
+      "after": {
+        "goals": []
+      }
+    },
+    {
+      "index": 7,
+      "proof": 1,
+      "range": {
+        "line": 36,
+        "colStart": 2,
+        "colEnd": 32
+      },
+      "text": "have h := exec_compile e [] []",
+      "tactic": "have",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3501",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "e",
+                "type": "Expr",
+                "id": "_uniq.3500"
+              }
+            ],
+            "target": "exec (compile e) [] = [eval e]"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.3509",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "e",
+                "type": "Expr",
+                "id": "_uniq.3500"
+              },
+              {
+                "name": "h",
+                "type": "exec (compile e ++ []) [] = exec [] [eval e]",
+                "id": "_uniq.3508"
+              }
+            ],
+            "target": "exec (compile e) [] = [eval e]"
+          }
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "proof": 1,
+      "range": {
+        "line": 37,
+        "colStart": 2,
+        "colEnd": 27
+      },
+      "text": "rw [List.append_nil] at h",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3509",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "e",
+                "type": "Expr",
+                "id": "_uniq.3500"
+              },
+              {
+                "name": "h",
+                "type": "exec (compile e ++ []) [] = exec [] [eval e]",
+                "id": "_uniq.3508"
+              }
+            ],
+            "target": "exec (compile e) [] = [eval e]"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.3529",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "e",
+                "type": "Expr",
+                "id": "_uniq.3500"
+              },
+              {
+                "name": "h",
+                "type": "exec (compile e) [] = exec [] [eval e]",
+                "id": "_uniq.3526"
+              }
+            ],
+            "target": "exec (compile e) [] = [eval e]"
+          }
+        ]
+      }
+    },
+    {
+      "index": 9,
+      "proof": 1,
+      "range": {
+        "line": 38,
+        "colStart": 2,
+        "colEnd": 9
+      },
+      "text": "exact h",
+      "tactic": "exact",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.3529",
+            "tag": "",
+            "hyps": [
+              {
+                "name": "e",
+                "type": "Expr",
+                "id": "_uniq.3500"
+              },
+              {
+                "name": "h",
+                "type": "exec (compile e) [] = exec [] [eval e]",
+                "id": "_uniq.3526"
+              }
+            ],
+            "target": "exec (compile e) [] = [eval e]"
+          }
+        ]
+      },
+      "after": {
+        "goals": []
+      }
+    }
+  ],
+  "messages": []
+}

@@ -3,7 +3,7 @@
 > Read this first after any context reset, then `PLAN.md` and `HUMAN_TASKS.md`.
 > Continue from the first unchecked item.
 
-**Current phase:** 2–4 code-complete without data; 5 (docs/deploy) in progress. Lean is not installed yet, so
+**Current phase:** 5 (ship). Real traces exist; next is a browser check of the player. Lean is not installed yet, so
 everything that needs a real Lean run is waiting on `HUMAN_TASKS.md` item 1.
 
 Last updated: 2026-10-24
@@ -12,10 +12,10 @@ Last updated: 2026-10-24
 
 - [x] Environment check: Node 26.1, npm 12, git 2.54 present. pnpm missing, Lean missing.
 - [x] Installed pnpm 9.15.9 (`npm i -g pnpm@9`)
-- [ ] Install Lean via elan: **blocked**, auto-mode classifier denied running the installer. Handed to the user (HUMAN_TASKS #1).
+- [x] Install Lean via elan: done by the user (elan 4.2.4, Lean 4.34.1)
 - [x] Picked and pinned toolchain `leanprover/lean4:v4.34.1` (`lean/lean-toolchain`)
 - [x] Read the real v4.34.1 sources for InfoTree, Frontend, Import, Parser, MessageLog to write the extractor against actual signatures (no compiler yet)
-- [ ] Run extractor on a 3-line proof and paste real output into `docs/lean-output-notes.md` (needs Lean)
+- [x] Ran the extractor on and_comm; real output + surprises in `docs/lean-output-notes.md`
 - [x] `git init` on `main`
 - [x] `PROMPT.md`, `PROGRESS.md`, `HUMAN_TASKS.md`, `PLAN.md`
 - [x] `apps/web/src/identity.ts` with placeholders (identity ask is HUMAN_TASKS #2)
@@ -23,12 +23,12 @@ Last updated: 2026-10-24
 ## Phase 1: Data pipeline
 
 - [x] `lean/lakefile.toml` (lib `Samples`, exe `extract`), `lean/Samples.lean`
-- [x] Five samples written: `AndComm`, `OrComm`, `ZeroAdd`, `Rev`, `Compiler` (not yet compiled)
+- [x] Five samples written: `AndComm`, `OrComm`, `ZeroAdd`, `Rev`, `Compiler` (all compile with `lake build`, first try)
 - [x] `lean/Extractor.lean`: elaborates a file, walks the InfoTree, prints every original tactic node (cmd, parent, kind, range, goals before/after) as JSON
 - [x] `core/raw.ts`: types for extractor JSON
 - [x] `core/buildSteps.ts`: raw nodes -> one step per line, with parked-goal reconstruction for `·`/`case`
 - [x] `scripts/gen-traces.ts` (`pnpm traces`, `--check` golden mode, `--raw` debug), `scripts/verify-samples.ts` (`pnpm verify`), `scripts/lean.ts` (shared lake runner), `scripts/samples.ts` (manifest with titles/blurbs/watch hints). Fails cleanly when lake is missing.
-- [ ] Generate and commit the 5 real traces (needs Lean)
+- [x] Generated the 5 real traces (4/6/5/7/10 steps, zero Lean errors) and read every step against the source. Fixes needed on first run: `enableInitializersExecution` in the extractor; skip `by` nodes as step starts.
 - [ ] CI: `lake build` + golden-trace check
 
 ## Phase 2: Working player
@@ -75,7 +75,5 @@ See `PLAN.md` § Decisions.
 
 ## Known issues
 
-- Lean not installed on this machine yet; the samples and the extractor are written against the
-  v4.34.1 source but have never been compiled. Expect a round of fixes once Lean is in.
 - Identity values were entered with their `{{ }}` braces; removed the braces so they render.
 - TypeScript 7 broke typescript-eslint peer ranges; pinned TS `~6.0.0`.

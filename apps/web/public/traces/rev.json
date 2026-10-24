@@ -1,0 +1,226 @@
+{
+  "schema": 1,
+  "meta": {
+    "id": "rev",
+    "file": "Samples/Rev.lean",
+    "title": "Reversing [1, 2, 3]",
+    "blurb": "A hand-rolled rev, unfolded one rewrite at a time.",
+    "watch": "Open List Lab: each rw [rev] moves the head of the list to the back.",
+    "theorem": "rev_123 : rev [1, 2, 3] = [3, 2, 1]",
+    "leanVersion": "4.34.1"
+  },
+  "source": "namespace Rev\n\ndef app : List Nat → List Nat → List Nat\n  | [],      ys => ys\n  | x :: xs, ys => x :: app xs ys\n\ndef rev : List Nat → List Nat\n  | []      => []\n  | x :: xs => app (rev xs) [x]\n\ntheorem rev_123 : rev [1, 2, 3] = [3, 2, 1] := by\n  rw [rev]\n  rw [rev]\n  rw [rev]\n  rw [rev]\n  rw [app]\n  rw [app]\n  simp only [app]\n\nend Rev\n",
+  "steps": [
+    {
+      "index": 0,
+      "proof": 0,
+      "range": {
+        "line": 12,
+        "colStart": 2,
+        "colEnd": 10
+      },
+      "text": "rw [rev]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.784",
+            "tag": "",
+            "hyps": [],
+            "target": "rev [1, 2, 3] = [3, 2, 1]"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.860",
+            "tag": "",
+            "hyps": [],
+            "target": "app (rev [2, 3]) [1] = [3, 2, 1]"
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "proof": 0,
+      "range": {
+        "line": 13,
+        "colStart": 2,
+        "colEnd": 10
+      },
+      "text": "rw [rev]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.860",
+            "tag": "",
+            "hyps": [],
+            "target": "app (rev [2, 3]) [1] = [3, 2, 1]"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.871",
+            "tag": "",
+            "hyps": [],
+            "target": "app (app (rev [3]) [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "proof": 0,
+      "range": {
+        "line": 14,
+        "colStart": 2,
+        "colEnd": 10
+      },
+      "text": "rw [rev]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.871",
+            "tag": "",
+            "hyps": [],
+            "target": "app (app (rev [3]) [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.882",
+            "tag": "",
+            "hyps": [],
+            "target": "app (app (app (rev []) [3]) [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "proof": 0,
+      "range": {
+        "line": 15,
+        "colStart": 2,
+        "colEnd": 10
+      },
+      "text": "rw [rev]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.882",
+            "tag": "",
+            "hyps": [],
+            "target": "app (app (app (rev []) [3]) [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.889",
+            "tag": "",
+            "hyps": [],
+            "target": "app (app (app [] [3]) [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "proof": 0,
+      "range": {
+        "line": 16,
+        "colStart": 2,
+        "colEnd": 10
+      },
+      "text": "rw [app]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.889",
+            "tag": "",
+            "hyps": [],
+            "target": "app (app (app [] [3]) [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.1006",
+            "tag": "",
+            "hyps": [],
+            "target": "app (app [3] [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "proof": 0,
+      "range": {
+        "line": 17,
+        "colStart": 2,
+        "colEnd": 10
+      },
+      "text": "rw [app]",
+      "tactic": "rw",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.1006",
+            "tag": "",
+            "hyps": [],
+            "target": "app (app [3] [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      },
+      "after": {
+        "goals": [
+          {
+            "id": "_uniq.1021",
+            "tag": "",
+            "hyps": [],
+            "target": "app (3 :: app [] [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "proof": 0,
+      "range": {
+        "line": 18,
+        "colStart": 2,
+        "colEnd": 17
+      },
+      "text": "simp only [app]",
+      "tactic": "simp",
+      "before": {
+        "goals": [
+          {
+            "id": "_uniq.1021",
+            "tag": "",
+            "hyps": [],
+            "target": "app (3 :: app [] [2]) [1] = [3, 2, 1]"
+          }
+        ]
+      },
+      "after": {
+        "goals": []
+      }
+    }
+  ],
+  "messages": []
+}
