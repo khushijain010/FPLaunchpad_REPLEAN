@@ -3,7 +3,7 @@
 > Read this first after any context reset, then `PLAN.md` and `HUMAN_TASKS.md`.
 > Continue from the first unchecked item.
 
-**Current phase:** 5 (ship). Real traces exist; next is a browser check of the player. Lean is not installed yet, so
+**Current phase:** 5 (ship). Player verified in a real browser on real traces. Remaining work is mostly yours: push, deploy, tag, record. Lean is not installed yet, so
 everything that needs a real Lean run is waiting on `HUMAN_TASKS.md` item 1.
 
 Last updated: 2026-10-24
@@ -51,7 +51,8 @@ Last updated: 2026-10-24
 - [x] `core/scene.ts` (+ tests): one pure scene for both Tree3D and Tree2D
 - [x] `views/VizPane.tsx` (tabs, auto view w/ manual override, lite toggle, presentation, remaining counter), `views/Tree2D.tsx`, `App.tsx`, `main.tsx`, `index.html`, `ui/app.css`, `ui/StatusCard.tsx` (loading / no traces / error), `ui/ErrorBoundary.tsx`
 - [x] First static build: `vite build` OK. Main bundle 217 KB gzip; Tree3D lazy chunk 279 KB gzip. 50 tests, lint clean, tsc clean.
-- [ ] Visual check in a browser with real traces (needs Lean)
+- [x] Browser check with real traces: `pnpm capture` (Playwright, headless Chromium + SwiftShader WebGL) walks every step of every sample, checks Next/End/Back land on the right frame, fails on any console error, saves `docs/screenshots/`. **Passes: zero console errors.**
+- [x] Fixes from that check: duplicate React keys (goal panel listed a proved goal twice; hyp chips keyed by repeatable names like `a✝`), drei `<Html>` + Canvas unmount race (3D scene now stays mounted and is hidden instead), root label missing (Contents wait for `onCreated`), hyp chips moved under the active leaf, split edges labelled once, Q.E.D. text moved off the root, Shrink rail shows the theorem actually being proved, `diffHyps` matches by FVarId first (was flagging `a_ih✝` as changed)
 
 ## Phase 3: 3D Tree
 
@@ -63,11 +64,17 @@ Last updated: 2026-10-24
 - [x] List Lab (CSS 3D boxes keyed by value, moved boxes lit, symbolic chain + ih fallback)
 - [x] Rewrite lens (token diff, from -> to arrow), Shrink rail (theorem, recent steps, shrinking goals with size bars, proved shelf)
 - [x] Auto view (`chooseView`), autoplay + speed, custom scrubber with ticks, presentation mode, permalinks
-- [ ] a11y pass in a real browser (focus order, contrast check) once traces exist
+- [x] Keyboard: every control reachable, focus rings, scrubber is an ARIA slider with a text alternative per step, live region announces each step
+- [ ] Manual contrast audit (not done; palette chosen for contrast but not measured)
 
 ## Phase 5: Ship
 
-- [ ] README, docs (ARCHITECTURE, STEPPING, DEMO), deploy config, live mode (P2), tag v1.0
+- [x] README (real screenshot; story still TODO(me)), docs/ARCHITECTURE.md, docs/STEPPING.md, docs/DEMO.md, docs/lean-output-notes.md (real output)
+- [x] CI (`.github/workflows/ci.yml`: lint, typecheck, test, build, `pnpm verify`, `pnpm golden`), GitHub Pages workflow, `vercel.json`, `netlify.toml`
+- [ ] Push to GitHub and see CI go green (needs you: HUMAN_TASKS #3)
+- [ ] Deploy (needs you: HUMAN_TASKS #4)
+- [ ] Tag v1.0 (after CI is green on GitHub)
+- [ ] Live mode (P2): **cut for now.** The replay player is the priority; the shared `scripts/lean.ts` runner makes it a small add later.
 
 ## Decisions
 

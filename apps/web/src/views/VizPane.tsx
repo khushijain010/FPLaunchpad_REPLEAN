@@ -1,6 +1,6 @@
 // The right half: view tabs, the chosen view, and the remaining-goals counter.
 
-import { lazy, Suspense, useMemo } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import type { Film, Frame } from '../core/frames';
 import { buildScene } from '../core/scene';
 import type { ViewId } from '../core/types';
@@ -32,6 +32,11 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
   const webgl = useMemo(hasWebGL, []);
   const flat = lite || !webgl;
   const scene = useMemo(() => buildScene(film, frame), [film, frame]);
+  const show3d = view === 'tree' && !flat;
+  const [kept3d, setKept3d] = useState(false);
+  useEffect(() => {
+    if (show3d) setKept3d(true);
+  }, [show3d]);
 
   return (
     <div className="viz-pane">
@@ -70,14 +75,16 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
       </div>
 
       <div className="viz-stage" role="tabpanel" aria-label={LABELS[view]}>
-        {view === 'tree' &&
-          (flat ? (
-            <Tree2D scene={scene} />
-          ) : (
-            <Suspense fallback={<Tree2D scene={scene} />}>
+        {view === 'tree' && flat && <Tree2D scene={scene} />}
+        {/* Once the 3D scene has been shown it stays mounted and is only hidden. Unmounting a
+            Canvas full of drei <Html> overlays races React's own DOM cleanup. */}
+        {webgl && (show3d || kept3d) && (
+          <div className="viz-layer" hidden={!show3d}>
+            <Suspense fallback={show3d ? <Tree2D scene={scene} /> : null}>
               <Tree3D scene={scene} />
             </Suspense>
-          ))}
+          </div>
+        )}
         {view === 'list' && <ListLab frame={frame} />}
         {view === 'rewrite' && <RewriteLens frame={frame} />}
         {view === 'shrink' && <ShrinkRail film={film} frame={frame} />}

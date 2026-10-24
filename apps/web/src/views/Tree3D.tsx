@@ -139,7 +139,10 @@ function EdgeLine({ e }: { e: SceneEdge }) {
   );
 }
 
-/** Hypotheses of the active goal, floating beside it. New ones fly in; used ones get a beam. */
+/**
+ * Hypotheses of the active goal, stacked under it. The active goal is always a leaf, so the
+ * space below it is free. New ones fly in; the ones the line used get a beam to the goal.
+ */
 function HypRing({ scene }: { scene: Scene }) {
   const n = scene.active;
   if (!n || n.hyps.length === 0) return null;
@@ -147,13 +150,12 @@ function HypRing({ scene }: { scene: Scene }) {
   return (
     <group>
       {hyps.map((h, i) => {
-        const angle = -0.9 + (i / Math.max(1, hyps.length - 1)) * 1.8;
-        const pos = new THREE.Vector3(n.x + NODE.w / 2 + 1.1 + Math.cos(angle) * 0.4, n.y + Math.sin(angle) * 1.1, n.z + 0.3);
+        const pos = new THREE.Vector3(n.x, n.y - NODE.h / 2 - 0.42 - i * 0.36, n.z + 0.2);
         const used = scene.usedHyps.has(h.name);
         const added = scene.addedHyps.has(h.name);
         return (
-          <group key={`${n.id}:${h.name}`}>
-            {used && <Line points={[pos, new THREE.Vector3(n.x + NODE.w / 2, n.y, n.z)]} color={COLORS.hyp} lineWidth={1.4} transparent opacity={0.8} />}
+          <group key={`${n.id}:${h.id}`}>
+            {used && <Line points={[pos.clone().setX(pos.x - 0.9), new THREE.Vector3(n.x - NODE.w / 2 + 0.1, n.y, n.z)]} color={COLORS.hyp} lineWidth={1.4} transparent opacity={0.8} />}
             <Html position={pos} center distanceFactor={9} zIndexRange={[30, 0]} pointerEvents="none">
               <div className={`t3-hyp${added ? ' is-added' : ''}${used ? ' is-used' : ''}`}>
                 <b>{h.name}</b> : {h.type}
@@ -258,11 +260,21 @@ function Contents({ scene, resetKey }: { scene: Scene; resetKey: number }) {
 
 export default function Tree3D({ scene }: { scene: Scene }) {
   const [resetKey, setResetKey] = useState(0);
+  // drei's <Html> picks its DOM parent on first render. Before the canvas is attached there is
+  // none, and labels mounted then never appear. So the scene waits for onCreated.
+  const [ready, setReady] = useState(false);
   return (
     <div className="tree3d" onDoubleClick={() => setResetKey((k) => k + 1)} title="Drag to orbit, scroll to zoom, double-click to reset">
-      <Canvas frameloop="demand" dpr={[1, 2]} camera={{ position: [0, 0.6, 11], fov: 42 }} gl={{ antialias: true, powerPreference: 'high-performance' }} aria-label="3D goal tree">
+      <Canvas
+        frameloop="demand"
+        dpr={[1, 2]}
+        camera={{ position: [0, 0.6, 11], fov: 42 }}
+        gl={{ antialias: true, powerPreference: 'high-performance' }}
+        aria-label="3D goal tree"
+        onCreated={() => setReady(true)}
+      >
         <color attach="background" args={['#0a0a0a']} />
-        <Contents scene={scene} resetKey={resetKey} />
+        {ready && <Contents scene={scene} resetKey={resetKey} />}
       </Canvas>
       <div className={`t3-qed${scene.done ? ' is-on' : ''}`} aria-hidden={!scene.done}>
         Q.E.D.

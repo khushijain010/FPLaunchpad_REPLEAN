@@ -589,9 +589,9 @@
 .t3-qed {
   position: absolute;
   left: 50%;
-  top: 22%;
+  top: 5%;
   transform: translate(-50%, 8px);
-  font: 700 44px var(--sans);
+  font: 700 40px var(--sans);
   letter-spacing: 0.04em;
   color: var(--gold);
   text-shadow: 0 0 30px #f4b74066;
@@ -769,7 +769,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) auto minmax(0, 1.6fr) minmax(0, 1fr);
   gap: 16px;
-  padding: 28px 20px;
+  padding: 60px 20px 28px;
   height: 100%;
   align-items: start;
   overflow: auto;
@@ -1079,4 +1079,12 @@
   50% {
     opacity: 0.4;
   }
+}
+
+.viz-layer {
+  position: absolute;
+  inset: 0;
+}
+.viz-layer[hidden] {
+  display: none;
 }

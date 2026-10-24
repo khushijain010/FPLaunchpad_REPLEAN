@@ -4,11 +4,13 @@
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'framer-motion';
 import type { Film, Frame } from '../core/frames';
 import { shortLabel } from '../core/layout';
+import { theoremAt } from '../core/tactics';
 
 export function ShrinkRail({ film, frame }: { film: Film; frame: Frame }) {
   const reduce = useReducedMotion();
   const { trace, graph } = film;
-  const theorem = trace.meta.theorem || trace.steps[0]?.before.goals[0]?.target || '';
+  const here = frame.nextStep ?? frame.step;
+  const theorem = (here && theoremAt(trace.source, here.range.line)) || trace.meta.theorem;
   const goals = frame.state.goals.length > 0 ? frame.state.goals : (frame.upcoming?.goals ?? []);
   const widest = Math.max(1, ...graph.order.map((id) => graph.nodes.get(id)!.goal.target.length));
   const proved = graph.order

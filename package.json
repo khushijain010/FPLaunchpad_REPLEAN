@@ -18,7 +18,8 @@
     "traces": "tsx scripts/gen-traces.ts",
     "verify": "tsx scripts/verify-samples.ts",
     "golden": "tsx scripts/gen-traces.ts --check",
-    "server": "pnpm --filter @lemmascope/server dev"
+    "server": "pnpm --filter @lemmascope/server dev",
+    "capture": "tsx scripts/capture.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -26,6 +27,7 @@
     "eslint": "^10.13.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
+    "playwright": "^1.64.1",
     "prettier": "^3.9.10",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",

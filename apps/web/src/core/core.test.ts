@@ -8,7 +8,7 @@ import { buildFrames, reduce } from './frames';
 import { buildGoalGraph } from './graph';
 import { layoutTree, shortLabel } from './layout';
 import { chainLinks, hasConcreteList, listCells, parseListLiteral, parseListLiterals, sides } from './lists';
-import { extractTheorem, headTactic, mentionedNames } from './tactics';
+import { extractTheorem, headTactic, mentionedNames, theoremAt } from './tactics';
 import { rewriteSummary, tokenDiff, tokenize } from './tokens';
 import type { Step, Trace } from './types';
 
@@ -98,6 +98,17 @@ describe('diffStates', () => {
   it('marks a hypothesis whose type changed', () => {
     const changes = diffHyps([{ name: 'h', type: 'a', id: '1' }], [{ name: 'h', type: 'b', id: '2' }]);
     expect(changes).toEqual([{ kind: 'changed', hyp: { name: 'h', type: 'b', id: '2' }, was: { name: 'h', type: 'a', id: '1' } }]);
+  });
+  it('tells apart two hypotheses with the same inaccessible name', () => {
+    const hs = [
+      { name: 'a_ih✝', type: 'P a', id: '1' },
+      { name: 'a_ih✝', type: 'P b', id: '2' },
+    ];
+    expect(diffHyps(hs, hs).map((c) => c.kind)).toEqual(['same', 'same']);
+  });
+  it('pairs a rewritten hypothesis with its old self by name', () => {
+    const changes = diffHyps([{ name: 'h', type: 'a ++ []', id: '1' }], [{ name: 'h', type: 'a', id: '9' }]);
+    expect(changes.map((c) => c.kind)).toEqual(['changed']);
   });
   it('lists removed hypotheses after the kept ones', () => {
     const changes = diffHyps([{ name: 'a', type: 'A', id: '1' }, { name: 'b', type: 'B', id: '2' }], [{ name: 'b', type: 'B', id: '2' }]);
@@ -267,6 +278,11 @@ describe('tactics', () => {
   });
   it('collects mentioned names', () => {
     expect([...mentionedNames('rw [ih, myAdd] -- not h')]).toEqual(['rw', 'ih', 'myAdd']);
+  });
+  it('finds the theorem a line belongs to', () => {
+    const src = 'theorem a : P := by\n  rfl\ntheorem b : Q := by\n  rfl\n';
+    expect(theoremAt(src, 2)).toBe('a : P');
+    expect(theoremAt(src, 4)).toBe('b : Q');
   });
   it('extracts the last theorem statement', () => {
     expect(extractTheorem(andCommSource)).toBe('and_comm (p q : Prop) : p ∧ q → q ∧ p');

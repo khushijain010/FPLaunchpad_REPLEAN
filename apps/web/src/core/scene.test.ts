@@ -23,7 +23,7 @@ describe('buildScene', () => {
     const s = scene(2);
     expect(s.nodes).toHaveLength(4);
     const fresh = s.edges.filter((e) => e.isNew);
-    expect(fresh.map((e) => e.label)).toEqual(['constructor', 'constructor']);
+    expect(fresh.map((e) => e.label)).toEqual(['constructor', '']);
     expect(s.active?.id).toBe(goals.g2.id);
   });
   it('fills the proved constellation in closing order', () => {

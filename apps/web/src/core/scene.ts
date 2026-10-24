@@ -80,7 +80,10 @@ export function buildScene(film: Film, frame: Frame): Scene {
     const from = g.parent ? byId.get(g.parent) : undefined;
     if (!from) return [];
     const step = g.bornStep === undefined ? undefined : film.trace.steps[g.bornStep];
-    return [{ id: `${from.id}->${to.id}`, from, to, label: step ? shortLabel(step.text.replace(/^·\s*/, ''), 22) : '', isNew: to.isNew }];
+    // A split labels only its first edge; the tactic is the same for every branch.
+    const first = graph.nodes.get(from.id)?.children[0] === to.id;
+    const label = step && first ? shortLabel(step.text.replace(/^·\s*/, ''), 22) : '';
+    return [{ id: `${from.id}->${to.id}`, from, to, label, isNew: to.isNew }];
   });
 
   const proved: ProvedStar[] = nodes

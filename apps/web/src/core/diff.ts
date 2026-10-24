@@ -38,21 +38,30 @@ export type StepDiff = Readonly<{
   changed: readonly Readonly<{ hyp: Hyp; was: Hyp }>[];
 }>;
 
-const byName = (hyps: readonly Hyp[]): ReadonlyMap<string, Hyp> =>
-  new Map(hyps.map((h) => [h.name, h] as const));
-
-/** Compare two hypothesis lists by name: same name and type is the same hypothesis. */
+/**
+ * Compare two hypothesis lists. Lean's FVarId decides identity first. A tactic that rewrites a
+ * hypothesis (`rw ... at h`) makes a new FVarId under the old name, so leftovers are then paired
+ * by name, each old hypothesis used at most once. Names alone aren't enough: inaccessible names
+ * like `a✝` can repeat within one goal.
+ */
 export function diffHyps(from: readonly Hyp[], to: readonly Hyp[]): readonly HypChange[] {
-  const old = byName(from);
-  const now = new Set(to.map((h) => h.name));
-  const kept: HypChange[] = to.map((h) => {
-    const was = old.get(h.name);
-    if (!was) return { kind: 'added', hyp: h };
-    if (was.type !== h.type) return { kind: 'changed', hyp: h, was };
-    return { kind: 'same', hyp: h };
-  });
-  const gone: HypChange[] = from.filter((h) => !now.has(h.name)).map((h) => ({ kind: 'removed', hyp: h }));
-  return [...kept, ...gone];
+  const fromById = new Map(from.map((h) => [h.id, h] as const));
+  const toIds = new Set(to.map((h) => h.id));
+  type Acc = Readonly<{ changes: readonly HypChange[]; spare: readonly Hyp[] }>;
+  const init: Acc = { changes: [], spare: from.filter((h) => !toIds.has(h.id)) };
+  const { changes, spare } = to.reduce<Acc>((acc, h) => {
+    const same = fromById.get(h.id);
+    if (same) {
+      const c: HypChange = same.type === h.type ? { kind: 'same', hyp: h } : { kind: 'changed', hyp: h, was: same };
+      return { ...acc, changes: [...acc.changes, c] };
+    }
+    const i = acc.spare.findIndex((s) => s.name === h.name);
+    if (i < 0) return { ...acc, changes: [...acc.changes, { kind: 'added', hyp: h }] };
+    const was = acc.spare[i]!;
+    const c: HypChange = was.type === h.type ? { kind: 'same', hyp: h } : { kind: 'changed', hyp: h, was };
+    return { changes: [...acc.changes, c], spare: acc.spare.filter((_, j) => j !== i) };
+  }, init);
+  return [...changes, ...spare.map((hyp): HypChange => ({ kind: 'removed', hyp }))];
 }
 
 export function diffStates(before: ProofState, after: ProofState, tacticText = ''): StepDiff {

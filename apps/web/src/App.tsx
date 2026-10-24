@@ -91,7 +91,8 @@ export function App() {
 
   return (
     <>
-      {status === 'ready' && hasTrace ? (
+      {/* While the next sample loads, the current one stays on screen: no flash, no remount. */}
+      {(status === 'ready' || status === 'loading') && hasTrace ? (
         <Player />
       ) : status === 'loading' ? (
         <StatusCard kind="loading" title="Asking Lean nicely..." message="Loading the proof trace." />

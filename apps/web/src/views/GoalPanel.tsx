@@ -69,9 +69,8 @@ function GoalCard({ view, n, total, active }: { view: GoalView; n: number; total
 
 export function GoalPanel({ frame }: { frame: Frame }) {
   const goals = frame.diff ? frame.diff.goals : frame.state.goals.map(plain);
-  const proved = frame.diff?.proved ?? [];
-  const closedActed = frame.diff && frame.diff.opened.length === 0 ? frame.diff.acted : undefined;
-  const justProved = [...(closedActed ? [closedActed] : []), ...proved];
+  // `proved` already includes the acted-on goal when the step closed it.
+  const justProved = frame.diff?.proved ?? [];
 
   return (
     <div className="goal-panel" aria-live="polite">

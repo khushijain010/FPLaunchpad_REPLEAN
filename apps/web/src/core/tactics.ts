@@ -46,6 +46,10 @@ export function mentionedNames(text: string): ReadonlySet<string> {
   return names;
 }
 
+/** The statement of the theorem whose proof contains `line` (the last one starting above it). */
+export const theoremAt = (source: string, line: number): string =>
+  extractTheorem(source.split('\n').slice(0, line).join('\n'));
+
 /** The statement of the last `theorem`/`lemma` in a file, whitespace collapsed. */
 export function extractTheorem(source: string): string {
   const re = /(?:^|\n)\s*(?:theorem|lemma)\s+([\s\S]*?):=/g;

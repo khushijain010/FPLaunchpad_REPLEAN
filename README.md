@@ -3,7 +3,9 @@
 **Watch a Lean proof think.** Step through a Lean 4 proof one line at a time while a 3D scene
 shows goals splitting, hypotheses arriving, and goals turning gold as they're proved.
 
-<!-- TODO(me): replace with a 15-second GIF or a screenshot: docs/screenshots/hero.gif -->
+![Lemmascope stepping through or_comm: rcases has just split the goal into two branches](docs/screenshots/or_comm-2.png)
+
+<!-- TODO(me): optionally swap in a 15-second GIF (see HUMAN_TASKS.md). -->
 
 > TODO(me): two or three sentences, in your own words, on why you built this. What made Lean
 > proofs hard to follow for you, and what you wanted to see instead.
