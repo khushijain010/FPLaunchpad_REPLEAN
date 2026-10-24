@@ -6,9 +6,9 @@ export const identity = {
   yourName: 'Khushi',
   teamName: 'Bilibuu',
   collegeOrOrg: 'IITR',
-  oneLineStory: 'I was BORN',
+  oneLineStory: 'Proofs are the most beautiful things in mathematics, but you never see them happen, only the final answer; I wanted to watch one think.',
   event: 'Syntax Error 2026',
-  repoUrl: '{{REPO_URL}}',
+  repoUrl: 'https://github.com/khushijain010/FPLaunchpad_REPLEAN/',
 } as const;
 
 /** True while a value is still a `{{PLACEHOLDER}}`, so the UI can hide it gracefully. */

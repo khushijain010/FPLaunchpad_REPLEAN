@@ -13,7 +13,6 @@ export function TopBar() {
   const setDialog = useStore((s) => s.setDialog);
   const editing = useLive((s) => s.editing);
   const availability = useLive((s) => s.availability);
-  const current = samples.find((s) => s.id === sampleId);
   const isLive = sampleId === LIVE_ID || editing;
   const liveOffered = availability !== 'no' || sampleId === LIVE_ID;
 
@@ -47,11 +46,6 @@ export function TopBar() {
             ))}
             {liveOffered && <option value={LIVE_OPTION}>{liveTitle ? `Live: ${liveTitle}` : '+ Your own proof (live)'}</option>}
           </select>
-          {isLive ? (
-            <span className="picker-blurb">{editing ? 'Paste or upload Lean, then Run.' : 'Your proof, checked by Lean.'}</span>
-          ) : (
-            current && <span className="picker-blurb">{current.blurb}</span>
-          )}
         </label>
       )}
       {sampleId === LIVE_ID && !editing && (

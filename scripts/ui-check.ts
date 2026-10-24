@@ -146,7 +146,16 @@ async function viewsAndTools(page: Page): Promise<void> {
   check('lite button switches back to 3D', (await page.locator('.tab-sub').innerText()) === '3D' && (await page.locator('.tree3d canvas').count()) === 1);
 
   await page.click('button[aria-label="Presentation mode"]');
-  check('Presentation button hides the code side', (await page.locator('.pane.code').isHidden()) && (await page.locator('.app.is-presenting').count()) === 1);
+  await pause(page, 600);
+  const vw = page.viewportSize()!.width;
+  const vizBox = await page.locator('.pane.viz').boundingBox();
+  const codeBox = await page.locator('.pane.code').boundingBox();
+  const tabsBox = await page.locator('.tabs').boundingBox();
+  check('Presentation: the code side takes no space', codeBox === null || codeBox.width === 0, JSON.stringify(codeBox));
+  check('Presentation: the visualization fills the window', !!vizBox && vizBox.x < 2 && vizBox.width > vw * 0.97, JSON.stringify(vizBox));
+  check('Presentation: view tabs are laid out normally', !!tabsBox && tabsBox.width > 250 && tabsBox.x > 5, JSON.stringify(tabsBox));
+  check('Presentation: the tree is drawn', ((await page.locator('.tree3d canvas').boundingBox())?.width ?? 0) > vw * 0.9);
+  await page.screenshot({ path: 'docs/screenshots/presentation.png' });
   await page.click('button[aria-label="Presentation mode"]');
   check('Presentation button restores the code side', await page.locator('.pane.code').isVisible());
 
@@ -217,6 +226,7 @@ async function dialogs(page: Page): Promise<void> {
   const r = (await about.boundingBox())!;
   await page.mouse.click(r.x - 20 > 0 ? r.x - 20 : 5, 5);
   check('Clicking the backdrop closes About', (await page.locator('dialog[open]').count()) === 0);
+  check('No sample blurb or watch hint', (await page.locator('.picker-blurb, .watch').count()) === 0);
   check('No footer line on the page', (await page.locator('.footer').count()) === 0 && !(await page.locator('body').innerText()).includes('Built by'));
 }
 

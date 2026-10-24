@@ -41,14 +41,6 @@
   cursor: pointer;
   flex: none;
 }
-.picker-blurb {
-  color: var(--muted);
-  font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0;
-}
 .mode-badge {
   font: 600 10px var(--mono);
   letter-spacing: 0.12em;
@@ -60,21 +52,6 @@
   flex: none;
 }
 
-.watch {
-  margin: 0;
-  padding: 8px 14px;
-  font-size: 12px;
-  color: var(--muted);
-  border-bottom: 1px solid var(--line);
-  background: var(--panel);
-}
-.watch-label {
-  font: 600 10px var(--mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand);
-  margin-right: 6px;
-}
 
 .code-wrap {
   flex: 1 1 45%;
@@ -539,6 +516,10 @@
   white-space: nowrap;
   text-align: center;
   user-select: none;
+  /* Labels scale with the panels (drei distanceFactor), so a fixed width keeps them inside. */
+  max-width: 172px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .t3-label.s-worked {
   color: #c9a089;
@@ -1164,9 +1145,6 @@
   .picker select {
     flex: 1;
     min-width: 0;
-  }
-  .picker-blurb {
-    display: none;
   }
   .brand {
     margin-right: auto;

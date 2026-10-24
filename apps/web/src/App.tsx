@@ -42,11 +42,6 @@ function Player() {
   ) : (
     <>
       <TopBar />
-      {trace.meta.watch && (
-        <p className="watch">
-          <span className="watch-label">watch</span> {trace.meta.watch}
-        </p>
-      )}
       <div className="code-wrap">
         <CodePane trace={trace} frame={frame} onLine={jumpToLine} />
       </div>

@@ -96,6 +96,17 @@ Last updated: 2026-10-24 (evening)
   with a short description instead of a 404.
 - Commit history cleaned up before the move to the new repo (user request).
 
+## Presentation mode fix (2026-10-24)
+
+- [x] Presentation mode was broken: `.pane { display: flex }` beat the `hidden` attribute, so the code
+  side stayed in a 0-width column and the visualization landed in another 0-width column. Fixed with a
+  global `[hidden] { display: none !important }` and a one-column grid while presenting.
+- [x] `ui-check` now measures presentation mode (code side takes no space, visualization fills the
+  window, tabs laid out, tree drawn) instead of only asking "is the code pane hidden". 95/95.
+- [x] Removed the sample blurb next to the picker and the "watch" hint above the editor (user: they add
+  nothing). The data stays in the trace files; only the UI no longer shows it.
+- [x] 3D node labels no longer run past their panels (fixed width + ellipsis; scales with the panel).
+
 ## Latest round (user requests)
 
 - [x] **Renamed to Replean** everywhere (UI, docs, packages `@replean/*`, Lean package, Docker/Render

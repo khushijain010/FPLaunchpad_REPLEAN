@@ -23,7 +23,7 @@ export function Split({ left, right, hideLeft }: { left: ReactNode; right: React
     <div
       className="split"
       ref={box}
-      style={{ gridTemplateColumns: hideLeft ? '0 0 1fr' : `${pct}% 9px 1fr` }}
+      style={{ gridTemplateColumns: hideLeft ? 'minmax(0, 1fr)' : `${pct}% 9px minmax(0, 1fr)` }}
       onPointerMove={(e) => {
         if (!dragging || !box.current) return;
         const r = box.current.getBoundingClientRect();

@@ -67,6 +67,7 @@ Goal parents are *not* stored: `buildGoalGraph` derives them from consecutive st
 - **Name: Replean** (user's choice), replacing the working name Lemmascope.
 - **No footer, plain copy:** the user found the playful microcopy from the brief off-putting; UI text
   is now neutral and factual. This overrides the brief's voice section.
+- **No sample blurb or "watch" hint in the UI** (user's call; overrides the brief's hint).
 - **A file Lean rejects still opens in the player** so its errors can be shown in the visualization
   panel; only a file with no proof and no errors stays in the editor with a message.
 

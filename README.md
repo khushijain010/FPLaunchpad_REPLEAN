@@ -7,10 +7,9 @@ shows goals splitting, hypotheses arriving, and goals turning gold as they're pr
 
 <!-- TODO(me): optionally swap in a 15-second GIF (see HUMAN_TASKS.md). -->
 
-> TODO(me): two or three sentences, in your own words, on why you built this. What made Lean
-> proofs hard to follow for you, and what you wanted to see instead.
+> I first saw Lean at my friend's laptop and couldn’t follow what the proof was doing between lines. Everything important happens in a goal state you can’t see unless you click on each line. I wanted to step through it like a debugger, but with a picture.
 
-**Try it:** TODO(me): deployed link goes here.
+**Try it:** https://khushijain010.github.io/FPLaunchpad_REPLEAN/
 
 Built by Khushi (team Bilibuu, IITR) for Syntax Error 2026, Functional Programming track.
 
