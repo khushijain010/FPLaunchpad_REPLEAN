@@ -8,6 +8,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { BOX, PX } from '../core/layout';
 import type { Scene, SceneEdge, SceneNode } from '../core/scene';
 import { useTheme, type Theme } from '../ui/theme';
 
@@ -70,13 +71,10 @@ const usePalette = () => useContext(PaletteContext);
  */
 const LabelScaleContext = createContext(9);
 const useLabelScale = () => useContext(LabelScaleContext);
-const NODE = { w: 2.3, h: 0.86, d: 0.16 } as const;
-/** Label size relative to the canvas height (see LabelScaleContext). */
-const LABEL_SCALE = 0.018;
-/** Width of one label character in world units at that scale (13px JetBrains Mono ≈ 7.8px). */
-const CHAR_W = 7.8 * LABEL_SCALE;
-/** Each node is as wide as its label needs, within limits: short goals get compact panels. */
-const nodeWidth = (label: string) => Math.min(2.6, Math.max(1.15, label.length * CHAR_W + 0.55));
+/** Panel depth. Width and height come from the layout, which sizes each panel to its goal. */
+const NODE_D = 0.16;
+/** Label size relative to the canvas height (see LabelScaleContext): one CSS pixel is PX units. */
+const LABEL_SCALE = PX;
 const SETTLE = 1e-3;
 
 /** The bit of drei's OrbitControls the camera rig touches. */
@@ -89,7 +87,7 @@ const damp = (cur: number, target: number, lambda: number, dt: number, snap: boo
   snap ? target : THREE.MathUtils.damp(cur, target, lambda, dt);
 
 function shelfPos(scene: Scene, slot: number): THREE.Vector3 {
-  return new THREE.Vector3(scene.bounds.minX + slot * 0.55, scene.bounds.minY - 2.1, 0.4);
+  return new THREE.Vector3(scene.bounds.minX + slot * 0.55, scene.bounds.minY - 1.7, 0.4);
 }
 
 function NodeMesh({ n, scene, parentPos }: { n: SceneNode; scene: Scene; parentPos: THREE.Vector3 | undefined }) {
@@ -101,7 +99,7 @@ function NodeMesh({ n, scene, parentPos }: { n: SceneNode; scene: Scene; parentP
   const color = useMemo(() => new THREE.Color(pal.rim[n.status]), [pal, n.status]);
   const glow = pal.glow[n.status];
   const labelScale = useLabelScale();
-  const w = nodeWidth(n.label);
+  const { w, h } = n;
   const pulseAt = useRef<number | null>(null);
 
   // Born from the parent: start at its position so the branch visibly grows out of it.
@@ -123,7 +121,8 @@ function NodeMesh({ n, scene, parentPos }: { n: SceneNode; scene: Scene; parentP
     const pulse = pulseAt.current === null ? 0 : (performance.now() - pulseAt.current) / 900;
     const bump = pulse > 0 && pulse < 1 ? Math.sin(pulse * Math.PI) * 0.18 : 0;
     if (pulse >= 1) pulseAt.current = null;
-    const scale = (n.status === 'proved' ? 0.82 : n.status === 'worked' ? 0.9 : 1) + bump;
+    // Panels stay full size: the HTML label doesn't scale with the group, and must fit its panel.
+    const scale = 1 + bump;
     g.position.x = damp(g.position.x, target.x, 8, t, snap);
     g.position.y = damp(g.position.y, target.y, 8, t, snap);
     g.position.z = damp(g.position.z, target.z, 8, t, snap);
@@ -140,16 +139,18 @@ function NodeMesh({ n, scene, parentPos }: { n: SceneNode; scene: Scene; parentP
   return (
     <group ref={group} position={[n.x, n.y, n.z]}>
       {/* The rim: a colored panel, just visible around the face in front of it. */}
-      <RoundedBox args={[w, NODE.h, NODE.d]} radius={0.09} smoothness={3}>
+      <RoundedBox args={[w, h, NODE_D]} radius={0.09} smoothness={3}>
         <meshStandardMaterial ref={mat} color={pal.rim[n.status]} emissive={pal.rim[n.status]} emissiveIntensity={glow} roughness={0.45} metalness={0.1} toneMapped={false} />
       </RoundedBox>
-      <RoundedBox args={[w - 0.06, NODE.h - 0.06, NODE.d]} radius={0.075} smoothness={3} position={[0, 0, 0.014]}>
+      <RoundedBox args={[w - 0.06, h - 0.06, NODE_D]} radius={0.075} smoothness={3} position={[0, 0, 0.014]}>
         <meshBasicMaterial color={n.status === 'active' ? pal.faceActive : pal.face} toneMapped={false} />
       </RoundedBox>
       <Html center distanceFactor={labelScale} zIndexRange={[20, 0]} className="t3-label-wrap" pointerEvents="none">
         <div className={`t3-label s-${n.status}`}>
           {n.tag && <span className="t3-tag">{n.tag}</span>}
-          {n.label}
+          {n.lines.map((l, i) => (
+            <div key={i}>{l}</div>
+          ))}
         </div>
       </Html>
     </group>
@@ -157,8 +158,8 @@ function NodeMesh({ n, scene, parentPos }: { n: SceneNode; scene: Scene; parentP
 }
 
 function curvePoints(e: SceneEdge): THREE.Vector3[] {
-  const a = new THREE.Vector3(e.from.x, e.from.y - NODE.h / 2, e.from.z);
-  const b = new THREE.Vector3(e.to.x, e.to.y + NODE.h / 2, e.to.z);
+  const a = new THREE.Vector3(e.from.x, e.from.y - e.from.h / 2, e.from.z);
+  const b = new THREE.Vector3(e.to.x, e.to.y + e.to.h / 2, e.to.z);
   const midY = (a.y + b.y) / 2;
   return new THREE.CubicBezierCurve3(a, new THREE.Vector3(a.x, midY, a.z), new THREE.Vector3(b.x, midY, b.z), b).getPoints(28);
 }
@@ -188,8 +189,8 @@ function EdgeLine({ e }: { e: SceneEdge }) {
     state.invalidate();
   });
 
-  // Near the parent, where branches haven't spread yet, so labels don't sit on the children.
-  const mid = points[Math.floor(points.length * 0.15)]!;
+  // Just under the parent, where branches haven't spread yet; the layout leaves room for it.
+  const at: [number, number, number] = [e.from.x + BOX.edgeDx * PX, e.from.y - e.from.h / 2 - BOX.edgeDy * PX, e.from.z];
   const labelScale = useLabelScale();
   return (
     <group>
@@ -199,8 +200,12 @@ function EdgeLine({ e }: { e: SceneEdge }) {
         <meshBasicMaterial color={pal.spark} toneMapped={false} />
       </mesh>
       {e.label && (
-        <Html position={[mid.x + 0.12, mid.y, mid.z]} distanceFactor={labelScale} zIndexRange={[10, 0]} pointerEvents="none">
-          <div className={`t3-edge-label${e.isNew ? ' is-new' : ''}`}>{e.label}</div>
+        <Html position={at} distanceFactor={labelScale} zIndexRange={[10, 0]} pointerEvents="none">
+          <div className={`t3-edge-label${e.isNew ? ' is-new' : ''}`}>
+            {e.lines.map((l, i) => (
+              <div key={i}>{l}</div>
+            ))}
+          </div>
         </Html>
       )}
     </group>
@@ -220,12 +225,12 @@ function HypRing({ scene }: { scene: Scene }) {
   return (
     <group>
       {hyps.map((h, i) => {
-        const pos = new THREE.Vector3(n.x, n.y - NODE.h / 2 - 0.4 - i * 0.4, n.z + 0.2);
+        const pos = new THREE.Vector3(n.x, n.y - n.h / 2 - 0.4 - i * 0.4, n.z + 0.2);
         const used = scene.usedHyps.has(h.name);
         const added = scene.addedHyps.has(h.name);
         return (
           <group key={`${n.id}:${h.id}`}>
-            {used && <Line points={[pos.clone().setX(pos.x - 0.9), new THREE.Vector3(n.x - nodeWidth(n.label) / 2 + 0.1, n.y, n.z)]} color={pal.hyp} lineWidth={1.4} transparent opacity={0.8} />}
+            {used && <Line points={[pos.clone().setX(pos.x - 0.9), new THREE.Vector3(n.x - n.w / 2 + 0.1, n.y, n.z)]} color={pal.hyp} lineWidth={1.4} transparent opacity={0.8} />}
             <Html position={pos} center distanceFactor={labelScale} zIndexRange={[30, 0]} pointerEvents="none">
               <div className={`t3-hyp${added ? ' is-added' : ''}${used ? ' is-used' : ''}`}>
                 <b>{h.name}</b> : {h.type}
@@ -279,7 +284,8 @@ function CameraRig({ scene, resetKey }: { scene: Scene; resetKey: number }) {
     const tanHalf = Math.tan(((camera as THREE.PerspectiveCamera).fov * Math.PI) / 360);
     // Distance at which a w-by-h region fills the view, whichever of the two is tighter.
     const fit = (w: number, h: number) => Math.max(h, w / aspect) / (2 * tanHalf);
-    const treeW = maxX - minX + NODE.w;
+    // Bounds are the extents of the panels themselves.
+    const treeW = maxX - minX;
     if (scene.done || !scene.active) {
       const d = Math.min(40, fit(treeW + 1.6, maxY - minY + 5.2));
       goal.current.target.set(cx, cy, 0);
@@ -325,7 +331,7 @@ function Contents({ scene, resetKey }: { scene: Scene; resetKey: number }) {
       <directionalLight position={[4, 6, 8]} intensity={pal.bloom ? 1.1 : 0.8} />
       {/* A floor under the tree, fading into the distance. */}
       <Grid
-        position={[(minX + maxX) / 2, minY - 2.6, -3]}
+        position={[(minX + maxX) / 2, minY - 2.2, -3]}
         args={[60, 60]}
         cellSize={0.6}
         sectionSize={3}

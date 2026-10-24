@@ -778,9 +778,9 @@
   border-color: var(--error);
 }
 .gs-goal {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* Whole goals, wrapped: a cut-off goal hides the part that matters. */
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .gs-list li.is-proved .gs-goal {
   color: var(--muted);
@@ -910,9 +910,7 @@
 }
 .proved-row code {
   color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 .proved-row.is-error {
   color: var(--error);
@@ -1134,7 +1132,7 @@
 }
 .t2-edge-label {
   fill: var(--faint);
-  font-size: 11px;
+  font-size: 11px; /* BOX.edgeFont */
 }
 .t2-edge.is-new .t2-edge-label {
   fill: var(--brand-strong);
@@ -1161,10 +1159,10 @@
     stroke 300ms;
 }
 .t2-label {
-  font-size: 12.5px;
+  font-size: 13px; /* BOX.font: the layout sizes nodes for it */
 }
 .t2-tag {
-  font-size: 10px;
+  font-size: 10px; /* BOX.tagFont */
   fill: var(--faint);
 }
 .t2-node.s-open rect {
@@ -1231,14 +1229,12 @@
   pointer-events: none;
 }
 .t3-label {
-  font: 600 13px var(--mono);
-  white-space: nowrap;
+  /* BOX in core/layout.ts sizes each panel for 13px/17px text. drei's label scale is only
+     approximately one CSS pixel per PX, so 3D labels are drawn a little smaller to always fit. */
+  font: 600 12px/16px var(--mono);
+  white-space: pre;
   text-align: center;
   user-select: none;
-  /* Labels scale with the panels (Tree3D LABEL_SCALE), so this width is the widest panel (2.6 units). */
-  max-width: 134px;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .t3-label.s-open {
   color: var(--brand);
@@ -1258,12 +1254,12 @@
 .t3-tag {
   display: block;
   font-size: 9px;
+  line-height: 12px;
   font-weight: 400;
   color: var(--faint);
-  margin-top: -2px;
 }
 .t3-edge-label {
-  font: 11px var(--mono);
+  font: 11px/14px var(--mono);
   color: var(--faint);
   white-space: nowrap;
   user-select: none;
@@ -1571,7 +1567,7 @@
   background: var(--gold-dim);
   border-radius: 99px;
   padding: 2px 8px;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 .sh-pill.is-new {
   box-shadow: 0 0 16px var(--gold-dim);

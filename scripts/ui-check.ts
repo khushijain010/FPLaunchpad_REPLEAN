@@ -177,6 +177,24 @@ async function viewsAndTools(page: Page): Promise<void> {
     }),
   );
   check('2D labels fit inside their nodes', fits2d);
+  // The longest goals in the examples: every box holds its whole goal and no two boxes touch.
+  await open(page, '#sample=compiler');
+  await page.keyboard.press('End');
+  await page.click('.viz-bar .tab:has-text("Tree")');
+  await pause(page, 500);
+  const whole = await page.$$eval('.t2-node', (nodes) => {
+    const boxes = nodes.map((n) => {
+      const r = n.querySelector('rect')!.getBoundingClientRect();
+      const t = n.querySelector('.t2-label')!.getBoundingClientRect();
+      return { r, t, text: n.querySelector('.t2-label')!.textContent ?? '' };
+    });
+    const inside = boxes.every(({ r, t }) => t.left >= r.left - 0.5 && t.right <= r.right + 0.5 && t.top >= r.top - 0.5 && t.bottom <= r.bottom + 0.5);
+    const uncut = boxes.every(({ text }) => !text.includes('…'));
+    const apart = boxes.every((a, i) => boxes.every((b, j) => i === j || a.r.right <= b.r.left || b.r.right <= a.r.left || a.r.bottom <= b.r.top || b.r.bottom <= a.r.top));
+    return { n: boxes.length, inside, uncut, apart };
+  });
+  check('2D boxes hold their whole goal, no "…"', whole.n >= 8 && whole.inside && whole.uncut, JSON.stringify(whole));
+  check('2D boxes never overlap', whole.apart);
   await page.click('.segmented button:has-text("3D")');
   await pause(page, 800);
   check('3D button draws the 3D tree', (await page.locator('.tree3d canvas').count()) === 1 && !(await page.locator('.viz-layer').isHidden()));

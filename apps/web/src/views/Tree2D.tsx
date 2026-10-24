@@ -1,49 +1,45 @@
 // The goal tree as SVG: the same scene and layout as Tree3D, no WebGL needed.
-// Nodes are wide enough for their label (labels are cut to fit), siblings never touch, and a
-// node's case tag sits inside it so it can't collide with edge labels.
+// Every node is as big as its full goal (the layout wraps and sizes it), and a node's case tag
+// sits inside it so it can't collide with edge labels.
 
 import type { Scene, SceneNode } from '../core/scene';
-import { LAYOUT } from '../core/layout';
+import { BOX, PX } from '../core/layout';
 
-const NODE_W = 196;
-const NODE_H = 46;
-/** Pixels per layout unit, horizontally and vertically. Siblings are LAYOUT.dx apart. */
-const UX = (NODE_W + 22) / LAYOUT.dx;
-const UY = 96;
-/** Characters that fit in a node at 12.5px monospace. */
-const FIT = 24;
-
-const px = (n: { x: number; y: number }) => ({ x: n.x * UX, y: -n.y * (UY / LAYOUT.dy) });
-const fit = (s: string, max = FIT) => (s.length <= max ? s : `${s.slice(0, max - 1)}…`);
+/** Layout units to SVG pixels: label text is drawn at its CSS size. */
+const px = (v: number) => v / PX;
 
 export function Tree2D({ scene }: { scene: Scene }) {
-  const { minX, maxX, minY } = scene.bounds;
+  const { minX, maxX, minY, maxY } = scene.bounds;
   const pad = 40;
-  const left = minX * UX - NODE_W / 2 - pad;
-  const width = (maxX - minX) * UX + NODE_W + pad * 2;
-  const bottom = -minY * (UY / LAYOUT.dy) + NODE_H / 2;
-  const shelfY = bottom + 56;
-  const height = shelfY + 36 + pad;
-  const shelfX = minX * UX - NODE_W / 2;
+  const left = px(minX) - pad;
+  const top = -px(maxY) - pad;
+  const width = px(maxX - minX) + pad * 2;
+  const shelfY = -px(minY) + 56;
+  const height = shelfY + 36 + pad - top;
+  const shelfX = px(minX);
 
   return (
     <div className="tree2d">
-      <svg viewBox={`${left} ${-NODE_H / 2 - pad} ${width} ${height + NODE_H / 2}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`Goal tree: ${scene.nodes.length} goals, ${scene.remaining} open`}>
+      <svg viewBox={`${left} ${top} ${width} ${height}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`Goal tree: ${scene.nodes.length} goals, ${scene.remaining} open`}>
         {scene.edges.map((e) => {
-          const a = px(e.from);
-          const b = px(e.to);
-          const y1 = a.y + NODE_H / 2;
-          const y2 = b.y - NODE_H / 2;
+          const ax = px(e.from.x);
+          const bx = px(e.to.x);
+          const y1 = -px(e.from.y - e.from.h / 2);
+          const y2 = -px(e.to.y + e.to.h / 2);
           const midY = (y1 + y2) / 2;
-          const d = `M${a.x},${y1} C${a.x},${midY} ${b.x},${midY} ${b.x},${y2}`;
+          const d = `M${ax},${y1} C${ax},${midY} ${bx},${midY} ${bx},${y2}`;
           return (
             <g key={e.id} className={`t2-edge${e.isNew ? ' is-new' : ''}`}>
               <path d={d} />
               {e.isNew && <path d={d} className="t2-pulse" pathLength={1} />}
-              {e.label && (
+              {e.lines.length > 0 && (
                 // Labels sit just under the parent, where branches haven't spread yet.
-                <text x={a.x + 8} y={y1 + 14} className="t2-edge-label">
-                  {fit(e.label, 22)}
+                <text x={ax + BOX.edgeDx} y={y1 + BOX.edgeDy + BOX.edgeFont} className="t2-edge-label">
+                  {e.lines.map((l, i) => (
+                    <tspan key={i} x={ax + BOX.edgeDx} dy={i === 0 ? 0 : BOX.edgeLineH}>
+                      {l}
+                    </tspan>
+                  ))}
                 </text>
               )}
             </g>
@@ -69,18 +65,26 @@ export function Tree2D({ scene }: { scene: Scene }) {
 }
 
 function Node({ n }: { n: SceneNode }) {
-  const { x, y } = px(n);
+  const w = px(n.w);
+  const h = px(n.h);
+  const tagH = n.tag ? BOX.tagH : 0;
+  // Baseline of the first goal line: below the padding and the tag, centred in its line box.
+  const first = -h / 2 + BOX.padY + tagH + BOX.lineH / 2;
   return (
-    <g className={`t2-node s-${n.status}${n.isNew ? ' is-new' : ''}${n.justClosed ? ' just-closed' : ''}`} transform={`translate(${x}, ${y})`}>
+    <g className={`t2-node s-${n.status}${n.isNew ? ' is-new' : ''}${n.justClosed ? ' just-closed' : ''}`} transform={`translate(${px(n.x)}, ${-px(n.y)})`}>
       <g className="t2-node-inner">
-        <rect x={-NODE_W / 2} y={-NODE_H / 2} width={NODE_W} height={NODE_H} rx={9} />
+        <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={9} />
         {n.tag && (
-          <text className="t2-tag" x={-NODE_W / 2 + 10} y={-NODE_H / 2 + 13}>
-            {fit(n.tag, 20)}
+          <text className="t2-tag" x={-w / 2 + BOX.padX} y={-h / 2 + BOX.padY + BOX.tagFont}>
+            {n.tag}
           </text>
         )}
-        <text className="t2-label" textAnchor="middle" y={n.tag ? 9 : 0} dy="0.35em">
-          {fit(n.target.replace(/\s+/g, ' '))}
+        <text className="t2-label" textAnchor="middle" y={first}>
+          {n.lines.map((l, i) => (
+            <tspan key={i} x={0} dy={i === 0 ? '0.35em' : BOX.lineH}>
+              {l}
+            </tspan>
+          ))}
         </text>
         <title>{`${n.tag ? `case ${n.tag}\n` : ''}${n.hyps.map((h) => `${h.name} : ${h.type}`).join('\n')}\n⊢ ${n.target}`}</title>
       </g>

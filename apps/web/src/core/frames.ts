@@ -4,7 +4,7 @@
 import { chooseView } from './chooseView';
 import { diffStates, type StepDiff } from './diff';
 import { explainTactic, stepSummary, type Explanation } from './explain';
-import { buildGoalGraph, nodeStatuses, type GoalGraph, type NodeStatus } from './graph';
+import { buildGoalGraph, nodeStatuses, tacticOutOf, type GoalGraph, type NodeStatus } from './graph';
 import { layoutTree, type Layout } from './layout';
 import type { ProofState, Step, Trace, ViewId } from './types';
 
@@ -80,7 +80,7 @@ function frameAt(trace: Trace, graph: GoalGraph, k: number): Frame {
 export function buildFrames(trace: Trace): Film {
   const graph = buildGoalGraph(trace.steps);
   const frames = Array.from({ length: trace.steps.length + 1 }, (_, k) => frameAt(trace, graph, k));
-  return { trace, graph, layout: layoutTree(graph), frames };
+  return { trace, graph, layout: layoutTree(graph, (id) => tacticOutOf(graph, trace.steps, id)), frames };
 }
 
 const films = new WeakMap<Trace, Film>();

@@ -3,7 +3,6 @@
 
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'framer-motion';
 import type { Film, Frame } from '../core/frames';
-import { shortLabel } from '../core/layout';
 import { theoremAt } from '../core/tactics';
 
 export function ShrinkRail({ film, frame }: { film: Film; frame: Frame }) {
@@ -73,7 +72,7 @@ export function ShrinkRail({ film, frame }: { film: Film; frame: Frame }) {
                 className={`sh-pill${n.endFrame === frame.index ? ' is-new' : ''}`}
                 title={n.goal.target}
               >
-                {shortLabel(n.goal.target, 18)}
+                {n.goal.target}
               </motion.span>
             ))}
           </div>

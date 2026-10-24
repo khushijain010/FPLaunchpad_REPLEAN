@@ -6,7 +6,7 @@ import { explainTactic, stepSummary } from './explain';
 import { andCommRaw, andCommSource, goals } from './fixtures.test-data';
 import { buildFrames, reduce } from './frames';
 import { buildGoalGraph } from './graph';
-import { layoutTree, shortLabel } from './layout';
+import { BOX, boxOf, layoutTree, PX, wrapText } from './layout';
 import { chainLinks, hasConcreteList, listCells, parseListLiteral, parseListLiterals, sides } from './lists';
 import { extractTheorem, headTactic, mentionedNames, theoremAt } from './tactics';
 import { rewriteSummary, tokenDiff, tokenize } from './tokens';
@@ -202,9 +202,36 @@ describe('layoutTree', () => {
   it('is deterministic', () => {
     expect([...layoutTree(buildGoalGraph(built.steps)).positions]).toEqual([...layout.positions]);
   });
-  it('shortens long labels', () => {
-    expect(shortLabel('a'.repeat(40), 10)).toBe(`${'a'.repeat(9)}…`);
-    expect(shortLabel('p ∧\n  q')).toBe('p ∧ q');
+  it('wraps long goals instead of cutting them', () => {
+    const goal = 'run (compile e ++ c) s = run c (some (eval e :: s))';
+    const lines = wrapText(goal, BOX.cols);
+    expect(lines.join(' ')).toBe(goal);
+    expect(lines.every((l) => l.length <= BOX.cols)).toBe(true);
+    expect(wrapText('p ∧\n  q', BOX.cols)).toEqual(['p ∧ q']);
+    // Balanced: two similar lines, not a full line and a stray word.
+    const [l1, l2] = lines;
+    expect(Math.abs(l1!.length - l2!.length)).toBeLessThan(10);
+    // A word longer than a line is split rather than overflowing.
+    expect(wrapText('x'.repeat(50), 20).map((l) => l.length)).toEqual([20, 20, 10]);
+  });
+  it('sizes each node to its text', () => {
+    const short = boxOf('p', '');
+    const long = boxOf('q ∧ p ∧ r ∧ s ∧ t ∧ u ∧ v ∧ w ∧ x ∧ y ∧ z ∧ a ∧ b', 'inl');
+    expect(long.w).toBeGreaterThan(short.w);
+    expect(long.h).toBeGreaterThan(short.h);
+  });
+  it('never lets boxes in a row overlap, and leaves room for the edge label', () => {
+    const goal = (id: string, target: string) => ({ id, tag: '', hyps: [], target });
+    const wide = 'run (compile (Expr.add a b)) s = some (eval (Expr.add a b) :: s)';
+    const graph = buildGoalGraph([
+      { ...built.steps[0]!, before: { goals: [goal('r', wide)] }, after: { goals: [goal('a', wide), goal('b', wide), goal('c', 'p')] } },
+    ]);
+    const laid = layoutTree(graph, () => 'constructor <;> simp [compile, eval, run, List.append_assoc]');
+    const row = ['a', 'b', 'c'].map((id) => laid.positions.get(id)!).sort((x, y) => x.x - y.x);
+    row.slice(1).forEach((p, i) => expect(p.x - p.w / 2).toBeGreaterThan(row[i]!.x + row[i]!.w / 2));
+    const r = laid.positions.get('r')!;
+    expect(r.edgeLines.length).toBeGreaterThan(1);
+    row.forEach((p) => expect(p.y + p.h / 2).toBeLessThan(r.y - r.h / 2 - r.edgeLines.length * BOX.edgeLineH * PX));
   });
 });
 

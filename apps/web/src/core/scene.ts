@@ -2,17 +2,22 @@
 // Tree3D and Tree2D both render this, so lite mode shows the same thing, flatter.
 
 import type { Film, Frame } from './frames';
-import type { NodeStatus } from './graph';
-import { shortLabel } from './layout';
+import { tacticOutOf, type NodeStatus } from './graph';
 import type { Hyp } from './types';
 
 export type SceneNode = Readonly<{
   id: string;
+  /** Centre of the node, in layout units; `w` × `h` is its full size. */
   x: number;
   y: number;
   z: number;
+  w: number;
+  h: number;
   status: Exclude<NodeStatus, 'hidden'>;
+  /** The goal on one line. */
   label: string;
+  /** The goal wrapped to fit the node, never cut. */
+  lines: readonly string[];
   target: string;
   tag: string;
   hyps: readonly Hyp[];
@@ -27,6 +32,8 @@ export type SceneEdge = Readonly<{
   from: SceneNode;
   to: SceneNode;
   label: string;
+  /** `label`, wrapped. */
+  lines: readonly string[];
   /** Created by the step that just ran: send a pulse along it. */
   isNew: boolean;
 }>;
@@ -58,14 +65,17 @@ export function buildScene(film: Film, frame: Frame): Scene {
 
   const nodes: SceneNode[] = drawn.map((id) => {
     const n = graph.nodes.get(id)!;
-    const p = layout.positions.get(id) ?? { x: 0, y: 0, z: 0 };
+    const p = layout.positions.get(id) ?? { x: 0, y: 0, z: 0, w: 1, h: 0.5, lines: [n.goal.target] };
     return {
       id,
       x: p.x,
       y: p.y,
       z: p.z,
+      w: p.w,
+      h: p.h,
       status: frame.statuses.get(id) as SceneNode['status'],
-      label: shortLabel(n.goal.target, 24),
+      label: n.goal.target.replace(/\s+/g, ' ').trim(),
+      lines: p.lines,
       target: n.goal.target,
       tag: n.goal.tag,
       hyps: n.goal.hyps,
@@ -79,11 +89,11 @@ export function buildScene(film: Film, frame: Frame): Scene {
     const g = graph.nodes.get(to.id)!;
     const from = g.parent ? byId.get(g.parent) : undefined;
     if (!from) return [];
-    const step = g.bornStep === undefined ? undefined : film.trace.steps[g.bornStep];
     // A split labels only its first edge; the tactic is the same for every branch.
     const first = graph.nodes.get(from.id)?.children[0] === to.id;
-    const label = step && first ? shortLabel(step.text.replace(/^·\s*/, ''), 22) : '';
-    return [{ id: `${from.id}->${to.id}`, from, to, label, isNew: to.isNew }];
+    const label = first ? tacticOutOf(graph, film.trace.steps, from.id) : '';
+    const lines = label ? (layout.positions.get(from.id)?.edgeLines ?? [label]) : [];
+    return [{ id: `${from.id}->${to.id}`, from, to, label, lines, isNew: to.isNew }];
   });
 
   const proved: ProvedStar[] = nodes

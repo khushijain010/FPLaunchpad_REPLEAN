@@ -98,7 +98,15 @@ export function buildGoalGraph(steps: readonly Step[]): GoalGraph {
   };
 }
 
-export type NodeStatus = 'hidden' | 'open' | 'active' | 'worked' | 'proved' | 'error';
+/** The line that split a goal into its children, as drawn on the edges out of it. */
+export function tacticOutOf(graph: GoalGraph, steps: readonly Step[], id: string): string {
+  const first = graph.nodes.get(id)?.children[0];
+  const born = first === undefined ? undefined : graph.nodes.get(first)?.bornStep;
+  const step = born === undefined ? undefined : steps[born];
+  return step ? step.text.replace(/^·\s*/, '').replace(/\s+/g, ' ').trim() : '';
+}
+
+export type NodeStatus ='hidden' | 'open' | 'active' | 'worked' | 'proved' | 'error';
 
 /** Status of every node at frame `k`. `active` is the goal Lean will work on next. */
 export function nodeStatuses(
