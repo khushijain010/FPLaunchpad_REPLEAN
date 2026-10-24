@@ -39,7 +39,7 @@ extractor itself is written in Lean. Thanks."
 
 - If the venue Wi-Fi dies: the site is static and works offline once loaded. Better: `pnpm build`
   then `pnpm preview` locally, or open the deployed link before the demo and keep the tab.
-- If WebGL misbehaves on the demo machine: press `L` for the 2D tree. Same data, same layout.
+- If WebGL misbehaves on the demo machine: press `D` (or click **2D**) for the 2D tree. Same data, same layout.
 - Keep a screen recording of the script above as a last resort (HUMAN_TASKS).
 
 ## Judge Q&A cheat sheet

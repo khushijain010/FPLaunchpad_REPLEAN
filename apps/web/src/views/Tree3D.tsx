@@ -3,23 +3,80 @@
 // only state is animation progress, which is damped toward the scene each frame.
 // Loaded lazily: none of three.js is in the first bundle.
 
-import { Html, Line, OrbitControls, RoundedBox } from '@react-three/drei';
+import { Grid, Html, Line, OrbitControls, RoundedBox } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Bloom, EffectComposer } from '@react-three/postprocessing';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import type { Scene, SceneEdge, SceneNode } from '../core/scene';
+import { useTheme, type Theme } from '../ui/theme';
 
-const COLORS = {
-  open: '#ff4f00',
-  active: '#ff4f00',
-  worked: '#4a2a1c',
-  proved: '#f4b740',
-  error: '#ff4b4b',
-  hyp: '#2fd3c4',
-} as const;
-const EMISSIVE: Readonly<Record<SceneNode['status'], number>> = { open: 0.35, active: 1.6, worked: 0.15, proved: 1.1, error: 1.4 };
-const NODE = { w: 2.05, h: 0.62, d: 0.16 } as const;
+/** Every color the scene uses, per theme. Nodes are outlined panels: a colored rim around a plain face. */
+type Palette = Readonly<{
+  rim: Readonly<Record<SceneNode['status'], string>>;
+  glow: Readonly<Record<SceneNode['status'], number>>;
+  face: string;
+  faceActive: string;
+  background: string;
+  edge: string;
+  edgeNew: string;
+  spark: string;
+  hyp: string;
+  proved: string;
+  gridCell: string;
+  gridSection: string;
+  bloom: boolean;
+}>;
+
+const PALETTES: Readonly<Record<Theme, Palette>> = {
+  dark: {
+    rim: { open: '#ff4f00', active: '#ff6a1a', worked: '#5b4c45', proved: '#f4b740', error: '#ff4b4b' },
+    glow: { open: 0.5, active: 1.7, worked: 0.1, proved: 1.2, error: 1.4 },
+    face: '#141417',
+    faceActive: '#22120a',
+    background: '#0f0f12',
+    edge: '#3d3d44',
+    edgeNew: '#ff7a3d',
+    spark: '#ffd2b8',
+    hyp: '#2fd3c4',
+    proved: '#f4b740',
+    gridCell: '#1c1c22',
+    gridSection: '#2b2b33',
+    bloom: true,
+  },
+  light: {
+    rim: { open: '#e8510c', active: '#e8510c', worked: '#b9aea7', proved: '#c98a06', error: '#d23131' },
+    glow: { open: 0.15, active: 0.35, worked: 0, proved: 0.25, error: 0.3 },
+    face: '#ffffff',
+    faceActive: '#fff1e8',
+    background: '#ffffff',
+    edge: '#cdc6bd',
+    edgeNew: '#e8510c',
+    spark: '#e8510c',
+    hyp: '#0f8f86',
+    proved: '#c98a06',
+    gridCell: '#efebe5',
+    gridSection: '#e2ddd5',
+    bloom: false,
+  },
+};
+
+const PaletteContext = createContext<Palette>(PALETTES.dark);
+const usePalette = () => useContext(PaletteContext);
+
+/**
+ * drei sizes <Html> by camera distance only, not by canvas size, so in a small panel labels
+ * would outgrow their nodes. Scaling with the canvas height keeps label and node in proportion.
+ */
+const LabelScaleContext = createContext(9);
+const useLabelScale = () => useContext(LabelScaleContext);
+const NODE = { w: 2.3, h: 0.86, d: 0.16 } as const;
+/** Label size relative to the canvas height (see LabelScaleContext). */
+const LABEL_SCALE = 0.018;
+/** Width of one label character in world units at that scale (13px JetBrains Mono ≈ 7.8px). */
+const CHAR_W = 7.8 * LABEL_SCALE;
+/** Each node is as wide as its label needs, within limits: short goals get compact panels. */
+const nodeWidth = (label: string) => Math.min(2.6, Math.max(1.15, label.length * CHAR_W + 0.55));
 const SETTLE = 1e-3;
 
 /** The bit of drei's OrbitControls the camera rig touches. */
@@ -36,11 +93,15 @@ function shelfPos(scene: Scene, slot: number): THREE.Vector3 {
 }
 
 function NodeMesh({ n, scene, parentPos }: { n: SceneNode; scene: Scene; parentPos: THREE.Vector3 | undefined }) {
+  const pal = usePalette();
   const group = useRef<THREE.Group>(null);
   const mat = useRef<THREE.MeshStandardMaterial>(null);
   const snap = useMemo(reducedMotion, []);
   const target = useMemo(() => new THREE.Vector3(n.x, n.y, n.z), [n.x, n.y, n.z]);
-  const color = useMemo(() => new THREE.Color(COLORS[n.status]), [n.status]);
+  const color = useMemo(() => new THREE.Color(pal.rim[n.status]), [pal, n.status]);
+  const glow = pal.glow[n.status];
+  const labelScale = useLabelScale();
+  const w = nodeWidth(n.label);
   const pulseAt = useRef<number | null>(null);
 
   // Born from the parent: start at its position so the branch visibly grows out of it.
@@ -70,18 +131,22 @@ function NodeMesh({ n, scene, parentPos }: { n: SceneNode; scene: Scene; parentP
     g.scale.setScalar(s);
     m.color.lerp(color, snap ? 1 : 1 - Math.exp(-8 * t));
     m.emissive.copy(m.color);
-    m.emissiveIntensity = damp(m.emissiveIntensity, EMISSIVE[n.status] + bump * 4, 6, t, snap);
+    m.emissiveIntensity = damp(m.emissiveIntensity, glow + bump * 4, 6, t, snap);
     const moving =
-      g.position.distanceTo(target) > SETTLE || Math.abs(s - scale) > SETTLE || pulseAt.current !== null || Math.abs(m.emissiveIntensity - EMISSIVE[n.status]) > 0.01;
+      g.position.distanceTo(target) > SETTLE || Math.abs(s - scale) > SETTLE || pulseAt.current !== null || Math.abs(m.emissiveIntensity - glow) > 0.01;
     if (moving) state.invalidate();
   });
 
   return (
     <group ref={group} position={[n.x, n.y, n.z]}>
-      <RoundedBox args={[NODE.w, NODE.h, NODE.d]} radius={0.07} smoothness={3}>
-        <meshStandardMaterial ref={mat} color={COLORS[n.status]} emissive={COLORS[n.status]} emissiveIntensity={EMISSIVE[n.status]} roughness={0.45} metalness={0.1} toneMapped={false} />
+      {/* The rim: a colored panel, just visible around the face in front of it. */}
+      <RoundedBox args={[w, NODE.h, NODE.d]} radius={0.09} smoothness={3}>
+        <meshStandardMaterial ref={mat} color={pal.rim[n.status]} emissive={pal.rim[n.status]} emissiveIntensity={glow} roughness={0.45} metalness={0.1} toneMapped={false} />
       </RoundedBox>
-      <Html center distanceFactor={9} zIndexRange={[20, 0]} className="t3-label-wrap" pointerEvents="none">
+      <RoundedBox args={[w - 0.06, NODE.h - 0.06, NODE.d]} radius={0.075} smoothness={3} position={[0, 0, 0.014]}>
+        <meshBasicMaterial color={n.status === 'active' ? pal.faceActive : pal.face} toneMapped={false} />
+      </RoundedBox>
+      <Html center distanceFactor={labelScale} zIndexRange={[20, 0]} className="t3-label-wrap" pointerEvents="none">
         <div className={`t3-label s-${n.status}`}>
           {n.tag && <span className="t3-tag">{n.tag}</span>}
           {n.label}
@@ -99,6 +164,7 @@ function curvePoints(e: SceneEdge): THREE.Vector3[] {
 }
 
 function EdgeLine({ e }: { e: SceneEdge }) {
+  const pal = usePalette();
   const points = useMemo(() => curvePoints(e), [e]);
   const spark = useRef<THREE.Mesh>(null);
   const start = useRef(performance.now());
@@ -122,16 +188,18 @@ function EdgeLine({ e }: { e: SceneEdge }) {
     state.invalidate();
   });
 
-  const mid = points[Math.floor(points.length / 2)]!;
+  // Near the parent, where branches haven't spread yet, so labels don't sit on the children.
+  const mid = points[Math.floor(points.length * 0.15)]!;
+  const labelScale = useLabelScale();
   return (
     <group>
-      <Line points={points} color={e.isNew ? '#ff7a3d' : '#3a3a3a'} lineWidth={e.isNew ? 2 : 1.2} transparent opacity={0.9} />
+      <Line points={points} color={e.isNew ? pal.edgeNew : pal.edge} lineWidth={e.isNew ? 2 : 1.4} transparent opacity={0.95} />
       <mesh ref={spark} visible={false}>
         <sphereGeometry args={[0.07, 12, 12]} />
-        <meshBasicMaterial color="#ffd2b8" toneMapped={false} />
+        <meshBasicMaterial color={pal.spark} toneMapped={false} />
       </mesh>
       {e.label && (
-        <Html position={[mid.x + 0.1, mid.y, mid.z]} distanceFactor={9} zIndexRange={[10, 0]} pointerEvents="none">
+        <Html position={[mid.x + 0.12, mid.y, mid.z]} distanceFactor={labelScale} zIndexRange={[10, 0]} pointerEvents="none">
           <div className={`t3-edge-label${e.isNew ? ' is-new' : ''}`}>{e.label}</div>
         </Html>
       )}
@@ -144,19 +212,21 @@ function EdgeLine({ e }: { e: SceneEdge }) {
  * space below it is free. New ones fly in; the ones the line used get a beam to the goal.
  */
 function HypRing({ scene }: { scene: Scene }) {
+  const pal = usePalette();
+  const labelScale = useLabelScale();
   const n = scene.active;
   if (!n || n.hyps.length === 0) return null;
   const hyps = n.hyps.slice(-6);
   return (
     <group>
       {hyps.map((h, i) => {
-        const pos = new THREE.Vector3(n.x, n.y - NODE.h / 2 - 0.42 - i * 0.36, n.z + 0.2);
+        const pos = new THREE.Vector3(n.x, n.y - NODE.h / 2 - 0.4 - i * 0.4, n.z + 0.2);
         const used = scene.usedHyps.has(h.name);
         const added = scene.addedHyps.has(h.name);
         return (
           <group key={`${n.id}:${h.id}`}>
-            {used && <Line points={[pos.clone().setX(pos.x - 0.9), new THREE.Vector3(n.x - NODE.w / 2 + 0.1, n.y, n.z)]} color={COLORS.hyp} lineWidth={1.4} transparent opacity={0.8} />}
-            <Html position={pos} center distanceFactor={9} zIndexRange={[30, 0]} pointerEvents="none">
+            {used && <Line points={[pos.clone().setX(pos.x - 0.9), new THREE.Vector3(n.x - nodeWidth(n.label) / 2 + 0.1, n.y, n.z)]} color={pal.hyp} lineWidth={1.4} transparent opacity={0.8} />}
+            <Html position={pos} center distanceFactor={labelScale} zIndexRange={[30, 0]} pointerEvents="none">
               <div className={`t3-hyp${added ? ' is-added' : ''}${used ? ' is-used' : ''}`}>
                 <b>{h.name}</b> : {h.type}
               </div>
@@ -169,6 +239,7 @@ function HypRing({ scene }: { scene: Scene }) {
 }
 
 function Star({ scene, id, slot, isNew, from }: { scene: Scene; id: string; slot: number; isNew: boolean; from: THREE.Vector3 | undefined }) {
+  const pal = usePalette();
   const mesh = useRef<THREE.Mesh>(null);
   const target = useMemo(() => shelfPos(scene, slot), [scene, slot]);
   const snap = useMemo(reducedMotion, []);
@@ -185,7 +256,7 @@ function Star({ scene, id, slot, isNew, from }: { scene: Scene; id: string; slot
   return (
     <mesh ref={mesh} position={target}>
       <icosahedronGeometry args={[0.17, 0]} />
-      <meshStandardMaterial color={COLORS.proved} emissive={COLORS.proved} emissiveIntensity={1.4} toneMapped={false} />
+      <meshStandardMaterial color={pal.proved} emissive={pal.proved} emissiveIntensity={pal.bloom ? 1.4 : 0.3} toneMapped={false} />
     </mesh>
   );
 }
@@ -194,6 +265,7 @@ function Star({ scene, id, slot, isNew, from }: { scene: Scene; id: string; slot
 function CameraRig({ scene, resetKey }: { scene: Scene; resetKey: number }) {
   const controls = useThree((s) => s.controls) as unknown as Controls | null;
   const camera = useThree((s) => s.camera);
+  const size = useThree((s) => s.size);
   const until = useRef(0);
   const goal = useRef({ target: new THREE.Vector3(), position: new THREE.Vector3(0, 0, 11) });
   const snap = useMemo(reducedMotion, []);
@@ -203,19 +275,29 @@ function CameraRig({ scene, resetKey }: { scene: Scene; resetKey: number }) {
     const { minX, maxX, minY, maxY } = scene.bounds;
     const cx = (minX + maxX) / 2;
     const cy = (minY + maxY) / 2 - 0.8;
+    const aspect = size.width / Math.max(1, size.height);
+    const tanHalf = Math.tan(((camera as THREE.PerspectiveCamera).fov * Math.PI) / 360);
+    // Distance at which a w-by-h region fills the view, whichever of the two is tighter.
+    const fit = (w: number, h: number) => Math.max(h, w / aspect) / (2 * tanHalf);
+    const treeW = maxX - minX + NODE.w;
     if (scene.done || !scene.active) {
-      const span = Math.max(maxX - minX + 4, (maxY - minY + 4) * 1.4, 6);
+      const d = Math.min(40, fit(treeW + 1.6, maxY - minY + 5.2));
       goal.current.target.set(cx, cy, 0);
-      goal.current.position.set(cx, cy + 0.6, span * 1.05 + 2);
+      goal.current.position.set(cx, cy + 0.4, d);
     } else {
       const a = scene.active;
-      goal.current.target.set(a.x * 0.7 + cx * 0.3, a.y * 0.7 + cy * 0.3, a.z);
-      goal.current.position.set(a.x * 0.7 + cx * 0.3, a.y * 0.7 + cy * 0.3 + 0.6, a.z + 10);
+      // If the whole tree fits across, center it; otherwise lean toward the active goal.
+      const wantW = Math.min(treeW + 1.2, 11);
+      const tx = treeW + 1.2 <= 11 ? cx : a.x * 0.6 + cx * 0.4;
+      const ty = a.y * 0.6 + cy * 0.4;
+      const d = Math.min(30, Math.max(5, fit(wantW, Math.min(maxY - minY + 2.8, 8.5))));
+      goal.current.target.set(tx, ty, a.z);
+      goal.current.position.set(tx, ty + 0.4, a.z + d);
     }
     until.current = performance.now() + 1200;
-    // Recompute only when the focus changes or the user asks for a reset.
+    // Recompute when the focus changes, the panel is resized, or the user asks for a reset.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusKey, resetKey]);
+  }, [focusKey, resetKey, size.width, size.height]);
 
   useFrame((state, dt) => {
     if (!controls || performance.now() > until.current) return;
@@ -229,15 +311,32 @@ function CameraRig({ scene, resetKey }: { scene: Scene; resetKey: number }) {
 }
 
 function Contents({ scene, resetKey }: { scene: Scene; resetKey: number }) {
+  const pal = usePalette();
+  const height = useThree((s) => s.size.height);
+  const { minX, maxX, minY } = scene.bounds;
   const positions = useMemo(() => new Map(scene.nodes.map((n) => [n.id, new THREE.Vector3(n.x, n.y, n.z)] as const)), [scene.nodes]);
   const parentOf = useMemo(() => new Map(scene.edges.map((e) => [e.to.id, e.from.id] as const)), [scene.edges]);
   const invalidate = useThree((s) => s.invalidate);
   useEffect(() => invalidate(), [scene, invalidate]);
 
   return (
-    <>
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 6, 8]} intensity={1.1} />
+    <LabelScaleContext.Provider value={LABEL_SCALE * height}>
+      <ambientLight intensity={pal.bloom ? 0.35 : 0.9} />
+      <directionalLight position={[4, 6, 8]} intensity={pal.bloom ? 1.1 : 0.8} />
+      {/* A floor under the tree, fading into the distance. */}
+      <Grid
+        position={[(minX + maxX) / 2, minY - 2.6, -3]}
+        args={[60, 60]}
+        cellSize={0.6}
+        sectionSize={3}
+        cellColor={pal.gridCell}
+        sectionColor={pal.gridSection}
+        cellThickness={0.6}
+        sectionThickness={1}
+        fadeDistance={26}
+        fadeStrength={1.6}
+        infiniteGrid
+      />
       {scene.edges.map((e) => (
         <EdgeLine key={e.id} e={e} />
       ))}
@@ -251,14 +350,18 @@ function Contents({ scene, resetKey }: { scene: Scene; resetKey: number }) {
       ))}
       <CameraRig scene={scene} resetKey={resetKey} />
       <OrbitControls makeDefault enableDamping={false} minDistance={3} maxDistance={40} />
-      <EffectComposer>
-        <Bloom mipmapBlur luminanceThreshold={0.55} luminanceSmoothing={0.2} intensity={0.75} />
-      </EffectComposer>
-    </>
+      {pal.bloom && (
+        <EffectComposer>
+          <Bloom mipmapBlur luminanceThreshold={0.55} luminanceSmoothing={0.2} intensity={0.7} />
+        </EffectComposer>
+      )}
+    </LabelScaleContext.Provider>
   );
 }
 
 export default function Tree3D({ scene }: { scene: Scene }) {
+  const theme = useTheme((s) => s.theme);
+  const pal = PALETTES[theme];
   const [resetKey, setResetKey] = useState(0);
   // drei's <Html> picks its DOM parent on first render. Before the canvas is attached there is
   // none, and labels mounted then never appear. So the scene waits for onCreated.
@@ -273,8 +376,8 @@ export default function Tree3D({ scene }: { scene: Scene }) {
         aria-label="3D goal tree"
         onCreated={() => setReady(true)}
       >
-        <color attach="background" args={['#0a0a0a']} />
-        {ready && <Contents scene={scene} resetKey={resetKey} />}
+        <color attach="background" args={[pal.background]} />
+        <PaletteContext.Provider value={pal}>{ready && <Contents scene={scene} resetKey={resetKey} />}</PaletteContext.Provider>
       </Canvas>
       <div className={`t3-qed${scene.done ? ' is-on' : ''}`} aria-hidden={!scene.done}>
         Q.E.D.

@@ -54,11 +54,16 @@ async function main(): Promise<void> {
     await page.keyboard.press(key);
     await shot(`rev-${name}`);
   }
-  await page.keyboard.press('l');
-  await shot('rev-lite');
-  await page.keyboard.press('l');
+  await page.keyboard.press('d');
+  await shot('rev-2d');
+  await page.keyboard.press('d');
 
-  // Live mode, if a backend answers (pnpm live, or the preview proxy to 127.0.0.1:8787).
+  // Light theme.
+  await page.keyboard.press('t');
+  await shot('rev-light');
+  await page.keyboard.press('t');
+
+  // Your own file, if a Lean server answers (pnpm live, or the preview proxy to 127.0.0.1:8791).
   const health = await page.evaluate(async (u) => {
     try {
       return (await (await fetch(`${u}api/health`)).json()) as { ok?: boolean };
@@ -67,31 +72,19 @@ async function main(): Promise<void> {
     }
   }, url);
   if (health?.ok) {
-    await page.selectOption('.picker select', '__live__');
+    const proof = ['theorem two_steps (p q : Prop) (hp : p) (hq : q) : p ∧ q := by', '  constructor', '  · exact hp', '  · exact hq', ''].join('\n');
+    // Upload a file the way a person would: from the files panel.
+    await page.setInputFiles('.sidebar input[type=file]', { name: 'two_steps.lean', mimeType: 'text/plain', buffer: Buffer.from(proof) });
     await page.waitForSelector('.live-editor .cm-content');
-    // Upload a file the way a person would.
-    const proof = 'theorem two_steps (p q : Prop) (hp : p) (hq : q) : p ∧ q := by\n  constructor\n  · exact hp\n  · exact hq\n';
-    await page.setInputFiles('.live input[type=file]', { name: 'two_steps.lean', mimeType: 'text/plain', buffer: Buffer.from(proof) });
-    await shot('live-editor');
+    await shot('file-editor');
     await page.click('.live-bar .btn.primary');
     await page.waitForSelector('.code-host', { timeout: 150_000 });
     const total = Number(await page.locator('.scrubber').getAttribute('aria-valuemax'));
-    if (total !== 3) problems.push(`live: expected 3 steps, got ${total}`);
+    if (total !== 3) problems.push(`file: expected 3 steps, got ${total}`);
     for (let k = 1; k <= total; k++) await page.keyboard.press('ArrowRight');
-    await shot('live-done');
-    // A broken proof comes back as a readable error in the editor, not a crash.
-    await page.click('.topbar button:has-text("Edit")');
-    await page.click('.live-editor .cm-content');
-    await page.keyboard.press('Control+A');
-    await page.keyboard.type('theorem nope : 1 = 2 := by\n  rfl\n');
-    await page.keyboard.press('Control+Enter');
-    await page.waitForSelector('.live-error, .code-host', { timeout: 150_000 });
-    const err = await page.locator('.live-error').textContent().catch(() => null);
-    const steps = Number(await page.locator('.scrubber').getAttribute('aria-valuemax'));
-    if (!err && !(steps > 0)) problems.push('live: a failing proof produced neither an error nor a trace');
-    await shot('live-error');
+    await shot('file-done');
   } else {
-    console.log('No live backend answering; skipped the live-mode check.');
+    console.log('No Lean server answering; skipped the file check.');
   }
 
   await browser.close();

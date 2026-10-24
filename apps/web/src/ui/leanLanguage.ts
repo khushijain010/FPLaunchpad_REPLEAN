@@ -59,13 +59,14 @@ export const lean4 = StreamLanguage.define<State>({
   languageData: { commentTokens: { line: '--', block: { open: '/-', close: '-/' } } },
 });
 
+// Colors are theme variables (theme.css), so the editor follows light / dark mode.
 export const leanHighlight = HighlightStyle.define([
-  { tag: t.keyword, color: '#c9a7ff' },
-  { tag: t.special(t.keyword), color: '#ff7a3d', fontWeight: '600' },
-  { tag: t.comment, color: '#6b6b6b', fontStyle: 'italic' },
-  { tag: t.number, color: '#f4b740' },
-  { tag: t.string, color: '#a5d6a7' },
-  { tag: t.typeName, color: '#2fd3c4' },
-  { tag: t.operator, color: '#9aa0a6' },
-  { tag: t.variableName, color: '#e6e6e6' },
+  { tag: t.keyword, color: 'var(--syn-keyword)' },
+  { tag: t.special(t.keyword), color: 'var(--syn-tactic)', fontWeight: '600' },
+  { tag: t.comment, color: 'var(--syn-comment)', fontStyle: 'italic' },
+  { tag: t.number, color: 'var(--syn-number)' },
+  { tag: t.string, color: 'var(--syn-string)' },
+  { tag: t.typeName, color: 'var(--syn-type)' },
+  { tag: t.operator, color: 'var(--syn-operator)' },
+  { tag: t.variableName, color: 'var(--syn-text)' },
 ]);

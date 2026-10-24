@@ -3,6 +3,7 @@
   "meta": {
     "id": "compiler",
     "file": "Samples/Compiler.lean",
+    "category": "Programs",
     "title": "A tiny compiler, proved correct",
     "blurb": "Arithmetic expressions compiled to a stack machine, with a correctness proof.",
     "watch": "The add case uses both induction hypotheses, one rewrite each.",

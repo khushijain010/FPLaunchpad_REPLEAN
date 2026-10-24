@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import type { ViewId } from '../core/types';
 import { useStore } from './store';
+import { toggleTheme } from './theme';
 
 export const VIEW_KEYS: readonly ViewId[] = ['tree', 'list', 'rewrite', 'shrink'];
 
@@ -11,10 +12,12 @@ export const SHORTCUTS: readonly Readonly<[keys: string, what: string]>[] = [
   ['P', 'Autoplay on / off'],
   ['[  ]', 'Slower / faster'],
   ['1 2 3 4', 'Tree, List Lab, Rewrite, Shrink'],
-  ['F', 'Presentation mode'],
-  ['L', 'Lite (2D) mode'],
-  ['?', 'This list'],
-  ['Esc', 'Close dialogs, leave presentation mode'],
+  ['D', '2D / 3D tree'],
+  ['F', 'Full screen visualization'],
+  ['B', 'Files panel'],
+  ['T', 'Light / dark theme'],
+  ['?', 'Help'],
+  ['Esc', 'Close dialogs, leave full screen'],
 ];
 
 export function useShortcuts(): void {
@@ -56,9 +59,17 @@ export function useShortcuts(): void {
         case 'f':
         case 'F':
           return act(s.togglePresentation);
+        case 'd':
+        case 'D':
         case 'l':
         case 'L':
           return act(s.toggleLite);
+        case 'b':
+        case 'B':
+          return act(s.toggleExplorer);
+        case 't':
+        case 'T':
+          return act(toggleTheme);
         case '?':
           return act(() => s.setDialog('help'));
         case 'Escape':

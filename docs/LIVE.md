@@ -1,8 +1,8 @@
 # Live mode
 
-Paste a proof, upload a `.lean` file or drop one on the editor, press **Run** (`Ctrl+Enter`),
-and the player shows your proof the same way it shows the samples. Pick
-**+ Your own proof (live)** in the sample picker to open the editor.
+Make a file under **My Proofs** in the Files panel (new, upload, drop, or **Copy to My Proofs**
+from an example), press **Run** (`Ctrl+Enter`), and the player shows your proof the same way it
+shows the examples. Files are kept in the browser's localStorage and remember their last trace.
 
 ```
 browser ──POST /api/trace {source}──▶ apps/server (Fastify) ──writes lean/Live/L<uuid>.lean
@@ -14,7 +14,7 @@ browser ◀───────────── { trace } ──────�
 ## Running it locally
 
 ```sh
-pnpm live        # Lean backend on 127.0.0.1:8787 + the player on http://localhost:5173
+pnpm live        # Lean backend on 127.0.0.1:8791 + the player on http://localhost:5173
 ```
 
 Needs Lean via elan. The dev server (and `pnpm preview`) forward `/api` to the backend, so the

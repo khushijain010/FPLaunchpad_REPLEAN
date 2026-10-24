@@ -1,6 +1,6 @@
 import { useStore } from './store';
 import { Logo } from './Logo';
-import { loadSample } from './loader';
+import { openExample } from './nav';
 
 export function StatusCard({ kind, title, message }: { kind: 'loading' | 'empty' | 'error'; title: string; message: string }) {
   const samples = useStore((s) => s.samples);
@@ -12,7 +12,7 @@ export function StatusCard({ kind, title, message }: { kind: 'loading' | 'empty'
       {kind === 'error' && samples.length > 0 && (
         <div className="status-actions">
           {samples.map((s) => (
-            <button key={s.id} className="btn" onClick={() => void loadSample(s.id)}>
+            <button key={s.id} className="btn" onClick={() => openExample(s.id)}>
               {s.title}
             </button>
           ))}

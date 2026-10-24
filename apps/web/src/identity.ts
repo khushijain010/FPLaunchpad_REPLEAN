@@ -9,6 +9,10 @@ export const identity = {
   oneLineStory: 'Proofs are the most beautiful things in mathematics, but you never see them happen, only the final answer; I wanted to watch one think.',
   event: 'Syntax Error 2026',
   repoUrl: 'https://github.com/khushijain010/FPLaunchpad_REPLEAN/',
+  /** Shown under "Contact" in Help. */
+  githubProfile: 'https://github.com/khushijain010',
+  // TODO(me): an email (or LinkedIn) to show under "Contact" in Help. Hidden while it's a placeholder.
+  contactEmail: '{{CONTACT_EMAIL}}',
 } as const;
 
 /** True while a value is still a `{{PLACEHOLDER}}`, so the UI can hide it gracefully. */

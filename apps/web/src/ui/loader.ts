@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 import { validateTrace } from '../core/validate';
 import type { SampleInfo } from '../core/types';
 import { checkLive } from './live';
-import { LIVE_ID, useStore } from './store';
+import { useNav } from './nav';
+import { fileIdOf, useStore } from './store';
 
 const base = import.meta.env.BASE_URL;
 
@@ -50,6 +51,9 @@ export function useBoot(): void {
         setSamples(samples);
         const hash = readHash();
         const first = samples.find((s) => s.id === hash.sample) ?? samples[0]!;
+        // The first sample opens as the first editor tab.
+        const tab = { kind: 'example', id: first.id } as const;
+        useNav.setState({ tabs: [tab], active: tab });
         await loadSample(first.id, hash.sample === first.id ? hash.step : 0);
       } catch (e) {
         failed('error', e instanceof Error ? e.message : String(e));
@@ -64,7 +68,7 @@ export function useHashSync(): void {
   const status = useStore((s) => s.status);
   useEffect(() => {
     // A live trace can't be reloaded from a link, so it gets no permalink.
-    if (status !== 'ready' || !sampleId || sampleId === LIVE_ID) return;
+    if (status !== 'ready' || !sampleId || fileIdOf(sampleId)) return;
     const next = `#sample=${sampleId}&step=${step}`;
     if (window.location.hash !== next) history.replaceState(null, '', next);
   }, [sampleId, step, status]);

@@ -38,8 +38,12 @@ Things only you can do. Ordered by priority. Tick them off as you go.
     `oneLineStory` is `'I was BORN'` and shows in the About dialog; change it if that wasn't meant to stay.
   - `README.md`: the two `TODO(me)` lines, your story (2–3 sentences, your words) and the deployed link.
 
+- [ ] **Optional: a contact email in Help.** In `apps/web/src/identity.ts`, replace `'{{CONTACT_EMAIL}}'`
+  with the email you want shown under Contact (or leave it; it stays hidden). Your GitHub profile and
+  repo are already listed.
+
 - [ ] **6. Test on your laptop and phone** (priority: before submission)
-  - All five samples; `L` (lite) and `F` (presentation); then **+ Your own proof (live)**: paste a proof, Run.
+  - All five examples from the Files panel; 2D/3D, full screen, light/dark; then My Proofs → New file → Run.
 
 - [ ] **7. Record the backup demo video** (priority: before submission)
   - Follow `docs/DEMO.md` (90 s), and add 10 s of live mode at the end. Windows: `Win + Alt + R`.

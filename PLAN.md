@@ -67,6 +67,10 @@ Goal parents are *not* stored: `buildGoalGraph` derives them from consecutive st
 - **Name: Replean** (user's choice), replacing the working name Lemmascope.
 - **No footer, plain copy:** the user found the playful microcopy from the brief off-putting; UI text
   is now neutral and factual. This overrides the brief's voice section.
+- **IDE layout from the user's mockup** replaces the 50/50 split with a bottom transport bar:
+  header controls, Files sidebar, editor tabs, Goal State / Local Context, Explanation / Tactic Info.
+- **My Proofs live in localStorage:** no accounts or server storage; files exist only in that browser.
+- **Mathlib is not supported** (multi-GB, far beyond the free server's memory); the UI says so plainly.
 - **No sample blurb or "watch" hint in the UI** (user's call; overrides the brief's hint).
 - **A file Lean rejects still opens in the player** so its errors can be shown in the visualization
   panel; only a file with no proof and no errors stays in the editor with a message.

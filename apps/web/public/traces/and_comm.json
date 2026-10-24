@@ -3,6 +3,7 @@
   "meta": {
     "id": "and_comm",
     "file": "Samples/AndComm.lean",
+    "category": "Logic",
     "title": "And, swapped",
     "blurb": "p ∧ q → q ∧ p with intro, constructor and exact.",
     "watch": "Line 5: one goal splits into two. Then each branch turns gold.",

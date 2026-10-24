@@ -3,30 +3,35 @@
     "id": "and_comm",
     "title": "And, swapped",
     "blurb": "p ∧ q → q ∧ p with intro, constructor and exact.",
+    "category": "Logic",
     "file": "and_comm.json"
   },
   {
     "id": "or_comm",
     "title": "Or, swapped",
     "blurb": "p ∨ q → q ∨ p by splitting on which side is true.",
+    "category": "Logic",
     "file": "or_comm.json"
   },
   {
     "id": "zero_add",
     "title": "Zero plus n, by induction",
     "blurb": "myAdd 0 n = n: a base case, a step case and an induction hypothesis.",
+    "category": "Numbers",
     "file": "zero_add.json"
   },
   {
     "id": "rev",
     "title": "Reversing [1, 2, 3]",
     "blurb": "A hand-rolled rev, unfolded one rewrite at a time.",
+    "category": "Lists",
     "file": "rev.json"
   },
   {
     "id": "compiler",
     "title": "A tiny compiler, proved correct",
     "blurb": "Arithmetic expressions compiled to a stack machine, with a correctness proof.",
+    "category": "Programs",
     "file": "compiler.json"
   }
 ]

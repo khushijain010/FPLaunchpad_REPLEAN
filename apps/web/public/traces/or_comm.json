@@ -3,6 +3,7 @@
   "meta": {
     "id": "or_comm",
     "file": "Samples/OrComm.lean",
+    "category": "Logic",
     "title": "Or, swapped",
     "blurb": "p ∨ q → q ∨ p by splitting on which side is true.",
     "watch": "rcases makes two branches with different hypotheses: hp in one, hq in the other.",

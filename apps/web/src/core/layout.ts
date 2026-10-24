@@ -12,7 +12,7 @@ export type Layout = Readonly<{
 
 type HNode = Readonly<{ id: string; children: readonly HNode[] }>;
 
-export const LAYOUT = { dx: 2.4, dy: 1.7, dz: 0.35 } as const;
+export const LAYOUT = { dx: 2.8, dy: 2.0, dz: 0.35 } as const;
 
 export function layoutTree(graph: GoalGraph): Layout {
   const build = (id: string): HNode => ({

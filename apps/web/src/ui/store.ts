@@ -5,12 +5,14 @@ import { create } from 'zustand';
 import { clampStep } from '../core/frames';
 import type { SampleInfo, Trace, ViewId } from '../core/types';
 
-/** The sample id used for a trace that came from live mode. */
-export const LIVE_ID = 'live';
+/** A trace that came from one of the user's files is filed under `file:<id>` instead of a sample id. */
+export const FILE_PREFIX = 'file:';
+export const fileIdOf = (sampleId: string | undefined): string | undefined =>
+  sampleId?.startsWith(FILE_PREFIX) ? sampleId.slice(FILE_PREFIX.length) : undefined;
 
 export type Speed = 0.5 | 1 | 2;
 export const SPEEDS: readonly Speed[] = [0.5, 1, 2];
-export type Dialog = 'none' | 'help' | 'about';
+export type Dialog = 'none' | 'help';
 export type LoadStatus = 'loading' | 'ready' | 'empty' | 'error';
 
 type State = Readonly<{
@@ -28,14 +30,16 @@ type State = Readonly<{
   presentation: boolean;
   dialog: Dialog;
   whyOpen: boolean;
+  /** The file explorer on the left. */
+  explorerOpen: boolean;
 }>;
 
 type Actions = Readonly<{
   setSamples: (samples: readonly SampleInfo[]) => void;
   startLoading: (sampleId: string) => void;
   loaded: (trace: Trace, step?: number) => void;
-  /** A trace from live mode: it has no entry in the sample list. */
-  loadedLive: (trace: Trace) => void;
+  /** A trace Lean produced for one of the user's files. */
+  loadedFile: (trace: Trace, fileId: string) => void;
   failed: (status: 'empty' | 'error', message?: string) => void;
   goto: (k: number) => void;
   next: () => void;
@@ -50,9 +54,12 @@ type Actions = Readonly<{
   /** `undefined` hands the choice back to the automatic picker. */
   setView: (v: ViewId | undefined) => void;
   toggleLite: () => void;
+  /** true = 2D tree, false = 3D tree. */
+  setLite: (lite: boolean) => void;
   togglePresentation: () => void;
   setDialog: (d: Dialog) => void;
   toggleWhy: () => void;
+  toggleExplorer: () => void;
 }>;
 
 const initialLite = (() => {
@@ -61,6 +68,17 @@ const initialLite = (() => {
   } catch {
     return false;
   }
+})();
+
+/** Open by default on wide screens, closed on phones; then whatever the user chose last. */
+const initialExplorer = (() => {
+  try {
+    const saved = localStorage.getItem('replean.explorer');
+    if (saved !== null) return saved === '1';
+  } catch {
+    // Fall through to the default.
+  }
+  return typeof window === 'undefined' || window.innerWidth >= 900;
 })();
 
 export const useStore = create<State & Actions>()((set, get) => {
@@ -86,12 +104,13 @@ export const useStore = create<State & Actions>()((set, get) => {
     presentation: false,
     dialog: 'none',
     whyOpen: true,
+    explorerOpen: initialExplorer,
 
     setSamples: (samples) => set({ samples }),
     startLoading: (sampleId) => set({ sampleId, status: 'loading', playing: false, manualView: undefined }),
     loaded: (trace, step = 0) => set({ trace, status: 'ready', error: undefined, step: clampStep(trace, step) }),
-    loadedLive: (trace) =>
-      set({ trace, sampleId: LIVE_ID, status: 'ready', error: undefined, step: 0, playing: false, manualView: undefined }),
+    loadedFile: (trace, fileId) =>
+      set({ trace, sampleId: FILE_PREFIX + fileId, status: 'ready', error: undefined, step: 0, playing: false, manualView: undefined }),
     failed: (status, message) => set({ status, error: message, trace: undefined, playing: false }),
     goto: move,
     next: () => move(get().step + 1),
@@ -113,6 +132,14 @@ export const useStore = create<State & Actions>()((set, get) => {
     faster: () => shiftSpeed(1),
     slower: () => shiftSpeed(-1),
     setView: (manualView) => set({ manualView }),
+    setLite: (lite) => {
+      try {
+        localStorage.setItem('replean.lite', lite ? '1' : '0');
+      } catch {
+        // Remembered for this visit only.
+      }
+      set({ lite });
+    },
     toggleLite: () => {
       const lite = !get().lite;
       try {
@@ -125,5 +152,14 @@ export const useStore = create<State & Actions>()((set, get) => {
     togglePresentation: () => set({ presentation: !get().presentation }),
     setDialog: (dialog) => set({ dialog }),
     toggleWhy: () => set({ whyOpen: !get().whyOpen }),
+    toggleExplorer: () => {
+      const explorerOpen = !get().explorerOpen;
+      try {
+        localStorage.setItem('replean.explorer', explorerOpen ? '1' : '0');
+      } catch {
+        // Not remembered across visits; still works now.
+      }
+      set({ explorerOpen });
+    },
   };
 });

@@ -3,6 +3,7 @@
   "meta": {
     "id": "rev",
     "file": "Samples/Rev.lean",
+    "category": "Lists",
     "title": "Reversing [1, 2, 3]",
     "blurb": "A hand-rolled rev, unfolded one rewrite at a time.",
     "watch": "Open List Lab: each rw [rev] moves the head of the list to the back.",

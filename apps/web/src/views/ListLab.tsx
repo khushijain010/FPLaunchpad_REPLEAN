@@ -46,9 +46,8 @@ function Row({ cells, side, previous, label }: { cells: readonly ListCell[]; sid
               className={`ll-box${moved ? ' is-moved' : ''}`}
               title={moved ? `${c.text} moved` : c.text}
             >
-              <span className="ll-face ll-front">{c.text}</span>
-              <span className="ll-face ll-top" />
-              <span className="ll-face ll-side-face" />
+              {/* One face; the top and side edges are drawn in CSS, so the box grows with its text. */}
+              <span className="ll-face">{c.text}</span>
             </motion.div>
           );
         })}

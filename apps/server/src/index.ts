@@ -7,7 +7,8 @@ import { buildApp, TIMEOUT_MS } from './app.ts';
 // Public mode is for the sandboxed container only (Dockerfile sets it). Locally it stays off and
 // the server binds to loopback.
 const PUBLIC = process.env.REPLEAN_PUBLIC === '1';
-const PORT = Number(process.env.PORT ?? process.env.REPLEAN_PORT ?? 8787);
+// 8791 locally (8787 is a common default for other dev servers); the container sets PORT.
+const PORT = Number(process.env.PORT ?? process.env.REPLEAN_PORT ?? 8791);
 const HOST = PUBLIC ? '0.0.0.0' : '127.0.0.1';
 const ORIGINS = (process.env.REPLEAN_ORIGINS ?? '')
   .split(',')

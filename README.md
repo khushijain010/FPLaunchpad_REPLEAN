@@ -17,10 +17,11 @@ Built by Khushi (team Bilibuu, IITR) for Syntax Error 2026, Functional Programmi
 
 ## What it does
 
-Pick a sample, press **Next** (or `→`), and one line of the proof runs. On the right, the picture
-keeps up:
+Open an example from the **Files** panel, press **Next** (or `→`), and one line of the proof runs.
+The layout is an IDE: files on the left, the code with its goals in the middle, the picture and
+an explanation on the right, and every playback control in the header. The picture keeps up:
 
-- **Tree** (3D, or 2D in lite mode): the graph grows. Goals are nodes, tactics are edges. `constructor`,
+- **Tree** (3D or 2D): the graph grows. Goals are nodes, tactics are edges. `constructor`,
   `rcases` and `induction` visibly branch. The active goal's hypotheses float beside it; new ones fly in,
   the ones the line uses get a beam. Proved goals contract, turn gold and drop a star onto the base.
 - **List Lab**: a list rearranges. List items in the goal are boxes keyed by value, so when
@@ -29,9 +30,14 @@ keeps up:
 - **Shrink**: a goal shrinks down to what was just proved. Theorem on the left, open goals in the
   middle getting smaller, proved goals collapsing onto a shelf.
 
-**Your own proofs (live mode):** pick *+ Your own proof (live)*, paste Lean or upload a `.lean`
-file, press Run, and your proof plays the same way. Locally: `pnpm live`. On the deployed site it
-talks to a hosted, sandboxed Lean server ([docs/LIVE.md](docs/LIVE.md)).
+**Your own proofs:** under **My Proofs** in the Files panel, make a new file, upload `.lean` files
+(or drop them on the panel), or copy an example with **Copy to My Proofs**. Press **Run** and your
+proof plays the same way. Files are saved in your browser and remember their last result. Running
+needs a Lean server: locally `pnpm live`; on the deployed site, a hosted, sandboxed one
+([docs/LIVE.md](docs/LIVE.md)). Core Lean only: a file that imports Mathlib gets a clear explanation
+and core replacements for the tactics it uses.
+
+**Light and dark themes**, switched from the header (or `T`).
 
 **Errors:** if Lean rejects a line, the visualization panel shows Lean's own error message for it,
 the line is marked red in the editor and the failing goal turns red in the tree. Errors outside any
@@ -65,7 +71,7 @@ pnpm dev            # http://localhost:5173
 Live mode (paste or upload your own proof) needs Lean too:
 
 ```sh
-pnpm live           # Lean backend on 127.0.0.1:8787 + the player
+pnpm live           # Lean backend on 127.0.0.1:8791 + the player
 ```
 
 Regenerating traces needs Lean ([elan](https://github.com/leanprover/elan)); the toolchain is
@@ -81,7 +87,7 @@ pnpm build          # static site in apps/web/dist
 ```
 
 Shortcuts: `→`/`Space` next, `←` back, `Home`/`End`, `P` autoplay, `[` `]` speed, `1`–`4` views,
-`F` presentation mode, `L` lite mode, `?` the full list. Click any proof line to jump to it.
+`D` 2D/3D, `F` full screen, `B` files panel, `T` theme, `?` help. Click any proof line to jump to it.
 
 ## How this relates to Paperproof and lean-tui
 

@@ -17,7 +17,7 @@ Replay first, live optional: the demo never depends on a Lean process being aliv
             ┌──────────────┬──────────────┬───────────┼────────────┬──────────────┬─────────────┐
             ▼              ▼              ▼           ▼            ▼              ▼             ▼
        CodePane       GoalPanel       WhyPanel     Tree3D       Tree2D        ListLab   Rewrite/Shrink
-   (decorations)    (diff colours)  (dictionary)  (R3F)       (SVG, lite)   (CSS 3D)    (DOM)
+   (decorations)    (diff colours)  (dictionary)  (R3F)       (SVG, 2D)     (CSS 3D)    (DOM)
 ```
 
 ## The pieces

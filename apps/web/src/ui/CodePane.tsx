@@ -81,7 +81,7 @@ const theme = EditorView.theme(
     '.cm-cursor': { display: 'none' },
     '&.cm-focused': { outline: 'none' },
     '.cm-activeLine': { backgroundColor: 'transparent' },
-    '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': { backgroundColor: '#ffffff1a !important' },
+    '.cm-selectionBackground, &.cm-focused .cm-selectionBackground': { backgroundColor: 'var(--selection) !important' },
   },
   { dark: true },
 );

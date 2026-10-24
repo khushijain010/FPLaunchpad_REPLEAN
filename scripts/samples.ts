@@ -6,12 +6,15 @@ export type SampleSpec = Readonly<{
   title: string;
   blurb: string;
   watch: string;
+  /** Folder in the file explorer. */
+  category: 'Logic' | 'Numbers' | 'Lists' | 'Programs';
 }>;
 
 export const SAMPLES: readonly SampleSpec[] = [
   {
     id: 'and_comm',
     file: 'Samples/AndComm.lean',
+    category: 'Logic',
     title: 'And, swapped',
     blurb: 'p ∧ q → q ∧ p with intro, constructor and exact.',
     watch: 'Line 5: one goal splits into two. Then each branch turns gold.',
@@ -19,6 +22,7 @@ export const SAMPLES: readonly SampleSpec[] = [
   {
     id: 'or_comm',
     file: 'Samples/OrComm.lean',
+    category: 'Logic',
     title: 'Or, swapped',
     blurb: 'p ∨ q → q ∨ p by splitting on which side is true.',
     watch: 'rcases makes two branches with different hypotheses: hp in one, hq in the other.',
@@ -26,6 +30,7 @@ export const SAMPLES: readonly SampleSpec[] = [
   {
     id: 'zero_add',
     file: 'Samples/ZeroAdd.lean',
+    category: 'Numbers',
     title: 'Zero plus n, by induction',
     blurb: 'myAdd 0 n = n: a base case, a step case and an induction hypothesis.',
     watch: 'In the succ case, ih arrives in the context, then rw [ih] spends it.',
@@ -33,6 +38,7 @@ export const SAMPLES: readonly SampleSpec[] = [
   {
     id: 'rev',
     file: 'Samples/Rev.lean',
+    category: 'Lists',
     title: 'Reversing [1, 2, 3]',
     blurb: 'A hand-rolled rev, unfolded one rewrite at a time.',
     watch: 'Open List Lab: each rw [rev] moves the head of the list to the back.',
@@ -40,6 +46,7 @@ export const SAMPLES: readonly SampleSpec[] = [
   {
     id: 'compiler',
     file: 'Samples/Compiler.lean',
+    category: 'Programs',
     title: 'A tiny compiler, proved correct',
     blurb: 'Arithmetic expressions compiled to a stack machine, with a correctness proof.',
     watch: 'The add case uses both induction hypotheses, one rewrite each.',

@@ -1,69 +1,42 @@
-// Live mode: send Lean source to the backend, get a trace back, play it like a sample.
+// Running the user's files: send a file's Lean source to the backend, get a trace back, play it.
 //
 // Where the backend is: `VITE_LIVE_API` at build time (the deployed site points it at the hosted
 // server), otherwise same origin `/api`, which the Vite dev and preview servers proxy to
-// 127.0.0.1:8787 (`pnpm live`).
+// 127.0.0.1:8791 (`pnpm live`).
 
 import { create } from 'zustand';
+import { importProblem } from '../core/imports';
 import { validateTrace } from '../core/validate';
 import type { Trace } from '../core/types';
+import { getFile, saveTrace, useFiles } from './files';
 import { useStore } from './store';
 
 const API = (import.meta.env.VITE_LIVE_API as string | undefined)?.replace(/\/+$/, '') ?? '';
 /** A hosted backend is configured; free hosts sleep, so the first call may be slow. */
 export const HOSTED = API !== '';
 
-export const STARTER = `-- Paste a Lean 4 proof here, or upload a .lean file. Core Lean only (no imports).
-theorem imp_chain (p q r : Prop) (hpq : p → q) (hqr : q → r) : p → r := by
-  intro hp
-  apply hqr
-  apply hpq
-  exact hp
-`;
-
-const DRAFT_KEY = 'replean.liveDraft';
-
 export type Availability = 'checking' | 'yes' | 'no';
 
 type LiveState = Readonly<{
   availability: Availability;
   isPublic: boolean;
+  /** The active file is open in the editor (as opposed to its visualization in the player). */
   editing: boolean;
-  source: string;
   running: boolean;
   slow: boolean;
   error: string | undefined;
 }>;
 
-const loadDraft = (): string => {
-  try {
-    return localStorage.getItem(DRAFT_KEY) ?? STARTER;
-  } catch {
-    return STARTER;
-  }
-};
-
 export const useLive = create<LiveState>()(() => ({
   availability: 'checking',
   isPublic: false,
   editing: false,
-  source: loadDraft(),
   running: false,
   slow: false,
   error: undefined,
 }));
 
-export function setSource(source: string): void {
-  useLive.setState({ source, error: undefined });
-  try {
-    localStorage.setItem(DRAFT_KEY, source);
-  } catch {
-    // A draft that isn't saved is only an inconvenience.
-  }
-}
-
-export const openEditor = () => useLive.setState({ editing: true });
-export const closeEditor = () => useLive.setState({ editing: false, error: undefined });
+const activeFileId = (): string | undefined => useFiles.getState().activeId;
 
 async function fetchJson(path: string, init: RequestInit, timeoutMs: number): Promise<{ status: number; body: unknown }> {
   const ctrl = new AbortController();
@@ -71,7 +44,7 @@ async function fetchJson(path: string, init: RequestInit, timeoutMs: number): Pr
   try {
     const res = await fetch(`${API}${path}`, { ...init, signal: ctrl.signal });
     const text = await res.text();
-    // The dev proxy answers with HTML when nothing listens on 8787.
+    // The dev proxy answers with HTML (or another server's JSON) when the backend isn't running.
     const body: unknown = text.trimStart().startsWith('{') ? JSON.parse(text) : null;
     return { status: res.status, body };
   } finally {
@@ -91,17 +64,23 @@ export async function checkLive(): Promise<void> {
   }
 }
 
-export async function runLive(): Promise<void> {
-  const { source, running } = useLive.getState();
-  if (running) return;
-  // Named after the first theorem in the file, so the picker always matches the code.
-  const title = /\b(?:theorem|lemma)\s+([^\s:({[]+)/.exec(source)?.[1] ?? (/\bexample\b/.test(source) ? 'example' : 'Your proof');
+/** Run a file (the active one by default) through Lean and show the result. */
+export async function runFile(id = activeFileId()): Promise<void> {
+  const file = getFile(id);
+  if (!file || useLive.getState().running) return;
+  const source = file.source;
+  // Library imports can't run here; explain that instead of sending the file to fail.
+  const imports = importProblem(source);
+  if (imports) {
+    useLive.setState({ error: imports.message });
+    return;
+  }
   useLive.setState({ running: true, slow: false, error: undefined });
   const slowTimer = setTimeout(() => useLive.setState({ slow: true }), 6000);
   try {
     const { status, body } = await fetchJson(
       '/api/trace',
-      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ source, title }) },
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ source, title: file.name }) },
       150_000,
     );
     const b = body as { trace?: unknown; error?: string } | null;
@@ -112,10 +91,14 @@ export async function runLive(): Promise<void> {
     const hasErrors = trace.messages.some((m) => m.severity === 'error');
     // A file Lean rejected still opens in the player, so its errors show in the visualization panel.
     if (trace.steps.length === 0 && !hasErrors) {
-      throw new Error('No tactic proof found. Live mode steps through proofs written with `by`.');
+      throw new Error('No tactic proof found. Write a proof with `by` to step through it.');
     }
-    useStore.getState().loadedLive(trace);
-    useLive.setState({ editing: false });
+    saveTrace(file.id, trace, source);
+    // The user may have switched files while Lean was running; only show it if this file is still open.
+    if (activeFileId() === file.id) {
+      useStore.getState().loadedFile(trace, file.id);
+      useLive.setState({ editing: false });
+    }
   } catch (e) {
     const msg = e instanceof Error ? (e.name === 'AbortError' ? 'The Lean server did not respond in time.' : e.message) : String(e);
     useLive.setState({ error: msg });

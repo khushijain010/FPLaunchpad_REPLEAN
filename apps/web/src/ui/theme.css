@@ -3,34 +3,106 @@
 @import '@fontsource/space-grotesk/500.css';
 @import '@fontsource/space-grotesk/700.css';
 
-:root {
-  --bg: #0a0a0a;
-  --panel: #101010;
-  --panel-2: #151515;
-  --raise: #1c1c1c;
-  --line: #262626;
-  --line-2: #333333;
-  --text: #ececec;
-  --muted: #8f8f8f;
-  --faint: #5c5c5c;
+/* ---------- design tokens ----------
+   Every color in the app is one of these. [data-theme="light"] swaps the set. */
 
-  /* Semantic palette: who is who in a proof. */
-  --brand: #ff4f00; /* open goals */
-  --brand-dim: #ff4f0026;
+:root {
+  --bg: #0b0b0d;
+  --surface: #121215;
+  --surface-2: #17171b;
+  --raise: #1f1f24;
+  --line: #24242a;
+  --line-2: #33333b;
+  --text: #ececee;
+  --muted: #9b9ba4;
+  --faint: #62626c;
+
+  --brand: #ff5a14; /* open goals, primary actions */
+  --brand-strong: #ff7a3d;
+  --brand-dim: #ff5a1424;
+  --brand-line: #ff5a1466;
+  --brand-fill: #1d0e06;
+  --brand-ink: #0b0b0d; /* text on a brand-colored button */
   --hyp: #2fd3c4; /* hypotheses */
   --hyp-dim: #2fd3c41f;
+  --hyp-line: #2fd3c455;
   --gold: #f4b740; /* proved */
   --gold-dim: #f4b7401f;
+  --gold-line: #f4b74066;
   --error: #ff4b4b;
   --error-dim: #ff4b4b1f;
+  --error-line: #ff4b4b88;
+  --error-fill: #1a0909;
+
+  --selection: #ff5a1433;
+  --active-line: #ffffff08;
+  --scrim: #000000a0;
+  --shadow: 0 10px 30px #00000066;
+
+  --syn-keyword: #c3a6ff;
+  --syn-tactic: #ff7a3d;
+  --syn-comment: #6c6c74;
+  --syn-number: #f4b740;
+  --syn-string: #a5d6a7;
+  --syn-type: #2fd3c4;
+  --syn-operator: #9aa0a8;
+  --syn-text: #e6e6e8;
 
   --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
   --sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --radius: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 
   color-scheme: dark;
 }
+
+:root[data-theme='light'] {
+  --bg: #f1efeb;
+  --surface: #ffffff;
+  --surface-2: #faf9f7;
+  --raise: #f0eee9;
+  --line: #e4e0d9;
+  --line-2: #d3cec5;
+  --text: #1c1b19;
+  --muted: #5e5a54;
+  --faint: #98938b;
+
+  --brand: #e04d0b;
+  --brand-strong: #c94309;
+  --brand-dim: #e04d0b1a;
+  --brand-line: #e04d0b55;
+  --brand-fill: #fdf0e8;
+  --brand-ink: #ffffff;
+  --hyp: #0d8a81;
+  --hyp-dim: #0d8a811a;
+  --hyp-line: #0d8a8155;
+  --gold: #b07a05;
+  --gold-dim: #b07a051a;
+  --gold-line: #b07a0566;
+  --error: #cf2f2f;
+  --error-dim: #cf2f2f14;
+  --error-line: #cf2f2f66;
+  --error-fill: #fdf1f1;
+
+  --selection: #e04d0b2e;
+  --active-line: #0000000a;
+  --scrim: #1c1b1966;
+  --shadow: 0 10px 30px #1c1b1922;
+
+  --syn-keyword: #7a3fd0;
+  --syn-tactic: #cc4a0c;
+  --syn-comment: #97928a;
+  --syn-number: #a56700;
+  --syn-string: #2e7d32;
+  --syn-type: #0d8a81;
+  --syn-operator: #6a655e;
+  --syn-text: #1c1b19;
+
+  color-scheme: light;
+}
+
+/* ---------- base ---------- */
 
 * {
   box-sizing: border-box;
@@ -60,9 +132,15 @@ h3 {
   margin: 0;
 }
 
-button {
+button,
+input,
+select {
   font: inherit;
   color: inherit;
+}
+
+a {
+  color: var(--brand);
 }
 
 /* Components set display: flex/grid; without this the `hidden` attribute would lose to them. */
@@ -75,8 +153,31 @@ button {
   outline-offset: 2px;
 }
 
+code {
+  font-family: var(--mono);
+}
+
+kbd {
+  font: 11px var(--mono);
+  padding: 1px 6px;
+  border: 1px solid var(--line-2);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  color: var(--muted);
+  background: var(--surface-2);
+}
+
 .tnum {
   font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0;
+}
+
+.small {
+  font-size: 12px;
 }
 
 .sr-only {
@@ -98,119 +199,92 @@ button {
   padding: 0 12px;
   border: 1px solid var(--line-2);
   border-radius: var(--radius);
-  background: var(--panel-2);
+  background: var(--surface-2);
   cursor: pointer;
+  white-space: nowrap;
   transition:
     border-color 120ms,
-    background 120ms;
+    background 120ms,
+    color 120ms;
 }
 .btn:hover:not(:disabled) {
-  border-color: var(--muted);
+  border-color: var(--faint);
 }
 .btn:disabled {
-  opacity: 0.35;
+  opacity: 0.4;
   cursor: default;
 }
 .btn.primary {
   background: var(--brand);
   border-color: var(--brand);
-  color: #0a0a0a;
+  color: var(--brand-ink);
   font-weight: 600;
 }
 .btn.primary:hover:not(:disabled) {
-  background: #ff6a26;
-  border-color: #ff6a26;
-}
-.btn.icon {
-  width: 32px;
-  padding: 0;
-  justify-content: center;
+  background: var(--brand-strong);
+  border-color: var(--brand-strong);
 }
 .btn.ghost {
   background: transparent;
   border-color: transparent;
-}
-.btn.ghost:hover:not(:disabled) {
-  border-color: var(--line-2);
-}
-.btn[aria-pressed='true'] {
-  border-color: var(--brand);
-  color: var(--brand);
-}
-
-kbd {
-  font: 11px var(--mono);
-  padding: 1px 5px;
-  border: 1px solid var(--line-2);
-  border-bottom-width: 2px;
-  border-radius: 4px;
   color: var(--muted);
 }
-
-code {
-  font-family: var(--mono);
+.btn.ghost:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--line-2);
+}
+.btn.small {
+  height: 28px;
+  padding: 0 9px;
+  font-size: 12px;
 }
 
-/* ---------- app shell ---------- */
-
-.app {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  grid-template-columns: minmax(0, 1fr);
-  height: 100%;
-}
-
-.split {
-  display: grid;
-  min-height: 0;
-}
-
-.pane {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-}
-
-.divider {
-  width: 9px;
-  cursor: col-resize;
-  position: relative;
-  background: transparent;
-  border: 0;
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
   padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background 120ms,
+    color 120ms,
+    border-color 120ms;
 }
-.divider::after {
-  content: '';
-  position: absolute;
-  inset: 0 4px;
-  background: var(--line);
-  transition: background 120ms;
+.icon-btn:hover:not(:disabled) {
+  background: var(--raise);
+  color: var(--text);
 }
-.divider:hover::after,
-.divider:focus-visible::after,
-.divider[data-dragging='true']::after {
-  background: var(--brand);
+.icon-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.icon-btn[aria-pressed='true'] {
+  color: var(--brand);
+  background: var(--brand-dim);
+}
+.icon-btn.small {
+  width: 26px;
+  height: 26px;
 }
 
-@media (max-width: 899px) {
-  body {
-    overflow: auto;
-  }
-  .app {
-    height: auto;
-    min-height: 100%;
-  }
-  .split {
-    /* minmax(0, ...) so wide content (the top bar, long code lines) can't widen the page. */
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
-  .divider {
-    display: none;
-  }
-  .pane.viz {
-    min-height: 70vh;
-  }
+.link-btn {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--brand);
+  cursor: pointer;
+  font-size: inherit;
+}
+.link-btn:hover {
+  text-decoration: underline;
+}
+.link-btn.danger {
+  color: var(--error);
 }
 
 @media (prefers-reduced-motion: reduce) {

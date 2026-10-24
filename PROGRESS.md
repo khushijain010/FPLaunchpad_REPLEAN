@@ -96,6 +96,37 @@ Last updated: 2026-10-24 (evening)
   with a short description instead of a 404.
 - Commit history cleaned up before the move to the new repo (user request).
 
+## IDE redesign (2026-10-25, user request, inspired by their mockup)
+
+- [x] **Layout:** header (logo, files-panel toggle, all playback controls with step counter, dotted
+  scrubber and speed menu, light/dark switch, help) over three columns: Files sidebar | editor tabs +
+  Goal State / Local Context | visualization + Explanation / Tactic Info. Panels are cards.
+- [x] **Files sidebar** (`ui/Sidebar.tsx`, open on first visit on wide screens, toggled from the header
+  or `B`, a drawer on phones): Examples in folders by category (Logic, Numbers, Lists, Programs, from
+  `scripts/samples.ts` → `index.json`) and **My Proofs** (`ui/files.ts`, localStorage): new, upload
+  (multiple), drag-and-drop, rename (F2 / double-click / pencil), delete with inline confirm, search,
+  stale dot for files edited since their last run.
+- [x] **Editor tabs** (`ui/nav.ts`, `ui/EditorArea.tsx`): open examples and files as tabs, × to close,
+  + for a new file, breadcrumbs, **Copy to My Proofs** for examples, Edit / Show last result for files.
+  Files remember their last trace, so reopening an unchanged file needs no re-run.
+- [x] **Light/dark theme** (`ui/theme.ts`, tokens in `theme.css`): every color is a variable, including
+  editor syntax colors and the 3D scene (no bloom in light mode). First visit follows the system.
+- [x] **LITE removed**; replaced by a 2D / 3D switch in the visualization (`D`).
+- [x] **Help dialog** (`?` or the logo): shortcuts, About, Contact (name/team/college, GitHub, repo;
+  email shows once `identity.contactEmail` is filled).
+- [x] **3D tree restyle:** outlined panels (colored rim, plain face) sized to their label, labels
+  scaled to the canvas so they never outgrow nodes, edge labels near the parent, a fading floor grid,
+  camera that fits the panel's width and height.
+- [x] **2D tree:** nodes sized for 24-char labels, siblings spaced so they never touch, case tags inside
+  nodes, edge labels under the parent. **List Lab:** boxes grow with their text (`Instr.add` fits).
+- [x] **Mathlib files explained** (`core/imports.ts` + tests): a file with `import Mathlib` (or any
+  import) gets a plain explanation and core replacements for the tactics it uses (ring_nf → omega...),
+  before anything is sent to the server.
+- [x] **Local backend port moved to 8791** (`REPLEAN_PORT` to change): another program on this machine
+  (`ring_sandbox`) uses 8787. The container still uses PORT=8787.
+- [x] `pnpm ui-check` rewritten for the new UI: 122/122 checks, zero console errors. 69 web + 23 server
+  unit tests. `pnpm capture` updated.
+
 ## Presentation mode fix (2026-10-24)
 
 - [x] Presentation mode was broken: `.pane { display: flex }` beat the `hidden` attribute, so the code

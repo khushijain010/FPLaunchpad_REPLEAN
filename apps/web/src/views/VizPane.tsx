@@ -1,4 +1,4 @@
-// The right half: view tabs, the chosen view, and the remaining-goals counter.
+// The visualization panel: view tabs, 2D/3D, full screen, the chosen view, the goals counter.
 
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import type { Film, Frame } from '../core/frames';
@@ -6,6 +6,7 @@ import { buildScene } from '../core/scene';
 import type { ViewId } from '../core/types';
 import { VIEW_KEYS } from '../ui/shortcuts';
 import { useStore } from '../ui/store';
+import { ExpandIcon } from '../ui/icons';
 import { hasWebGL } from '../ui/webgl';
 import { LeanErrors } from './LeanErrors';
 import { ListLab } from './ListLab';
@@ -26,7 +27,7 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
   const manualView = useStore((s) => s.manualView);
   const setView = useStore((s) => s.setView);
   const lite = useStore((s) => s.lite);
-  const toggleLite = useStore((s) => s.toggleLite);
+  const setLite = useStore((s) => s.setLite);
   const presentation = useStore((s) => s.presentation);
   const togglePresentation = useStore((s) => s.togglePresentation);
   const view = manualView ?? frame.view;
@@ -40,7 +41,7 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
   }, [show3d]);
 
   return (
-    <div className="viz-pane">
+    <section className="panel viz-panel" aria-label="Visualization">
       <div className="viz-bar">
         <div className="tabs" role="tablist" aria-label="Visualization">
           {VIEW_KEYS.map((v, i) => (
@@ -53,24 +54,28 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
               title={`${LABELS[v]} (${i + 1})`}
             >
               {LABELS[v]}
-              {v === 'tree' && <span className="tab-sub">{flat ? '2D' : '3D'}</span>}
-              {!manualView && frame.view === v && <span className="auto-dot" title="Picked automatically for this step" />}
+              {!manualView && frame.view === v && <span className="auto-dot" title="Picked automatically for this step. Click a tab to choose yourself." />}
             </button>
           ))}
         </div>
         <div className="viz-tools">
           {manualView && (
-            <button className="btn ghost small" onClick={() => setView(undefined)} title="Let the player pick the view per step">
-              auto
+            <button className="link-btn auto-link" onClick={() => setView(undefined)} title="Let the player pick the best view for each step">
+              auto view
             </button>
           )}
-          <button className="btn ghost small" aria-pressed={flat} disabled={!webgl} onClick={toggleLite} title={webgl ? 'Lite mode: 2D tree (L)' : 'WebGL is not available here, so the tree is 2D'}>
-            lite
-          </button>
-          <button className="btn icon ghost" aria-pressed={presentation} onClick={togglePresentation} aria-label="Presentation mode" title="Presentation mode (F)">
-            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
-              <path d={presentation ? 'M5 1v4H1M9 1v4h4M5 13V9H1M9 13V9h4' : 'M1 5V1h4M13 5V1H9M1 9v4h4M13 9v4H9'} fill="none" stroke="currentColor" strokeWidth="1.6" />
-            </svg>
+          {view === 'tree' && (
+            <div className="segmented" role="group" aria-label="Tree dimensions" title={webgl ? 'Show the tree in 2D or 3D (D)' : 'WebGL is not available here, so the tree is 2D'}>
+              <button aria-pressed={flat} onClick={() => setLite(true)}>
+                2D
+              </button>
+              <button aria-pressed={!flat} disabled={!webgl} onClick={() => setLite(false)}>
+                3D
+              </button>
+            </div>
+          )}
+          <button className="icon-btn" aria-pressed={presentation} onClick={togglePresentation} aria-label="Full screen" title="Full screen (F)">
+            <ExpandIcon on={presentation} />
           </button>
         </div>
       </div>
@@ -104,6 +109,6 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
         <LeanErrors key={film.trace.source} trace={film.trace} frame={frame} />
         {scene.truncated && <p className="viz-note">Showing the first 300 goals. The rest are still in the goal panel.</p>}
       </div>
-    </div>
+    </section>
   );
 }

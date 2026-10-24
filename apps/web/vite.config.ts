@@ -4,9 +4,10 @@ import react from '@vitejs/plugin-react';
 
 // `base: './'` keeps every asset path relative, so the same build works on
 // Vercel, Netlify, GitHub Pages (under /<repo>/) or straight from a folder.
-// Live mode: `pnpm live` runs the Lean backend on 127.0.0.1:8787; both the dev server and
-// `vite preview` forward /api to it, so the page talks to its own origin.
-const api = { '/api': { target: 'http://127.0.0.1:8787', changeOrigin: false } };
+// Live mode: `pnpm live` runs the Lean backend on 127.0.0.1:8791 (REPLEAN_PORT to change it);
+// both the dev server and `vite preview` forward /api to it, so the page talks to its own origin.
+const port = process.env.REPLEAN_PORT ?? '8791';
+const api = { '/api': { target: `http://127.0.0.1:${port}`, changeOrigin: false } };
 
 export default defineConfig({
   base: './',

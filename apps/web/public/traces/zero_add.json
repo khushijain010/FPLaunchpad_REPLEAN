@@ -3,6 +3,7 @@
   "meta": {
     "id": "zero_add",
     "file": "Samples/ZeroAdd.lean",
+    "category": "Numbers",
     "title": "Zero plus n, by induction",
     "blurb": "myAdd 0 n = n: a base case, a step case and an induction hypothesis.",
     "watch": "In the succ case, ih arrives in the context, then rw [ih] spends it.",

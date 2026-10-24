@@ -20,7 +20,7 @@ async function main(): Promise<void> {
   if (build.code !== 0) throw new Error(`lake build failed:\n${build.stdout}\n${build.stderr}`);
 
   await mkdir(OUT, { recursive: true });
-  const index = SAMPLES.map(({ id, title, blurb }) => ({ id, title, blurb, file: `${id}.json` }));
+  const index = SAMPLES.map(({ id, title, blurb, category }) => ({ id, title, blurb, category, file: `${id}.json` }));
   const outputs: Array<[string, string]> = [['index.json', stringify(index)]];
 
   for (const sample of SAMPLES) {

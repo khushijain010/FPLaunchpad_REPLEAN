@@ -74,6 +74,8 @@ export type SampleInfo = Readonly<{
   id: string;
   title: string;
   blurb: string;
+  /** Explorer folder (Logic, Numbers, ...). Older index files may not have one. */
+  category?: string;
   file: string;
 }>;
 
