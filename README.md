@@ -1,60 +1,61 @@
 # Replean
 
-**Watch a Lean proof think.** Step through a Lean 4 proof one line at a time while a 3D scene
-shows goals splitting, hypotheses arriving, and goals turning gold as they're proved.
-
-![Replean stepping through or_comm: rcases has just split the goal into two branches](docs/screenshots/or_comm-2.png)
-
-<!-- TODO(me): optionally swap in a 15-second GIF (see HUMAN_TASKS.md). -->
-
-> I first saw Lean at my friend's laptop and couldn’t follow what the proof was doing between lines. Everything important happens in a goal state you can’t see unless you click on each line. I wanted to step through it like a debugger, but with a picture.
+A step-through player for Lean 4 proofs. Press **Next** and one line of the proof runs; the goal
+tree, the hypotheses and the visualizations update with it.
 
 **Try it:** https://khushijain010.github.io/FPLaunchpad_REPLEAN/
 
-Built by Khushi (team Bilibuu, IITR) for Syntax Error 2026, Functional Programming track.
+![Replean in dark mode: and_comm after constructor has split the goal into two](docs/screenshots/hero-dark.png)
+
+> I first saw Lean at my friend's laptop and couldn’t follow what the proof was doing between lines. Everything important happens in a goal state you can’t see unless you click on each line. I wanted to step through it like a debugger, but with a picture.
+
+Khushi · team Bilibuu · IITR, for Syntax Error 2026 (Functional Programming track).
 
 ---
 
-## What it does
+## What you get
 
-Open an example from the **Files** panel, press **Next** (or `→`), and one line of the proof runs.
-The layout is an IDE: files on the left, the code with its goals in the middle, the picture and
-an explanation on the right, and every playback control in the header. The picture keeps up:
+| | |
+| --- | --- |
+| **Files** | Examples grouped by topic (Logic, Numbers, Lists, Programs) and **My Proofs**, your own `.lean` files: new, upload, drag and drop, rename, delete. Saved in your browser. |
+| **Editor** | Tabs, the current line highlighted, lines already run dimmed, Lean errors marked in the gutter. Click any proof line to jump to it. |
+| **Goal State** | The goal Lean works on next, its hypotheses (new ones highlighted), and every open goal. **Local Context** shows the full diff per goal. |
+| **Visualization** | Four views, picked automatically per step: **Tree** (3D or 2D), **List Lab**, **Rewrite**, **Shrink**. Full-screen mode for presenting. |
+| **Explanation** | What the tactic that just ran did, in plain English: which hypotheses it used, which goals it opened or closed. Works offline. |
+| **Playback** | Next, back, reset, autoplay at three speeds, and a scrubber, all in the header. |
+| **Themes** | Light and dark, across the whole app, the editor and the 3D scene. |
 
-- **Tree** (3D or 2D): the graph grows. Goals are nodes, tactics are edges. `constructor`,
-  `rcases` and `induction` visibly branch. The active goal's hypotheses float beside it; new ones fly in,
-  the ones the line uses get a beam. Proved goals contract, turn gold and drop a star onto the base.
-- **List Lab**: a list rearranges. List items in the goal are boxes keyed by value, so when
+### The four views
+
+- **Tree**: the graph grows. Goals are nodes, tactics are edges; `constructor`, `rcases` and
+  `induction` visibly branch. Proved goals turn gold and drop into a row along the bottom.
+- **List Lab**: a list rearranges. List elements in the goal are boxes keyed by value, so when
   `rw [rev]` moves `1` from the front to the back, that box slides there.
 - **Rewrite**: before and after, diffed token by token, with what was replaced by what.
 - **Shrink**: a goal shrinks down to what was just proved. Theorem on the left, open goals in the
   middle getting smaller, proved goals collapsing onto a shelf.
 
-**Your own proofs:** under **My Proofs** in the Files panel, make a new file, upload `.lean` files
-(or drop them on the panel), or copy an example with **Copy to My Proofs**. Press **Run** and your
-proof plays the same way. Files are saved in your browser and remember their last result. Running
-needs a Lean server: locally `pnpm live`; on the deployed site, a hosted, sandboxed one
-([docs/LIVE.md](docs/LIVE.md)). Core Lean only: a file that imports Mathlib gets a clear explanation
-and core replacements for the tactics it uses.
+![Replean in light mode: List Lab on rev [1, 2, 3]](docs/screenshots/hero-light.png)
 
-**Light and dark themes**, switched from the header (or `T`).
+### Your own proofs
 
-**Errors:** if Lean rejects a line, the visualization panel shows Lean's own error message for it,
-the line is marked red in the editor and the failing goal turns red in the tree. Errors outside any
-proof step are listed in the same panel.
+Make a file under **My Proofs** (or **Copy to My Proofs** from an example), press **Run**
+(`Ctrl+Enter`), and it plays like the examples. A Lean server runs it: locally `pnpm live`, and on
+the deployed site a hosted, sandboxed one ([docs/LIVE.md](docs/LIVE.md)). If Lean rejects a line,
+its error message appears in the visualization panel and the failing goal turns red.
 
-The player picks the best view per step; picking one yourself overrides that until the next sample.
-On the left: the code with the current line lit, the goals infoview-style with a diff, and a **Why**
-panel that explains each tactic in plain English (offline, no AI).
+Replean runs **core Lean 4** (no Mathlib). A file that imports Mathlib gets a plain explanation and
+core replacements for the tactics it uses, such as `omega` for `ring`.
 
 ## How it works
 
-1. A Lean 4 program ([`lean/Extractor.lean`](lean/Extractor.lean)) elaborates each sample and walks
+1. A Lean 4 program ([`lean/Extractor.lean`](lean/Extractor.lean)) elaborates a file and walks
    Lean's InfoTree, printing every tactic's goals before and after.
 2. A pure function ([`buildSteps`](apps/web/src/core/buildSteps.ts)) turns tactics into one step per
-   source line ([the rule](docs/STEPPING.md)), and the result is committed as `trace.json`.
-3. The site is a static replay engine. `buildFrames(trace)` computes every frame up front.
-4. Every view is a function of the current frame. Scrubbing back is an array index, not an undo.
+   source line ([the rule](docs/STEPPING.md)). The examples' results are committed as JSON traces.
+3. `buildFrames(trace)` computes every frame up front, so scrubbing back is an array index, not an
+   undo.
+4. Every panel is a function of the current frame.
 5. Nothing on screen is hand-written: every hypothesis and goal string was printed by Lean.
 
 More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
@@ -65,60 +66,57 @@ Needs Node 20+ and pnpm 9 (`npm i -g pnpm@9`).
 
 ```sh
 pnpm install
-pnpm dev            # http://localhost:5173
+pnpm dev            # http://localhost:5173 (examples only)
+pnpm live           # the same, plus a local Lean server on 127.0.0.1:8791 for your own files
 ```
 
-Live mode (paste or upload your own proof) needs Lean too:
+Running your own files and regenerating the example traces need Lean
+([elan](https://github.com/leanprover/elan)); the toolchain is pinned in `lean/lean-toolchain`.
 
 ```sh
-pnpm live           # Lean backend on 127.0.0.1:8791 + the player
-```
-
-Regenerating traces needs Lean ([elan](https://github.com/leanprover/elan)); the toolchain is
-pinned in `lean/lean-toolchain`:
-
-```sh
-pnpm verify         # lake build: all samples compile
-pnpm traces         # run the extractor, rewrite apps/web/public/traces/*.json
-pnpm golden         # check the committed traces match a fresh run
-pnpm test           # unit tests (core + live server)
+pnpm verify         # lake build: all examples compile
+pnpm traces         # rerun the extractor and rewrite apps/web/public/traces/*.json
+pnpm golden         # check the committed traces match a fresh Lean run
+pnpm test           # unit tests (core + server)
 pnpm ui-check       # click every control in a real browser (needs pnpm preview + pnpm server)
 pnpm build          # static site in apps/web/dist
 ```
 
-Shortcuts: `→`/`Space` next, `←` back, `Home`/`End`, `P` autoplay, `[` `]` speed, `1`–`4` views,
-`D` 2D/3D, `F` full screen, `B` files panel, `T` theme, `?` help. Click any proof line to jump to it.
+### Shortcuts
 
-## How this relates to Paperproof and lean-tui
+| Key | Action | Key | Action |
+| --- | --- | --- | --- |
+| `→` / `Space` | Next line | `1`–`4` | Tree, List Lab, Rewrite, Shrink |
+| `←` | Previous line | `D` | 2D / 3D tree |
+| `Home` / `End` | Start / end | `F` | Full screen |
+| `P` | Autoplay | `B` | Files panel |
+| `[` `]` | Slower / faster | `T` | Light / dark theme |
+| `?` | Help | `Esc` | Close dialogs, leave full screen |
 
-I'm not the first to draw Lean proofs. [Paperproof](https://github.com/Paper-Proof/paperproof)
-renders Lean 4 proofs as 2D paper-style proof trees inside the editor, and
-[lean-tui](https://github.com/lean-tui) is a terminal infoview with tactic and data-flow graphs.
-Both are tools you use while writing proofs. Replean is for *watching* one: it's a player
-(next, back, scrub, autoplay), it runs from a URL with nothing installed, it has three
-coordinated views for the three things the brief asked to see, and it explains each step in
-words.
+## Related work
+
+[Paperproof](https://github.com/Paper-Proof/paperproof) renders Lean 4 proofs as 2D paper-style
+proof trees inside the editor, and [lean-tui](https://github.com/lean-tui) is a terminal infoview
+with tactic and data-flow graphs. Both are tools for writing proofs. Replean is for watching and
+presenting one: a player with scrubbing and autoplay, four coordinated views, explanations in
+words, and nothing to install.
 
 ## Limitations
 
-- **Live mode on the public site goes through a hosted Lean server** with a free plan: the first run
-  after a quiet spell waits up to a minute for it to wake. It refuses code-running commands
-  (`#eval`, `native_decide`, macros, `import`), so it's core-Lean proofs only. See [docs/LIVE.md](docs/LIVE.md)
-  for the security trade-offs.
+- **Core Lean only.** Mathlib is several gigabytes and needs far more memory than the free server.
+- **The hosted server sleeps when idle** (free plan), so the first run after a quiet spell can take
+  up to a minute. It refuses code-running commands (`#eval`, `native_decide`, macros, `import`);
+  see [docs/LIVE.md](docs/LIVE.md) for the security trade-offs.
 - **"Used" hypotheses are a heuristic:** a hypothesis counts as used if the line mentions it by name.
-  `simp` using one implicitly won't show.
-- **`cases ... with | ...` alternatives hide their sibling goals** while you're inside one (see
-  [STEPPING.md](docs/STEPPING.md)). The samples avoid that form.
 - **`simp` is a black box:** you see before and after, not which lemmas fired.
-- List Lab finds lists by reading the pretty-printed goal, so it works on literals and `::` chains,
-  not on lists hidden behind definitions.
-- Only five samples, all core Lean, no Mathlib.
+- **`cases … with | …` alternatives hide their sibling goals** while you're inside one
+  ([STEPPING.md](docs/STEPPING.md)); `rcases` with bullets keeps every goal visible.
+- **List Lab reads the printed goal**, so it handles list literals and `::` chains, not lists hidden
+  behind definitions.
 
 ## Credits
 
 Lean 4 and Lake by the Lean FRO and contributors. three.js, React Three Fiber and drei by pmndrs.
 CodeMirror 6 by Marijn Haverbeke. d3-hierarchy by Mike Bostock. Fonts: JetBrains Mono and Space
-Grotesk via Fontsource. The extractor's approach follows the InfoTree-walking used by Lean's own
-server code and the community `lean-training-data` tools.
-
-MIT licensed.
+Grotesk via Fontsource. The extractor follows the InfoTree walking used by Lean's own server code
+and the community `lean-training-data` tools.

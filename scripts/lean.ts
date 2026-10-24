@@ -62,7 +62,7 @@ export async function requireLake(): Promise<void> {
     const r = await run('lake', ['--version'], LEAN_DIR, 60_000);
     if (r.code !== 0) throw new Error(r.stderr);
   } catch {
-    throw new Error('`lake` is not on PATH. Install Lean with elan first (see HUMAN_TASKS.md).');
+    throw new Error('`lake` is not on PATH. Install Lean with elan first: https://github.com/leanprover/elan');
   }
 }
 

@@ -77,7 +77,8 @@ export function Dialogs() {
               {[identity.yourName, identity.teamName, identity.collegeOrOrg].filter(shown).join(' · ')}
             </li>
           )}
-          {shown(identity.contactEmail) && (
+          {/* Shown only when it's a real address, so a half-filled value never becomes a broken link. */}
+          {shown(identity.contactEmail) && identity.contactEmail.includes('@') && (
             <li>
               <span className="contact-label">Email</span>
               <a href={`mailto:${identity.contactEmail}`}>{identity.contactEmail}</a>

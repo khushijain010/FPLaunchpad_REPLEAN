@@ -12,7 +12,7 @@ export const identity = {
   /** Shown under "Contact" in Help. */
   githubProfile: 'https://github.com/khushijain010',
   // TODO(me): an email (or LinkedIn) to show under "Contact" in Help. Hidden while it's a placeholder.
-  contactEmail: '{{CONTACT_EMAIL}}',
+  contactEmail: 'khushijain010705@gmail.com',
 } as const;
 
 /** True while a value is still a `{{PLACEHOLDER}}`, so the UI can hide it gracefully. */

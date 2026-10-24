@@ -1,67 +1,73 @@
 # Demo
 
-> Check every "you'll see" line against the real traces once they're generated. The behaviour
-> is what the code does with the expected Lean output; Lean has the final word.
-
 ## 90-second script
 
-**0:00 – Open on And, swapped. Shrink view (press `4`).**
+**0:00 – Open on `and_comm.lean` (Files panel → Examples → Logic). Tree view, 3D.**
 "This is a Lean proof. Lean checks it in a blink, which is great for Lean and useless for
 learning. Replean slows it down to one line at a time."
 
-**0:10 – Press `1` (Tree). Press `→` twice.**
-"`intro h` takes `p ∧ q` off the goal and puts it in the context: there it is, flying in, in cyan.
-`constructor` splits the goal in two. The graph grows."
+**0:10 – Press `→` twice.**
+"`intro h` takes `p ∧ q` off the goal and puts it in the context: there it is, in cyan.
+`constructor` splits the goal in two. The graph grows. Goal State shows both goals; Explanation
+says what the tactic did."
 
 **0:25 – `→` twice.**
-"Each bullet closes one branch. Watch the beam: that's the hypothesis the line uses. Closed goals
-contract, turn gold and drop into the constellation at the bottom."
-"Zero goals left. Q.E.D. The camera pulls back so you see the whole proof as one shape."
+"Each bullet closes one branch. The beam is the hypothesis the line uses. Closed goals turn gold
+and drop into the row at the bottom. Zero goals left: Q.E.D., and the camera pulls back to show
+the whole proof."
 
-**0:40 – Pick Reversing [1, 2, 3]. Press `→` repeatedly.**
-"Same idea, different picture. The player switched to List Lab on its own because the goal has a
+**0:40 – Open `rev.lean` (Examples → Lists). Press `→` a few times.**
+"Same idea, different picture. The player switched to List Lab by itself because the goal has a
 concrete list. Each `rw [rev]` moves the head of the list to the back. That's the list
 rearranging."
 
 **0:55 – Drag the scrubber back and forth.**
-"Every frame is a pure function of the step index, computed up front. So scrubbing backwards
-isn't an undo stack. It's an array lookup, and it can't get out of sync."
+"Every frame is a pure function of the step index, computed up front. Scrubbing backwards isn't
+an undo stack. It's an array lookup, so it can't get out of sync."
 
-**1:05 – Pick the compiler sample, press `P` (autoplay).**
-"The boss level: a tiny compiler from arithmetic to a stack machine, proved correct by
-induction. Two induction hypotheses, one rewrite each."
+**1:05 – My Proofs → New file → Run (`Ctrl+Enter`).**
+"Your own proofs work too. This file goes to a Lean server, comes back as a trace, and plays the
+same way. Break a line and Lean's own error shows up in the picture."
 
-**1:20 – Open the Why panel / About.**
-"None of this is hand-drawn. A Lean program walks Lean's InfoTree and prints every goal. The
-extractor itself is written in Lean. Thanks."
+**1:20 – Press `T`, then `?`.**
+"Light and dark themes; shortcuts and contact are in Help. None of the proof states are drawn by
+hand: a Lean program walks Lean's InfoTree and prints every goal. The extractor itself is written
+in Lean. Thanks."
 
 ## Backup plan
 
 - If the venue Wi-Fi dies: the site is static and works offline once loaded. Better: `pnpm build`
-  then `pnpm preview` locally, or open the deployed link before the demo and keep the tab.
-- If WebGL misbehaves on the demo machine: press `D` (or click **2D**) for the 2D tree. Same data, same layout.
-- Keep a screen recording of the script above as a last resort (HUMAN_TASKS).
+  then `pnpm preview` locally, or open the deployed site before the demo and keep the tab.
+- The Lean server on the free host sleeps when idle. Open the site a minute early; the page wakes
+  the server as it loads. The examples never need it.
+- If WebGL misbehaves on the demo machine: press `D` (or click **2D**) for the 2D tree. Same data,
+  same layout.
+- Keep a screen recording of the script above as a last resort.
 
 ## Judge Q&A cheat sheet
 
 **Are the proof states real?** Yes. Every string came from `ppExpr` inside Lean, via
-`lean/Extractor.lean`. The traces are committed, and CI regenerates them and fails if they differ.
+`lean/Extractor.lean`. The example traces are committed, and CI regenerates them and fails if they
+differ. Your own files run through the same extractor on the server.
 
 **Why not run Lean in the browser?** Lean's native build is far too big for WASM. Pre-generated
-traces make the demo fast and keep it from depending on a server.
+traces make the examples instant; your own files go to a small server.
 
-**What's functional about it?** The whole core is pure: `buildSteps`, `diffStates`,
-`buildGoalGraph`, `layoutTree`, `chooseView`, `explainTactic`, `buildFrames`. Frame `k` is a value,
-not the result of `k` mutations. The only mutable state is one small store (which trace, which
-step) and animation progress. The extractor is a Lean 4 metaprogram.
+**What's functional about it?** The core is pure: `buildSteps`, `diffStates`, `buildGoalGraph`,
+`layoutTree`, `chooseView`, `explainTactic`, `buildFrames`. Frame `k` is a value, not the result of
+`k` mutations. The only mutable state is a few small stores (what's open, which step, UI choices)
+and animation progress. The extractor is a Lean 4 metaprogram.
 
 **How does "one line" work when tactics nest?** The step starts at the first tactic on the line and
 ends where the next line's first tactic starts. Goals parked by `·` are put back so you always see
 every open goal. Details in `docs/STEPPING.md`.
 
 **How is this different from Paperproof?** Paperproof is an editor tool for writing proofs, drawn
-as 2D paper trees. This is a player for watching and presenting them: scrub, autoplay, three
+as 2D paper trees. This is a player for watching and presenting them: scrub, autoplay, four
 coordinated views, plain-English explanations, nothing to install.
 
-**What doesn't it do?** No live editing on the public site, `simp` is shown as before/after only,
-and "used hypotheses" is a by-name heuristic.
+**Does it support Mathlib?** No. Mathlib is several gigabytes and needs far more memory than the
+free server has. Files that import it get a clear message with core replacements for their tactics.
+
+**What doesn't it do?** `simp` is shown as before/after only, "used hypotheses" is a by-name
+heuristic, and the public server refuses code-running commands such as `#eval`.
