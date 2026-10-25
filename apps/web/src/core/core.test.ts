@@ -273,7 +273,11 @@ describe('tokens', () => {
     expect(ops.filter((o) => o.kind !== 'del').map((o) => o.text).join('')).toBe('myAdd 0 k + 1 = k + 1');
   });
   it('summarises what was replaced', () => {
-    expect(rewriteSummary(tokenDiff('rev [3]', 'app (rev []) [3]')).to).toContain('app');
+    expect(rewriteSummary(tokenDiff('rev [3]', 'app (rev []) [3]')).to.join(' ')).toContain('app');
+  });
+  it('summarises a rewrite as whole pieces, no "…" joins', () => {
+    const s = rewriteSummary(tokenDiff('eval (fold (Expr.num n)) = eval (Expr.num n)', 'eval (fold (a.add b)) = eval (a.add b)'));
+    expect(s).toEqual({ from: ['Expr.num n'], to: ['a.add b'] });
   });
 });
 

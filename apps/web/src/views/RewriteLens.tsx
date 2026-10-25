@@ -29,13 +29,17 @@ export function RewriteLens({ frame }: { frame: Frame }) {
           {ops.map((o, i) => (o.kind === 'add' ? null : <span key={i} className={o.kind === 'del' ? 'tok-del' : undefined}>{o.text}</span>))}
         </p>
       </div>
-      {after && (from || to) && (
-        <div className="rw-arrow" aria-label={`${from || 'nothing'} became ${to || 'nothing'}`}>
-          <code className="rw-from">{from || '·'}</code>
-          <svg width="56" height="16" viewBox="0 0 56 16" aria-hidden>
+      {after && (from.length > 0 || to.length > 0) && (
+        <div className="rw-arrow" aria-label={`${from.join(', ') || 'nothing'} became ${to.join(', ') || 'nothing'}`}>
+          <span className="rw-pieces">
+            {from.length ? from.map((t) => <code key={t} className="rw-from">{t}</code>) : <span className="muted">nothing</span>}
+          </span>
+          <svg className="rw-arrow-icon" viewBox="0 0 56 16" aria-hidden>
             <path d="M2 8h48M44 3l6 5-6 5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <code className="rw-to">{to || '·'}</code>
+          <span className="rw-pieces">
+            {to.length ? to.map((t) => <code key={t} className="rw-to">{t}</code>) : <span className="muted">nothing</span>}
+          </span>
         </div>
       )}
       <div className="rw-block">
@@ -49,7 +53,7 @@ export function RewriteLens({ frame }: { frame: Frame }) {
           <p className={`rw-goal ${step.error ? 'rw-error' : 'rw-closed'}`}>{step.error ? 'Lean rejected this line.' : 'Goal closed.'}</p>
         )}
       </div>
-      {d.opened.length > 1 && <p className="muted small">…and {d.opened.length - 1} more goal{d.opened.length > 2 ? 's' : ''}. The tree view shows the split.</p>}
+      {d.opened.length > 1 && <p className="muted small">And {d.opened.length - 1} more goal{d.opened.length > 2 ? 's' : ''}. The tree view shows the split.</p>}
     </motion.div>
   );
 }

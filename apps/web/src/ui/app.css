@@ -1325,7 +1325,17 @@
 }
 
 /* list lab */
+/* List Lab, Rewrite and Shrink fill the panel: text scales with the panel (container units) and
+   the content sits in the middle instead of hugging the top. Sizes inside are in em. */
+.list-lab,
+.rewrite,
+.shrink {
+  font-size: clamp(13px, min(1.6cqw, 3cqh), 28px);
+}
 .list-lab {
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
   padding: 50px 24px 24px;
   height: 100%;
   overflow: auto;
@@ -1333,13 +1343,13 @@
 .ll-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 26px;
+  gap: 1em;
+  margin-bottom: 2em;
 }
 .ll-side {
-  width: 40px;
+  width: 4em;
   flex: none;
-  font-size: 10px;
+  font-size: 0.75em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--faint);
@@ -1353,16 +1363,16 @@
 }
 .ll-glue {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 1em;
 }
 /* A box with a lit top and side edge; it grows with its text. */
 .ll-box {
   position: relative;
   display: inline-grid;
   place-items: center;
-  min-width: 42px;
-  height: 40px;
-  padding: 0 12px;
+  min-width: 3.2em;
+  height: 3em;
+  padding: 0 0.9em;
   border: 1px solid var(--brand-line);
   border-radius: 3px;
   background: var(--brand-fill);
@@ -1396,7 +1406,7 @@
   background: color-mix(in srgb, var(--brand) 12%, var(--surface));
 }
 .ll-face {
-  font: 700 16px var(--sans);
+  font: 700 1.25em var(--sans);
   color: var(--text);
   white-space: nowrap;
 }
@@ -1431,37 +1441,44 @@
   border: 1px dashed var(--hyp);
   color: var(--hyp);
   border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 12px;
+  padding: 0.45em 0.75em;
+  font-size: 0.92em;
 }
 .ll-source {
-  margin: 8px 0 0;
+  margin: 0.6em 0 0;
   color: var(--faint);
-  font: 12px var(--mono);
+  font: 0.92em var(--mono);
   white-space: pre-wrap;
 }
 
 /* rewrite lens */
 .rewrite {
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
   padding: 50px 24px 24px;
   height: 100%;
   overflow: auto;
 }
+.rewrite .view-caption,
+.list-lab .view-caption {
+  font-size: 0.95em;
+}
 .rw-block {
   border: 1px solid var(--line);
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 0.75em 1em;
   background: var(--surface-2);
 }
 .rw-label {
-  font-size: 10px;
+  font-size: 0.72em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--faint);
 }
 .rw-goal {
-  margin: 4px 0 0;
-  font-size: 15px;
+  margin: 0.3em 0 0;
+  font-size: 1.15em;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -1474,10 +1491,31 @@
 .rw-arrow {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 8px;
+  gap: 0.75em;
+  padding: 1em 0.5em;
   color: var(--brand);
   flex-wrap: wrap;
+}
+.rw-pieces {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+.rw-from,
+.rw-to {
+  padding: 0.1em 0.45em;
+  border-radius: 5px;
+}
+.rw-from {
+  background: var(--error-dim);
+}
+.rw-to {
+  background: var(--brand-fill);
+}
+.rw-arrow-icon {
+  width: 4em;
+  height: 1.15em;
+  flex: none;
 }
 .rw-from {
   color: var(--error);
@@ -1491,10 +1529,11 @@
 .shrink {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) auto minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 16px;
+  gap: 1.2em;
   padding: 56px 20px 24px;
   height: 100%;
   align-items: start;
+  align-content: safe center;
   overflow: auto;
 }
 @container (max-width: 700px) {
@@ -1503,20 +1542,21 @@
   }
 }
 .viz-stage {
-  container-type: inline-size;
+  /* Size containment so the views can scale with the panel's height as well as its width. */
+  container-type: size;
 }
 .sh-label {
   display: block;
-  font-size: 10px;
+  font-size: 0.72em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--faint);
-  margin-bottom: 6px;
+  margin-bottom: 0.5em;
 }
 .sh-theorem code {
   display: block;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.95em;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -1529,7 +1569,7 @@
 .sh-past {
   display: flex;
   gap: 6px;
-  font-size: 10px;
+  font-size: 0.78em;
   color: var(--muted);
   border-left: 2px solid var(--line-2);
   padding-left: 6px;
@@ -1545,7 +1585,7 @@
 .sh-goal {
   border: 1px solid var(--brand-line);
   border-radius: 10px;
-  padding: 8px 10px 10px;
+  padding: 0.6em 0.8em 0.8em;
   background: var(--brand-fill);
   transition: font-size 400ms var(--ease);
 }
@@ -1558,7 +1598,7 @@
 }
 .sh-tag {
   display: block;
-  font-size: 10px;
+  font-size: 0.72em;
   color: var(--muted);
 }
 .sh-size {
@@ -1575,7 +1615,7 @@
   gap: 6px;
 }
 .sh-pill {
-  font-size: 11px;
+  font-size: 0.85em;
   color: var(--gold);
   border: 1px solid var(--gold-line);
   background: var(--gold-dim);

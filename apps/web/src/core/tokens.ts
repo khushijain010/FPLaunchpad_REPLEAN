@@ -38,9 +38,35 @@ export function tokenDiff(before: string, after: string): readonly DiffOp[] {
   return ops;
 }
 
-/** The changed region of a diff: what was matched (deleted text) and what replaced it. */
-export function rewriteSummary(ops: readonly DiffOp[]): Readonly<{ from: string; to: string }> {
-  const from = ops.filter((o) => o.kind === 'del').map((o) => o.text).join(' … ').trim();
-  const to = ops.filter((o) => o.kind === 'add').map((o) => o.text).join(' … ').trim();
-  return { from, to };
+/**
+ * What was replaced by what, as separate pieces rather than one string. Changes separated only by
+ * whitespace are one piece (`Expr.num` + `n` is `Expr.num n`), and a piece that changes the same
+ * way twice (both sides of an `=`) is listed once.
+ */
+export function rewriteSummary(ops: readonly DiffOp[]): Readonly<{ from: readonly string[]; to: readonly string[] }> {
+  const from: string[] = [];
+  const to: string[] = [];
+  let del = '';
+  let add = '';
+  let gap = false;
+  const flush = () => {
+    if (del.trim()) from.push(del.trim());
+    if (add.trim()) to.push(add.trim());
+    del = '';
+    add = '';
+    gap = false;
+  };
+  for (const o of ops) {
+    if (o.kind === 'same') {
+      // Whitespace between two changes keeps them together; anything else ends the piece.
+      if (/^\s+$/.test(o.text) && (del || add)) gap = true;
+      else flush();
+    } else if (o.kind === 'del') {
+      del += (gap && del ? ' ' : '') + o.text;
+    } else {
+      add += (gap && add ? ' ' : '') + o.text;
+    }
+  }
+  flush();
+  return { from: [...new Set(from)], to: [...new Set(to)] };
 }
