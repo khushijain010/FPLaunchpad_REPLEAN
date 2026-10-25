@@ -65,6 +65,7 @@ export function ListLab({ frame }: { frame: Frame }) {
 
   return (
     <div className={`list-lab${closed ? ' is-closed' : ''}`}>
+      <div className="ll-inner">
       <p className="view-caption">
         {closed ? 'Goal closed.' : anyItems ? 'List elements in the goal. Highlighted boxes moved in this step.' : 'No concrete list in this goal. Showing its top-level structure.'}
       </p>
@@ -90,7 +91,8 @@ export function ListLab({ frame }: { frame: Frame }) {
           </div>
         )}
       </LayoutGroup>
-      <pre className="ll-source">{goal.target}</pre>
+        <pre className="ll-source">{goal.target}</pre>
+      </div>
     </div>
   );
 }

@@ -208,7 +208,15 @@ async function viewsAndTools(page: Page): Promise<void> {
   check('Full screen: the editor side takes no space', codeBox === null || codeBox.width === 0, JSON.stringify(codeBox));
   check('Full screen: the visualization fills the window', !!vizBox && vizBox.x < 12 && vizBox.width > vw * 0.95, JSON.stringify(vizBox));
   check('Full screen: the files panel is hidden', (await page.locator('.sidebar').count()) === 0);
+  const rail = page.locator('.stage-rail');
+  const railText = (await rail.count()) ? await rail.innerText() : '';
+  const current = await page.locator('.rail-line.is-current').innerText().catch(() => '');
+  check('Full screen: a side rail shows the line, what it did and the goal', /what it did/i.test(railText) && /goal|proved/i.test(railText) && current.length > 0, current);
+  const stageBox = await page.locator('.viz-stage').boundingBox();
+  const railBox = await rail.boundingBox();
+  check('Full screen: the rail sits beside the view, not over it', !!stageBox && !!railBox && stageBox.x + stageBox.width <= railBox.x + 1);
   await page.click('button[aria-label="Full screen"]');
+  check('Leaving full screen removes the rail', (await page.locator('.stage-rail').count()) === 0);
   check('Full screen button restores the layout', (await page.locator('.pane.code').isVisible()) && (await page.locator('.sidebar').count()) === 1);
 
   await page.keyboard.press('End');

@@ -22,7 +22,7 @@ Khushi · team Bilibuu · IITR, for Syntax Error 2026 (Functional Programming tr
 | **Files** | Examples grouped by topic (Logic, Numbers, Lists, Programs) and **My Proofs**, your own `.lean` files: new, upload, drag and drop, rename, delete. Saved in your browser. |
 | **Editor** | Tabs, the current line highlighted, lines already run dimmed, Lean errors marked in the gutter. Click any proof line to jump to it. |
 | **Goal State** | The goal Lean works on next, its hypotheses (new ones highlighted), and every open goal. **Local Context** shows the full diff per goal. |
-| **Visualization** | Four views, picked automatically per step: **Tree** (3D or 2D), **List Lab**, **Rewrite**, **Shrink**. Full-screen mode for presenting. |
+| **Visualization** | Four views, picked automatically per step: **Tree** (3D or 2D), **List Lab**, **Rewrite**, **Shrink**. Full-screen mode for presenting, with a side rail showing the line that just ran, what it did and the goal. |
 | **Explanation** | What the tactic that just ran did, in plain English: which hypotheses it used, which goals it opened or closed. Works offline. |
 | **Playback** | Next, back, reset, autoplay at three speeds, and a scrubber, all in the header. |
 | **Themes** | Light and dark, across the whole app, the editor and the 3D scene. |

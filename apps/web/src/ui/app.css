@@ -1052,11 +1052,116 @@
   opacity: 0.35;
   cursor: default;
 }
-.viz-stage {
-  position: relative;
+.viz-body {
   flex: 1;
   min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+/* Full screen: the view plus a rail with the line, what it did, and the goal. */
+.viz-body.has-rail {
+  grid-template-columns: minmax(0, 1fr) clamp(320px, 27%, 460px);
+}
+.viz-stage {
+  position: relative;
+  min-height: 0;
   overflow: hidden;
+}
+
+.stage-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 22px 22px 24px;
+  border-left: 1px solid var(--line);
+  background: var(--surface-2);
+  overflow: auto;
+  min-height: 0;
+}
+.rail-label {
+  margin: 0 0 10px;
+  font: 600 10.5px var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.rail-code {
+  margin: 0;
+  padding: 8px 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  font: 13px/1.7 var(--mono);
+  color: var(--muted);
+  overflow-x: auto;
+}
+.rail-line {
+  display: block;
+  padding: 0 14px 0 0;
+  white-space: pre;
+  border-left: 2px solid transparent;
+}
+.rail-line.is-current {
+  color: var(--text);
+  background: var(--brand-fill);
+  border-left-color: var(--brand);
+}
+.rail-ln {
+  display: inline-block;
+  width: 3.2em;
+  padding-right: 1em;
+  text-align: right;
+  color: var(--faint);
+}
+.rail-line.is-next .rail-ln {
+  color: var(--brand);
+}
+.stage-rail .explain-tactic {
+  font-size: 20px;
+}
+.rail-sublabel {
+  margin: 16px 0 8px;
+  font: 600 10px var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.rail-hyps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font: 13px/1.5 var(--mono);
+  color: var(--muted);
+}
+.rail-hyps li {
+  padding: 2px 8px;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
+.rail-hyps b {
+  color: var(--hyp);
+  font-weight: 600;
+}
+.rail-hyps li.is-new {
+  background: color-mix(in srgb, var(--hyp) 14%, transparent);
+}
+.rail-target {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--brand-line);
+  border-radius: 10px;
+  background: var(--brand-fill);
+  font: 15px/1.55 var(--mono);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.rail-qed {
+  margin: 0;
+  font: 700 18px var(--sans);
+  color: var(--gold);
 }
 .viz-layer {
   position: absolute;
@@ -1331,6 +1436,11 @@
 .rewrite,
 .shrink {
   font-size: clamp(13px, min(1.15cqw, 2.1cqh), 19px);
+}
+.ll-inner {
+  /* Centred as one block, so the left/right rows stay aligned with each other. */
+  align-self: center;
+  max-width: 100%;
 }
 .list-lab {
   display: flex;
@@ -1939,6 +2049,14 @@
   }
   .stack > .tabbed-panel {
     min-height: 260px;
+  }
+  .viz-body.has-rail {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .stage-rail {
+    border-left: 0;
+    border-top: 1px solid var(--line);
   }
   .viz-panel {
     min-height: 62vh;

@@ -6,7 +6,7 @@ import type { Frame } from '../core/frames';
 import { GoalPanel } from './GoalPanel';
 import { GoalState } from './GoalState';
 
-function rich(text: string): ReactNode[] {
+export function rich(text: string): ReactNode[] {
   return text.split(/(`[^`]*`)/g).map((part, i) =>
     part.startsWith('`') && part.endsWith('`') && part.length > 1 ? <code key={i}>{part.slice(1, -1)}</code> : part,
   );
@@ -30,6 +30,24 @@ function Tabbed({ label, tabs, children }: { label: string; tabs: readonly strin
   );
 }
 
+/** What the line that just ran did: tactic, headline, facts. Shared with the full-screen rail. */
+export function Explanation({ frame }: { frame: Frame }) {
+  const e = frame.explanation;
+  const step = frame.step;
+  if (!e || !step) return null;
+  return (
+    <div className={`explain${step.error ? ' is-error' : ''}`}>
+      <h3 className="explain-tactic">{step.tactic}</h3>
+      <p className="explain-headline">{rich(e.headline)}</p>
+      <ul className="explain-facts">
+        {e.facts.map((f, i) => (
+          <li key={i}>{rich(f)}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export function GoalPanels({ frame }: { frame: Frame | undefined }) {
   return (
     <Tabbed label="Goals" tabs={['Goal State', 'Local Context']}>
@@ -47,19 +65,7 @@ export function InfoPanels({ frame }: { frame: Frame | undefined }) {
         if (!frame || !e || !step) {
           return <p className="view-empty">{frame ? 'Press → to run the first line.' : 'Run the file to see each step explained.'}</p>;
         }
-        if (tab === 0) {
-          return (
-            <div className={`explain${step.error ? ' is-error' : ''}`}>
-              <h3 className="explain-tactic">{step.tactic}</h3>
-              <p className="explain-headline">{rich(e.headline)}</p>
-              <ul className="explain-facts">
-                {e.facts.map((f, i) => (
-                  <li key={i}>{rich(f)}</li>
-                ))}
-              </ul>
-            </div>
-          );
-        }
+        if (tab === 0) return <Explanation frame={frame} />;
         const d = frame.diff;
         return (
           <dl className="tactic-info">

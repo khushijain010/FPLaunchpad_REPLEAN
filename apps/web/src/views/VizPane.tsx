@@ -12,6 +12,7 @@ import { LeanErrors } from './LeanErrors';
 import { ListLab } from './ListLab';
 import { RewriteLens } from './RewriteLens';
 import { ShrinkRail } from './ShrinkRail';
+import { StageRail } from './StageRail';
 import { Tree2D } from './Tree2D';
 
 const Tree3D = lazy(() => import('./Tree3D'));
@@ -80,6 +81,7 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
         </div>
       </div>
 
+      <div className={`viz-body${presentation ? ' has-rail' : ''}`}>
       <div className="viz-stage" role="tabpanel" aria-label={LABELS[view]}>
         {view === 'tree' && flat && <Tree2D scene={scene} />}
         {/* Once the 3D scene has been shown it stays mounted and is only hidden. Unmounting a
@@ -108,6 +110,8 @@ export function VizPane({ film, frame }: { film: Film; frame: Frame }) {
         {/* Keyed by source so the expanded/collapsed choice resets for each new file. */}
         <LeanErrors key={film.trace.source} trace={film.trace} frame={frame} />
         {scene.truncated && <p className="viz-note">Showing the first 300 goals. The rest are still in the goal panel.</p>}
+      </div>
+      {presentation && <StageRail film={film} frame={frame} />}
       </div>
     </section>
   );
