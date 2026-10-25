@@ -26,6 +26,7 @@ Khushi · team Bilibuu · IITR, for Syntax Error 2026 (Functional Programming tr
 | **Explanation** | What the tactic that just ran did, in plain English: which hypotheses it used, which goals it opened or closed. Works offline. |
 | **Playback** | Next, back, reset, autoplay at three speeds, and a scrubber, all in the header. |
 | **Themes** | Light and dark, across the whole app, the editor and the 3D scene. |
+| **Layout** | Drag the dividers between cards, left and right or top and bottom, to size each panel the way you like. Double-click a divider to reset it. Remembered in your browser. |
 
 ### The four views
 

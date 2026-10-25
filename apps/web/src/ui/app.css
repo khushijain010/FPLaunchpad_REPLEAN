@@ -57,11 +57,31 @@
   background: var(--brand);
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.divider-y {
+  width: auto;
+  height: 9px;
+  cursor: row-resize;
+}
+.divider-y::after {
+  top: 3px;
+  bottom: auto;
+  left: 30%;
+  right: 30%;
+  width: auto;
+  height: 2px;
+}
+
+/* A column of two cards with a draggable divider (Stack in Split.tsx). */
+.stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   height: 100%;
+  min-height: 0;
+}
+.stack.is-single {
+  grid-template-rows: minmax(0, 1fr);
+}
+.stack > .panel {
   min-height: 0;
 }
 
@@ -73,18 +93,6 @@
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   overflow: hidden;
-}
-.editor-panel {
-  flex: 1 1 56%;
-}
-.column > .tabbed-panel {
-  flex: 1 1 44%;
-}
-.viz-panel {
-  flex: 1 1 60%;
-}
-.column > .viz-panel + .tabbed-panel {
-  flex: 1 1 40%;
 }
 
 .view-empty {
@@ -1875,7 +1883,17 @@
   .editor-panel {
     min-height: 340px;
   }
-  .column > .tabbed-panel {
+  /* Phones: cards stack at natural heights, no row divider. */
+  .stack {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    height: auto;
+  }
+  .divider-y {
+    display: none;
+  }
+  .stack > .tabbed-panel {
     min-height: 260px;
   }
   .viz-panel {

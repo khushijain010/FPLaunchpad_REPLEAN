@@ -232,7 +232,7 @@ async function editorAndPanels(page: Page): Promise<void> {
   check('Tactic Info shows the line and goal counts', (await page.locator('.tactic-info').innerText()).includes('2 opened'));
   check('Breadcrumb shows where the file lives', (await page.locator('.crumb').allInnerTexts()).join(' / ') === 'Examples / Logic / and_comm.lean');
 
-  const sep = page.locator('.divider');
+  const sep = page.locator('.divider:not(.divider-y)');
   await sep.focus();
   await page.keyboard.press('ArrowRight');
   check('Divider arrow keys resize', (await sep.getAttribute('aria-valuenow')) === '52');
@@ -240,6 +240,36 @@ async function editorAndPanels(page: Page): Promise<void> {
   check('Divider double-click resets to 50/50', (await sep.getAttribute('aria-valuenow')) === '50');
   await page.keyboard.press('ArrowRight');
   check('After using the divider, → steps the proof again', (await stepOf(page)) === 3, `step ${await stepOf(page)}`);
+
+  // The row dividers between the top and bottom cards of each column.
+  for (const [name, panel] of [['editor and goal', '.editor-panel'], ['visualization and explanation', '.viz-panel']] as const) {
+    const row = page.locator(`.divider-y[aria-label*="${name}"]`);
+    check(`Row divider between ${name} panels exists`, (await row.count()) === 1);
+    const before = await page.locator(panel).evaluate((el) => el.getBoundingClientRect().height);
+    const start = Number(await row.getAttribute('aria-valuenow'));
+    await row.focus();
+    for (let i = 0; i < 5; i++) await page.keyboard.press('ArrowDown');
+    const after = await page.locator(panel).evaluate((el) => el.getBoundingClientRect().height);
+    check(`Row divider (${name}): ↓ grows the top card`, Number(await row.getAttribute('aria-valuenow')) === start + 10 && after > before + 20, `${before} -> ${after}`);
+    const box = await row.boundingBox();
+    if (box) {
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2 - 120, { steps: 6 });
+      await page.mouse.up();
+    }
+    check(`Row divider (${name}): dragging up shrinks the top card`, Number(await row.getAttribute('aria-valuenow')) < start + 10);
+  }
+  const leftRow = page.locator('.divider-y[aria-label*="editor and goal"]');
+  await leftRow.focus();
+  await page.keyboard.press('ArrowDown');
+  const kept = await leftRow.getAttribute('aria-valuenow');
+  await page.reload();
+  await page.waitForSelector('.transport');
+  check('Panel sizes are remembered after a reload', (await page.locator('.divider-y[aria-label*="editor and goal"]').getAttribute('aria-valuenow')) === kept);
+  await page.locator('.divider-y[aria-label*="editor and goal"]').dblclick();
+  check('Row divider double-click resets', (await page.locator('.divider-y[aria-label*="editor and goal"]').getAttribute('aria-valuenow')) === '56');
+  await page.locator('.divider-y[aria-label*="visualization"]').dblclick();
 }
 
 async function sidebarAndTabs(page: Page): Promise<void> {

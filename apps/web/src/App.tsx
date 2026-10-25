@@ -10,7 +10,7 @@ import { useAutoplay, useBoot, useHashSync } from './ui/loader';
 import { useNav } from './ui/nav';
 import { useShortcuts } from './ui/shortcuts';
 import { Sidebar } from './ui/Sidebar';
-import { Split } from './ui/Split';
+import { Split, Stack } from './ui/Split';
 import { FILE_PREFIX, useStore } from './ui/store';
 import { StatusCard } from './ui/StatusCard';
 import { GoalPanels, InfoPanels } from './views/Panels';
@@ -91,18 +91,8 @@ function Workspace() {
         )}
         <Split
           hideLeft={presentation}
-          left={
-            <div className="column">
-              <EditorArea trace={shown} frame={frame} onLine={jumpToLine} />
-              <GoalPanels frame={frame} />
-            </div>
-          }
-          right={
-            <div className="column">
-              {viz}
-              {!presentation && <InfoPanels frame={frame} />}
-            </div>
-          }
+          left={<Stack id="left" initial={56} label="Resize editor and goal panels" top={<EditorArea trace={shown} frame={frame} onLine={jumpToLine} />} bottom={<GoalPanels frame={frame} />} />}
+          right={<Stack id="right" initial={60} label="Resize visualization and explanation panels" top={viz} bottom={presentation ? undefined : <InfoPanels frame={frame} />} />}
         />
       </div>
     </div>

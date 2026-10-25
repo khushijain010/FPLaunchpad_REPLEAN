@@ -48,6 +48,7 @@ export function Dialogs() {
           ))}
         </dl>
         <p className="muted small">Click any proof line in the editor to jump to it. In a file you're editing, Ctrl+Enter runs it.</p>
+        <p className="muted small">Drag the dividers between panels (left and right, top and bottom) to resize them; double-click one to reset it. Your layout is remembered.</p>
       </section>
 
       <section className="help-section" aria-label="About">
