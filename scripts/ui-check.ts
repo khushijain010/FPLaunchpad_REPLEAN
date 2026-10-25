@@ -196,7 +196,8 @@ async function viewsAndTools(page: Page): Promise<void> {
   check('2D boxes hold their whole goal, no "…"', whole.n >= 8 && whole.inside && whole.uncut, JSON.stringify(whole));
   check('2D boxes never overlap', whole.apart);
   await page.click('.segmented button:has-text("3D")');
-  await pause(page, 800);
+  // The 3D view loads lazily; wait for its canvas rather than a fixed time.
+  await page.waitForSelector('.tree3d canvas', { timeout: 10_000 }).catch(() => undefined);
   check('3D button draws the 3D tree', (await page.locator('.tree3d canvas').count()) === 1 && !(await page.locator('.viz-layer').isHidden()));
 
   await page.click('button[aria-label="Full screen"]');
@@ -358,6 +359,9 @@ async function myFiles(page: Page): Promise<void> {
     { name: 'up.lean', mimeType: 'text/plain', buffer: Buffer.from('theorem up : True := by\n  trivial\n') },
     { name: 'notes.txt', mimeType: 'text/plain', buffer: Buffer.from('not lean') },
   ]);
+  // Files are read asynchronously; wait for the new one to appear.
+  await sidebarFile(page, 'up.lean').waitFor({ timeout: 5_000 }).catch(() => undefined);
+  await page.waitForFunction(() => document.querySelector('.live-editor .cm-content')?.textContent?.includes('theorem up'), undefined, { timeout: 5_000 }).catch(() => undefined);
   check('Upload adds .lean files', (await sidebarFile(page, 'up.lean').count()) === 1 && (await editorText(page)).includes('theorem up'));
   check('Upload refuses non-.lean files with a message', (await page.locator('.sidebar-error').innerText()).includes('notes.txt'));
 

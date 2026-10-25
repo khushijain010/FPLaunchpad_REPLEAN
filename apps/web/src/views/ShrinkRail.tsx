@@ -49,7 +49,7 @@ export function ShrinkRail({ film, frame }: { film: Film; frame: Frame }) {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.6 }}
                   className={`sh-goal${i === 0 ? ' is-active' : ''}`}
-                  style={{ fontSize: `${(0.95 + 0.45 * size).toFixed(3)}em` }}
+                  style={{ fontSize: `${(1 + 0.2 * size).toFixed(3)}em` }}
                 >
                   {g.tag && <span className="sh-tag">{g.tag}</span>}
                   <code>{g.target}</code>
